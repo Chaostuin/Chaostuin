@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl" data-root="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGINATITEL — Ecologisch tuinieren · Chaostuinieren</title>
+  <meta name="description" content="BESCHRIJVING VAN DEZE PAGINA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .detail-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; max-width:1100px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .detail-figure { position:sticky; top:calc(var(--nav-height) + 1rem); }
+    .detail-figure img { width:100%; border-radius:4px; box-shadow:0 8px 40px rgba(44,36,22,0.15); display:block; }
+    .detail-figure figcaption { font-size:0.78rem; color:var(--sage); margin-top:0.75rem; line-height:1.5; text-align:center; font-style:italic; }
+    .detail-text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.3rem,2vw,1.7rem); color:var(--moss); margin:2rem 0 0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--fog); }
+    .detail-text h2:first-child { margin-top:0; }
+    .detail-text p { font-size:1rem; font-weight:300; line-height:1.85; color:#4a3f2f; margin-bottom:0.75rem; }
+    .detail-text ul { list-style:none; padding:0; margin:0.5rem 0 1rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .detail-text ul li { font-size:1rem; font-weight:300; line-height:1.7; color:#4a3f2f; display:flex; gap:0.75rem; align-items:flex-start; }
+    .detail-text ul li::before { content:'→'; color:var(--straw); font-weight:500; flex-shrink:0; margin-top:0.05rem; }
+    .nuance-box { background:var(--fog); border-left:3px solid var(--straw); border-radius:2px; padding:1.25rem 1.5rem; margin-top:2rem; }
+    .nuance-box .nuance-label { font-size:0.8rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--moss); margin-bottom:0.5rem; }
+    .nuance-box p { margin:0; font-style:italic; color:#5a5040; }
+    @media (max-width:600px) { .detail-layout { grid-template-columns:1fr; padding:3rem 2rem 4rem; gap:2rem; } .detail-figure { position:static; } }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">ecologisch <span>tuinieren</span></a>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <ul class="nav-links">
+      <li><a href="../index.html#filosofie">Filosofie</a></li>
+      <li><a href="../index.html#themas">Kies je aanpak</a></li>
+      <li class="nav-dropdown-item">
+        <a href="../index.html#tools" class="nav-dropdown-toggle">Tools ▾</a>
+        <ul class="nav-dropdown">
+          <li><a href="../tools/mulchcalculator.html">Mulchcalculator</a></li>
+          <li><a href="../tools/padplanner.html">Padplanner</a></li>
+          <li><a href="../tools/groentenplanner.html">Groentenplanner</a></li>
+        </ul>
+      </li>
+      <li><a href="../index.html#over">Over</a></li>
+    </ul>
+    <div class="nav-search">
+      <input type="text" class="search-input" id="searchInput" placeholder="Zoek een begrip..." autocomplete="off">
+      <span class="search-icon">⌕</span>
+      <div class="search-dropdown" id="searchDropdown"></div>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header" style="padding-top:calc(var(--nav-height) + 1.5rem);padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">Tien Geboden</h1>
+    <p class="page-lead">De 10 geboden van de ecologische tuinier</p>
+  </div>
+</header>
+
+<main>
+<!-- 10 GEBODEN -->
+<br><br><br>
+  <div class="geboden-grid">
+    <div class="gebot"><span class="gebot-num">1</span><span class="gebot-text">Bovenal bemin uw grond</span></div>
+    <div class="gebot"><span class="gebot-num">2</span><span class="gebot-text">Hou hem levend en gezond</span></div>
+    <div class="gebot"><span class="gebot-num">3</span><span class="gebot-text">Compost is voedsel voor de zaden</span></div>
+    <div class="gebot"><span class="gebot-num">4</span><span class="gebot-text">En blijf ALTIJD op de paden</span></div>
+    <div class="gebot"><span class="gebot-num">5</span><span class="gebot-text">Mest niet, mijd chemische brol</span></div>
+    <div class="gebot"><span class="gebot-num">6</span><span class="gebot-text">Mulch royaal, met emmers vol</span></div>
+    <div class="gebot"><span class="gebot-num">7</span><span class="gebot-text">Vlucht het spitten en het ploegen</span></div>
+    <div class="gebot"><span class="gebot-num">8</span><span class="gebot-text">Plant en zaai maar met genoegen</span></div>
+    <div class="gebot"><span class="gebot-num">9</span><span class="gebot-text">Combineer slim door elkaar</span></div>
+    <div class="gebot"><span class="gebot-num">10</span><span class="gebot-text">En vooral: genieten maar!</span></div>
+  </div>
+<br><br><br>
+  <nav class="page-nav" style="max-width:1100px;margin:0 auto;padding:0 4rem 4rem;">
+    <a href="../index.html#themas" class="page-nav-up">↑ Kies je aanpak</a>
+  </nav>
+</main>
+
+<footer>
+  <div class="footer-logo">chaos<span>tuin</span></div>
+  <p>Ecologisch tuinieren · De Chaostuin</p>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+  const dropdown = item.querySelector('.nav-dropdown');
+  if (!dropdown) return;
+  let t = null;
+  function isOver(e) {
+    const ib = item.getBoundingClientRect(), db = dropdown.getBoundingClientRect();
+    return (e.clientX>=ib.left&&e.clientX<=ib.right&&e.clientY>=ib.top&&e.clientY<=ib.bottom)||
+           (e.clientX>=db.left&&e.clientX<=db.right&&e.clientY>=db.top&&e.clientY<=db.bottom);
+  }
+  item.addEventListener('mouseenter', () => { clearTimeout(t); dropdown.classList.add('open'); });
+  document.addEventListener('mousemove', e => {
+    if (!dropdown.classList.contains('open')) return;
+    clearTimeout(t);
+    if (!isOver(e)) t = setTimeout(() => dropdown.classList.remove('open'), 100);
+  });
+});
+history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+</script>
+</body>
+</html>
