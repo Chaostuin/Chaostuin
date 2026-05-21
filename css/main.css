@@ -712,10 +712,8 @@ footer p { font-size: 0.8rem; color: rgba(245,240,232,0.3); }
     flex-shrink: 0;
     margin-left: auto;
   }
-  /* Verberg de flex-wrapper inhoud behalve nav-links */
-  nav#nav > div { display: none !important; }
-  /* Nav-links werkt als overlay, los van de wrapper */
-  .nav-links { display: flex !important; }
+  /* Zoekbalk verbergen op mobiel */
+  .nav-search { display: none !important; }
   .nav-hamburger span {
     display: block;
     height: 2px;
@@ -781,6 +779,5 @@ footer p { font-size: 0.8rem; color: rgba(245,240,232,0.3); }
     border-bottom: 1px solid rgba(245,240,232,0.04);
   }
 
-  /* ── ZOEKBALK VERBERGEN ── */
-  .nav-search { display: none; }
+
 }
