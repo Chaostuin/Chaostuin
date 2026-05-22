@@ -8,6 +8,8 @@
 
 (function() {
 
+  // Bepaal het pad naar /components/ relatief aan de root
+  // zodat het werkt vanuit /, /aanpak/, /tools/, enz.
   const root = document.documentElement.dataset.root || '/';
 
   function loadComponent(id, file, callback) {
@@ -20,6 +22,7 @@
       })
       .then(html => {
         el.outerHTML = html;
+        // Wacht één frame zodat de browser de nieuwe HTML heeft verwerkt
         requestAnimationFrame(() => {
           if (callback) callback();
           if (file === 'nav.html') {
@@ -30,15 +33,19 @@
       .catch(err => console.warn('Chaostuin includes:', err));
   }
 
+  // Pas alle nav-links aan op basis van data-root
   function fixNavLinks() {
     document.querySelectorAll('#nav a[href^="/"]').forEach(a => {
       const href = a.getAttribute('href');
+      // /index.html en /tools/... blijven absoluut — werkt altijd via localhost
+      // Alleen /#hash-links omzetten naar root + index.html#hash
       if (href.startsWith('/#')) {
         a.setAttribute('href', root + 'index.html' + href.substring(1));
       }
     });
   }
 
+  // Markeer actieve nav-link op basis van huidige URL
   function markActiveLink() {
     const path = window.location.pathname;
     document.querySelectorAll('#nav .nav-links a').forEach(a => {
@@ -49,36 +56,7 @@
     });
   }
 
-  function initHamburger() {
-    const hamburger = document.getElementById('navHamburger');
-    const navLinks = document.querySelector('.nav-links');
-    if (!hamburger || !navLinks) return;
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('mobile-open');
-    });
-
-    navLinks.querySelectorAll('a').forEach(a => {
-      if (!a.classList.contains('nav-dropdown-toggle')) {
-        a.addEventListener('click', () => {
-          hamburger.classList.remove('open');
-          navLinks.classList.remove('mobile-open');
-        });
-      }
-    });
-
-    navLinks.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
-      toggle.addEventListener('click', e => {
-        if (window.innerWidth <= 600) {
-          e.preventDefault();
-          const dd = toggle.nextElementSibling;
-          if (dd) dd.classList.toggle('open');
-        }
-      });
-    });
-  }
-
+  // Nav scroll-gedrag opnieuw activeren na inject
   function initNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
@@ -88,29 +66,36 @@
     fixNavLinks();
     markActiveLink();
     initDropdowns();
-    initHamburger();
   }
 
+  // Dropdown via JS - controleert of muis nog in het gebied is
   function initDropdowns() {
     document.querySelectorAll('.nav-dropdown-item').forEach(item => {
       const dropdown = item.querySelector('.nav-dropdown');
       if (!dropdown) return;
+
       let closeTimer = null;
+
       function isOverItemOrDropdown(e) {
-        const ib = item.getBoundingClientRect(), db = dropdown.getBoundingClientRect();
+        const itemBox     = item.getBoundingClientRect();
+        const dropBox     = dropdown.getBoundingClientRect();
         const x = e.clientX, y = e.clientY;
-        return (x >= ib.left && x <= ib.right && y >= ib.top && y <= ib.bottom) ||
-               (x >= db.left && x <= db.right && y >= db.top && y <= db.bottom);
+        const overItem    = x >= itemBox.left && x <= itemBox.right && y >= itemBox.top  && y <= itemBox.bottom;
+        const overDrop    = x >= dropBox.left && x <= dropBox.right && y >= dropBox.top  && y <= dropBox.bottom;
+        return overItem || overDrop;
       }
+
       item.addEventListener('mouseenter', () => {
         clearTimeout(closeTimer);
         dropdown.classList.add('open');
       });
-      document.addEventListener('mousemove', e => {
+
+      document.addEventListener('mousemove', (e) => {
         if (!dropdown.classList.contains('open')) return;
         clearTimeout(closeTimer);
-        if (!isOverItemOrDropdown(e))
+        if (!isOverItemOrDropdown(e)) {
           closeTimer = setTimeout(() => dropdown.classList.remove('open'), 100);
+        }
       });
     });
   }
@@ -120,6 +105,7 @@
     loadComponent('footer-placeholder', 'footer.html');
   }
 
+  // Als het script onderaan de pagina staat is DOMContentLoaded al voorbij
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
