@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chaostuin Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --moss:   #3D5229;
+      --straw:  #C8A96E;
+      --cream:  #F5F0E8;
+      --fog:    #EAE4D8;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      margin: 0;
+      padding: 3rem 2rem;
+      color: #3a3020;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--moss);
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      color: #7a6a50;
+      font-size: 0.9rem;
+      margin-bottom: 3rem;
+    }
+    .counter-card {
+      background: white;
+      border-radius: 6px;
+      border: 1px solid var(--fog);
+      padding: 2rem;
+      max-width: 400px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .counter-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--moss);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .counter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #3a3020;
+    }
+    .counter-value {
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--moss);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .counter-unit {
+      font-size: 0.9rem;
+      color: #7a6a50;
+      margin-bottom: 1.5rem;
+    }
+    .counter-updated {
+      font-size: 0.78rem;
+      color: #a09070;
+      border-top: 1px solid var(--fog);
+      padding-top: 1rem;
+    }
+    .refresh-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      background: var(--moss);
+      color: var(--cream);
+      border: none;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+    .refresh-btn:hover { background: #4a6632; }
+    .loading { color: #a09070; font-style: italic; }
+    .error { color: #8b3a1a; font-style: italic; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<h1>Chaostuin Admin</h1>
+<p class="subtitle">Statistieken — alleen voor intern gebruik</p>
+
+<div class="counter-card">
+  <div class="counter-label">📥 Downloads</div>
+  <div class="counter-title">De Avonturen van Lientje<br><em>Grommelpaniek</em></div>
+  <div class="counter-value" id="count"><span class="loading">laden...</span></div>
+  <div class="counter-unit">keer gedownload</div>
+  <div class="counter-updated" id="updated"></div>
+  <button class="refresh-btn" onclick="laadTeller()">↺ Vernieuwen</button>
+</div>
+
+<script>
+async function laadTeller() {
+  const countEl = document.getElementById('count');
+  const updatedEl = document.getElementById('updated');
+  countEl.innerHTML = '<span class="loading">laden...</span>';
+  updatedEl.textContent = '';
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const r = await fetch('https://api.counterapi.dev/v1/chaostuin/grommelpaniek',
+      { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!r.ok) throw new Error('API fout');
+    const data = await r.json();
+    countEl.textContent = data.count;
+    const datum = new Date(data.updated_at);
+    updatedEl.textContent = 'Laatste download: ' + datum.toLocaleString('nl-BE');
+  } catch(e) {
+    countEl.innerHTML = '<span class="error">Niet beschikbaar</span>';
+    updatedEl.textContent = '';
+  }
+}
+
+laadTeller();
+</script>
+</body>
+</html>
