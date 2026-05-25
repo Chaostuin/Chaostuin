@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl" data-root="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGINATITEL — Ecologisch tuinieren · Chaostuinieren</title>
+  <meta name="description" content="BESCHRIJVING VAN DEZE PAGINA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .detail-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; max-width:1100px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .detail-figure { position:sticky; top:calc(var(--nav-height) + 1rem); }
+    .detail-figure img { width:100%; border-radius:4px; box-shadow:0 8px 40px rgba(44,36,22,0.15); display:block; }
+    .detail-figure figcaption { font-size:0.78rem; color:var(--sage); margin-top:0.75rem; line-height:1.5; text-align:center; font-style:italic; }
+    .detail-text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.3rem,2vw,1.7rem); color:var(--moss); margin:2rem 0 0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--fog); }
+    .detail-text h2:first-child { margin-top:0; }
+    .detail-text p { font-size:1rem; font-weight:300; line-height:1.85; color:#4a3f2f; margin-bottom:0.75rem; }
+    .detail-text ul { list-style:none; padding:0; margin:0.5rem 0 1rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .detail-text ul li { font-size:1rem; font-weight:300; line-height:1.7; color:#4a3f2f; display:flex; gap:0.75rem; align-items:flex-start; }
+    .detail-text ul li::before { content:'→'; color:var(--straw); font-weight:500; flex-shrink:0; margin-top:0.05rem; }
+    .nuance-box { background:var(--fog); border-left:3px solid var(--straw); border-radius:2px; padding:1.25rem 1.5rem; margin-top:2rem; }
+    .nuance-box .nuance-label { font-size:0.8rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--moss); margin-bottom:0.5rem; }
+    .nuance-box p { margin:0; font-style:italic; color:#5a5040; }
+    @media (max-width:600px) { .detail-layout { grid-template-columns:1fr; padding:3rem 2rem 4rem; gap:2rem; } .detail-figure { position:static; } }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div style="height:var(--nav-height);"></div>
+<header class="page-header" style="padding-top:calc(var(--nav-height) + 1.5rem);padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">Compost maken en gebruiken</h1>
+    <p class="page-lead">Compost is verteerd organisch materiaal, vol leven, voeding en structuur.</p>
+  </div>
+</header>
+
+<main>
+  <div class="detail-layout">
+    <figure class="detail-figure">
+      <img src="../pictures/compost.png" alt="Afgebroken organisch materiaal dat je bodem voedt">
+      <figcaption>Compost is het zwarte goud van je tuin </figcaption>
+    </figure>
+    <div class="detail-text">
+      <h2>Hoe maak je het?</h2>
+      <ul>
+        <li>meng groen en bruin (=droog) materiaal</li>
+        <li>houd de hoop vochtig maar luchtig</li>
+        <li>zet na enkele maanden om: alles dooreen mengen</li>
+        <li>laat minstens een jaar rijpen (liefst langer)</li>
+      </ul>
+      <h2>Hoe werk je ermee?</h2>
+      <ul>
+        <li>meng met aarde voor potgrond</li>
+        <li>gebruik als voorjaarslaag op de bodem, eventueel onder verse mulch</li>
+        <li>voeg toe in plantgaten</li>
+      </ul>
+      <div class="nuance-box">
+        <p class="nuance-label">Nuance</p>
+        <p>Door twee of drie maal om te zetten hou je de composthoop luchtig</p>
+      </div>
+    </div>
+  </div>
+  <nav class="page-nav" style="max-width:1100px;margin:0 auto;padding:0 4rem 4rem;">
+    <a href="mulchen.html" class="page-nav-prev">← mulchen</a>
+    <a href="../index.html#themas" class="page-nav-up">↑ Kies je aanpak</a>
+    <a href="zaaien.html" class="page-nav-next">zaaien →</a>
+  </nav>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>
