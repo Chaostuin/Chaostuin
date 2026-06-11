@@ -4,182 +4,198 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wat mag op de composthoop? — Ecologisch tuinieren · Chaostuinieren</title>
-  <meta name="description" content="Wat mag wel en niet op de composthoop, met composteertijd en de reden waarom.">
+  <meta name="description" content="Wat mag wel en niet op de composthoop? Gebruik de compostcheck en ontdek composteertijden en redenen.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/main.css">
   <style>
-    .compost-wrap {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 3rem 2rem 6rem;
-    }
+    .compost-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
 
-    /* Zoekbalk */
-    .compost-search-wrap {
-      margin-bottom: 2rem;
-      position: relative;
-    }
-    .compost-search {
-      width: 100%;
-      padding: 0.85rem 1.25rem 0.85rem 3rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 300;
-      border: 1px solid var(--fog);
-      border-radius: 3px;
-      background: white;
-      color: #3a3020;
-      box-sizing: border-box;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .compost-search:focus { border-color: var(--straw); }
-    .compost-search-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      color: var(--sage);
-      pointer-events: none;
-    }
-    .compost-search-result {
-      margin-top: 0.75rem;
-      padding: 1rem 1.25rem;
-      border-radius: 3px;
-      font-size: 0.95rem;
-      display: none;
-    }
-    .compost-search-result.ja {
-      background: #eef5e8;
-      border-left: 3px solid var(--moss);
-      color: #2a4015;
-    }
-    .compost-search-result.nee {
-      background: #fdf0ec;
-      border-left: 3px solid #c0522a;
-      color: #6b2a10;
-    }
-    .compost-search-result.niets {
-      background: var(--fog);
-      border-left: 3px solid var(--straw);
-      color: #5a4a30;
-    }
-
-    /* Tabbladen */
-    .compost-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
-      border-bottom: 2px solid var(--fog);
-      padding-bottom: 0;
-    }
-    .compost-tab {
-      padding: 0.75rem 1.5rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: var(--sage);
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .compost-tab.active {
-      color: var(--moss);
-      border-bottom-color: var(--moss);
-    }
-    .compost-tab:hover { color: var(--moss); }
-
-    /* Tabinhoud */
-    .compost-panel { display: none; }
-    .compost-panel.active { display: block; }
-
-    /* MAG WEL — kaartjes */
-    .wel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-    .wel-kaart {
+    /* COMPOSTCHECK */
+    .check-box {
       background: white;
       border: 1px solid var(--fog);
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
+      border-radius: 6px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 16px rgba(44,36,22,0.07);
     }
-    .wel-naam {
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: #3a3020;
-      line-height: 1.3;
-    }
-    .wel-tijd {
-      font-size: 0.78rem;
-      font-weight: 300;
-      color: #7a6a50;
-    }
-    .wel-balk-wrap {
-      height: 4px;
-      background: var(--fog);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .wel-balk {
-      height: 100%;
-      border-radius: 2px;
-    }
-
-    /* MAG NIET — groepen */
-    .niet-groep {
-      margin-bottom: 2rem;
-    }
-    .niet-groep-titel {
-      font-family: 'DM Sans', sans-serif;
+    .check-label {
       font-size: 0.8rem;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--moss);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid var(--fog);
+      margin-bottom: 0.5rem;
     }
-    .niet-item {
-      display: flex;
-      gap: 1rem;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--fog);
-      align-items: flex-start;
-    }
-    .niet-item:last-child { border-bottom: none; }
-    .niet-icon {
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-    .niet-naam {
-      font-size: 0.95rem;
-      font-weight: 400;
+    .check-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
       color: #3a3020;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.5rem;
     }
-    .niet-reden {
+    .check-examples {
       font-size: 0.85rem;
       font-weight: 300;
       color: #7a6a50;
-      line-height: 1.5;
+      margin-bottom: 1.25rem;
     }
+    .check-examples em { font-style: normal; color: var(--straw); }
+    .check-input-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .check-input {
+      flex: 1;
+      padding: 0.8rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      border: 1px solid var(--fog);
+      border-radius: 3px;
+      background: var(--cream);
+      color: #3a3020;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .check-input:focus { border-color: var(--straw); background: white; }
+    .check-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--moss);
+      color: var(--cream);
+      border: none;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .check-btn:hover { background: #4a6632; }
+
+    .check-result {
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.4rem;
+      border-radius: 4px;
+      display: none;
+      line-height: 1.6;
+    }
+    .check-result.ja  { background: #eef5e8; border-left: 4px solid var(--moss); }
+    .check-result.nee { background: #fdf0ec; border-left: 4px solid #c0522a; }
+    .check-result.onbekend { background: var(--fog); border-left: 4px solid var(--straw); }
+    .check-result-titel { font-weight: 500; font-size: 1rem; margin-bottom: 0.3rem; }
+    .check-result-tijd { font-size: 0.88rem; color: var(--moss); margin-top: 0.4rem; font-weight: 400; }
+    .check-result-reden { font-size: 0.88rem; color: #6b3010; margin-top: 0.4rem; }
+
+    /* TABELLEN */
+    .compost-sectie { margin-bottom: 3rem; }
+    .sectie-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--fog);
+    }
+    .sectie-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+    }
+    .sectie-badge.groen { background: #eef5e8; color: var(--moss); }
+    .sectie-badge.rood  { background: #fdf0ec; color: #c0522a; }
+
+    .compost-tabel {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .compost-tabel th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sage);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--fog);
+    }
+    .compost-tabel td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--fog);
+      font-weight: 300;
+      color: #3a3020;
+      vertical-align: top;
+    }
+    .compost-tabel tr:last-child td { border-bottom: none; }
+    .compost-tabel tr:hover td { background: var(--fog); }
+    .tijd-chip {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .reden-cel { font-size: 0.83rem; color: #6b5040; }
+
+    .toon-meer-btn {
+      display: block;
+      margin: 1rem auto 0;
+      padding: 0.6rem 1.5rem;
+      background: none;
+      border: 1px solid var(--fog);
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--moss);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toon-meer-btn:hover { background: var(--fog); }
+    .verborgen { display: none; }
+
+    /* VEELGEMAAKTE FOUT */
+    .fout-box {
+      background: var(--fog);
+      border-left: 4px solid var(--straw);
+      border-radius: 3px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+    .fout-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--moss);
+      margin-bottom: 0.75rem;
+    }
+    .fout-vergelijk {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .fout-kolom { font-size: 0.88rem; font-weight: 300; line-height: 1.7; }
+    .fout-kolom strong { display: block; margin-bottom: 0.25rem; font-weight: 500; }
+
+    /* CTA */
+    .cta-box {
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border: 1px solid var(--fog);
+      border-radius: 6px;
+    }
+    .cta-box p { font-weight: 300; color: #5a4a30; margin-bottom: 0.5rem; }
 
     @media (max-width: 600px) {
-      .wel-grid { grid-template-columns: 1fr 1fr; }
-      .compost-tab { padding: 0.6rem 1rem; font-size: 0.82rem; }
+      .check-input-row { flex-direction: column; }
+      .fout-vergelijk { grid-template-columns: 1fr; }
+      .compost-tabel th:last-child, .compost-tabel td:last-child { display: none; }
     }
   </style>
 </head>
@@ -191,37 +207,78 @@
 <header class="page-header" style="padding-bottom:2.5rem;">
   <div class="page-header-inner">
     <h1 class="page-title">Wat mag op de composthoop?</h1>
-    <p class="page-lead">Zoek wat je wil composteren en ontdek of het mag — en hoe lang het duurt.</p>
+    <p class="page-lead">Een goede composthoop leeft van evenwicht. Sommige materialen verteren snel en voeden het bodemleven, andere verstoren het proces of horen er helemaal niet thuis.</p>
   </div>
 </header>
 
 <main>
   <div class="compost-wrap">
 
-    <!-- Zoekbalk -->
-    <div class="compost-search-wrap">
-      <span class="compost-search-icon">⌕</span>
-      <input type="text" class="compost-search" id="compostSearch" placeholder="Zoek bijv. 'sinaasappel', 'vlees', 'koffie'..." autocomplete="off">
-      <div class="compost-search-result" id="compostResult"></div>
+    <!-- COMPOSTCHECK -->
+    <div class="check-box">
+      <div class="check-label">🔍 Compostcheck</div>
+      <div class="check-title">Mag dit op de composthoop?</div>
+      <div class="check-examples">Typ een materiaal, bijvoorbeeld: <em>kaas</em>, <em>bananenschil</em>, <em>karton</em></div>
+      <div class="check-input-row">
+        <input type="text" class="check-input" id="checkInput" placeholder="Typ een materiaal..." autocomplete="off">
+        <button class="check-btn" id="checkBtn">Controleer</button>
+      </div>
+      <div class="check-result" id="checkResult"></div>
     </div>
 
-    <!-- Tabbladen -->
-    <div class="compost-tabs">
-      <button class="compost-tab active" data-tab="wel">✅ Mag wel</button>
-      <button class="compost-tab" data-tab="niet">❌ Mag niet</button>
+    <!-- TABEL MAG WEL -->
+    <div class="compost-sectie">
+      <div class="sectie-header">
+        <span class="sectie-badge groen">✅ Composteerbaar</span>
+      </div>
+      <table class="compost-tabel">
+        <thead>
+          <tr>
+            <th>Materiaal</th>
+            <th>Composteert in ongeveer</th>
+          </tr>
+        </thead>
+        <tbody id="welTbody"></tbody>
+      </table>
+      <button class="toon-meer-btn" id="toonMeerBtn">Toon volledige lijst ▾</button>
     </div>
 
-    <!-- MAG WEL -->
-    <div class="compost-panel active" id="panel-wel">
-      <p style="font-size:0.85rem;color:#7a6a50;margin-bottom:1.5rem;font-weight:300;">
-        Gesorteerd op composteertijd — van snel (groen) naar traag (rood). Tijden zijn gemiddelden.
-      </p>
-      <div class="wel-grid" id="welGrid"></div>
+    <!-- TABEL MAG NIET -->
+    <div class="compost-sectie">
+      <div class="sectie-header">
+        <span class="sectie-badge rood">❌ Niet composteerbaar</span>
+      </div>
+      <table class="compost-tabel">
+        <thead>
+          <tr>
+            <th>Materiaal</th>
+            <th>Waarom niet?</th>
+          </tr>
+        </thead>
+        <tbody id="nietTbody"></tbody>
+      </table>
     </div>
 
-    <!-- MAG NIET -->
-    <div class="compost-panel" id="panel-niet">
-      <div id="nietGroepen"></div>
+    <!-- VEELGEMAAKTE FOUT -->
+    <div class="fout-box">
+      <h3>⚠️ Veelgemaakte fout</h3>
+      <p style="font-weight:300;font-size:0.95rem;">Een composthoop is geen afvalbak.</p>
+      <div class="fout-vergelijk">
+        <div class="fout-kolom">
+          <strong>❌ Vraag niet:</strong>
+          "Mag dit weg?"
+        </div>
+        <div class="fout-kolom">
+          <strong>✅ Maar wel:</strong>
+          "Kan mijn composthoop dit veilig omzetten in voeding voor de bodem?"
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <p>Twijfel je nog?</p>
+      <p>Gebruik de compostcheck hierboven of raadpleeg de volledige lijst.</p>
     </div>
 
   </div>
@@ -229,222 +286,98 @@
 
 <div id="footer-placeholder"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
 <script>
 // ── DATA ──────────────────────────────────────────────────
 const MAG_WEL = [
-  {naam:'Vers grasmaaisel', maanden:1.1},
-  {naam:'Bladeren (vers)', maanden:1.3},
-  {naam:'Koffiedik', maanden:1.4},
-  {naam:'Bloemen', maanden:1.7},
-  {naam:'Fruit- en groenteschillen', maanden:1.7},
-  {naam:'Onkruid (zonder zaad)', maanden:1.8},
-  {naam:'Afgevallen bladeren (versnipperd)', maanden:1.8},
-  {naam:'Zeewier', maanden:1.8},
-  {naam:'Theezakjes (zonder plastic)', maanden:2.7},
-  {naam:'Brood (zonder boter of beleg)', maanden:2.8},
-  {naam:'Kippenmest (vers)', maanden:3.0},
-  {naam:'Dun karton (wc-rolletjes, eierdozen)', maanden:3.0},
-  {naam:'Kleine hoeveelheden ongebleekt papier', maanden:3.2},
-  {naam:'Keukenpapier & servetten (zonder vet)', maanden:3.2},
-  {naam:'Eierschalen (verpoederd)', maanden:3.3},
-  {naam:'Fijngescheurd karton en papier', maanden:3.7},
-  {naam:'Oude gedroogde kruiden', maanden:4.2},
-  {naam:'Turf, kokosvezels', maanden:4.2},
-  {naam:'Oude vogelnesten', maanden:4.2},
-  {naam:'Houtkrullen & zaagsel (onbehandeld hout)', maanden:4.4},
-  {naam:'Stof van natuurlijke vezels (katoen, wol)', maanden:4.6},
-  {naam:'Kleine takjes & stengels (versnipperd)', maanden:5.7},
-  {naam:'Droge bladeren (grote hoeveelheden)', maanden:7.3},
-  {naam:'Hooi, stro', maanden:7.3},
-  {naam:'Karton met plakband of gekleurd drukwerk', maanden:7.9},
-  {naam:'Maïsstengels, zonnebloemstelen', maanden:8.2},
-  {naam:'Sinaasappelschillen (stukjes)', maanden:8.3},
-  {naam:'Maiskolven en broccolistelen', maanden:10.4},
-  {naam:'Eierschalen (niet verkruimeld)', maanden:11.1},
-  {naam:'Dennennaalden', maanden:12.9},
-  {naam:'Harde notendoppen', maanden:16.2},
-  {naam:'Harde pitten (perzik, avocado, olijf)', maanden:16.6},
-  {naam:'Eikels, kastanjes', maanden:16.6},
-  {naam:'Houtkrullen en schors', maanden:16.6},
-  {naam:'Gehakseld hout', maanden:18.2},
-  {naam:'Grote stukken hout of takken', maanden:38.8},
+  {naam:'Vers grasmaaisel', maanden:1.1, categorie:'Tuin- en plantenresten'},
+  {naam:'Bladeren (vers)', maanden:1.3, categorie:'Tuin- en plantenresten'},
+  {naam:'Koffiedik', maanden:1.4, categorie:'Keukenresten'},
+  {naam:'Bloemen', maanden:1.7, categorie:'Tuin- en plantenresten'},
+  {naam:'Fruit- en groenteschillen', maanden:1.7, categorie:'Keukenresten'},
+  {naam:'Onkruid (zonder zaad)', maanden:1.8, categorie:'Tuin- en plantenresten'},
+  {naam:'Afgevallen bladeren (versnipperd)', maanden:1.8, categorie:'Tuin- en plantenresten'},
+  {naam:'Zeewier', maanden:1.8, categorie:'Tuin- en plantenresten'},
+  {naam:'Theezakjes (zonder plastic)', maanden:2.7, categorie:'Keukenresten'},
+  {naam:'Brood (zonder boter of beleg)', maanden:2.8, categorie:'Keukenresten'},
+  {naam:'Kippenmest (vers)', maanden:3.0, categorie:'Organisch'},
+  {naam:'Dun karton (wc-rolletjes, eierdozen)', maanden:3.0, categorie:'Papier en karton'},
+  {naam:'Kleine hoeveelheden ongebleekt papier', maanden:3.2, categorie:'Papier en karton'},
+  {naam:'Keukenpapier & servetten (zonder vet)', maanden:3.2, categorie:'Papier en karton'},
+  {naam:'Eierschalen (verpoederd)', maanden:3.3, categorie:'Keukenresten'},
+  {naam:'Fijngescheurd karton en papier', maanden:3.7, categorie:'Papier en karton'},
+  {naam:'Oude gedroogde kruiden', maanden:4.2, categorie:'Keukenresten'},
+  {naam:'Turf, kokosvezels', maanden:4.2, categorie:'Organisch'},
+  {naam:'Oude vogelnesten', maanden:4.2, categorie:'Organisch'},
+  {naam:'Houtkrullen & zaagsel (onbehandeld hout)', maanden:4.4, categorie:'Hout en vezels'},
+  {naam:'Stof van natuurlijke vezels (katoen, wol)', maanden:4.6, categorie:'Organisch'},
+  {naam:'Kleine takjes & stengels (versnipperd)', maanden:5.7, categorie:'Hout en vezels'},
+  {naam:'Droge bladeren (grote hoeveelheden)', maanden:7.3, categorie:'Tuin- en plantenresten'},
+  {naam:'Hooi, stro', maanden:7.3, categorie:'Tuin- en plantenresten'},
+  {naam:'Karton met plakband of gekleurd drukwerk', maanden:7.9, categorie:'Papier en karton'},
+  {naam:'Maïsstengels, zonnebloemstelen', maanden:8.2, categorie:'Tuin- en plantenresten'},
+  {naam:'Sinaasappelschillen (stukjes)', maanden:8.3, categorie:'Keukenresten'},
+  {naam:'Maiskolven en broccolistelen', maanden:10.4, categorie:'Keukenresten'},
+  {naam:'Eierschalen (niet verkruimeld)', maanden:11.1, categorie:'Keukenresten'},
+  {naam:'Dennennaalden', maanden:12.9, categorie:'Tuin- en plantenresten'},
+  {naam:'Harde notendoppen', maanden:16.2, categorie:'Keukenresten'},
+  {naam:'Harde pitten (perzik, avocado, olijf)', maanden:16.6, categorie:'Keukenresten'},
+  {naam:'Eikels, kastanjes', maanden:16.6, categorie:'Tuin- en plantenresten'},
+  {naam:'Houtkrullen en schors', maanden:16.6, categorie:'Hout en vezels'},
+  {naam:'Gehakseld hout', maanden:18.2, categorie:'Hout en vezels'},
+  {naam:'Grote stukken hout of takken', maanden:38.8, categorie:'Hout en vezels'},
 ];
 
 const MAG_NIET = [
-  {groep:'🐀 Ongedierte en geur', items:[
-    {naam:'Gekookt eten, sauzen, vetten', reden:'Trekt ratten, muizen en vliegen aan; verstoort het evenwicht in de compost (te vet, weinig structuur)'},
-    {naam:'Vlees, vis, botjes', reden:'Rot sneller, geeft geurhinder en trekt ongedierte aan; traag te composteren'},
-    {naam:'Zuivel (kaas, yoghurt, melk...)', reden:'Zelfde probleem als vlees: geurt, trekt dieren aan, moeilijk afbreekbaar'},
-  ]},
-  {groep:'☣️ Giftig of chemisch', items:[
-    {naam:'Gekleurd of glanzend papier', reden:'Bevat vaak inkt op petroleumbasis of plastic coatings – niet composteerbaar'},
-    {naam:'Hout met verf of lak', reden:'Bevat toxische stoffen of chemische verbindingen die je niet in je tuin wil'},
-    {naam:'Sigarettenpeuken', reden:'Bevatten nicotine, plastic vezels en zware metalen – zeer vervuilend'},
-    {naam:'Stof uit de stofzuigerzak', reden:'Kan synthetische vezels en chemicaliën bevatten'},
-  ]},
-  {groep:'🦠 Ziektekiemen', items:[
-    {naam:'Katten- of hondenpoep', reden:'Kan ziektekiemen bevatten (toxoplasmose, wormen, bacteriën) – onveilig, zeker voor moestuincompost'},
-    {naam:'Menselijke uitwerpselen', reden:'Kan ziekteverwekkers bevatten'},
-    {naam:'Kattenbak vulling (met uitwerpselen)', reden:'Kan ziekteverwekkers bevatten'},
-    {naam:'Zieke plantenresten', reden:'Schimmels of virussen kunnen overleven in koude compost – risico op herbesmetting'},
-  ]},
-  {groep:'♻️ Niet afbreekbaar', items:[
-    {naam:'Aarde, zand, stenen, metaal, plastiek, glas', reden:'Zijn niet biologisch en breken niet af'},
-    {naam:'Bioplastics (composteerbare zakjes)', reden:'Veel soorten hebben industriële compostinstallaties nodig met hogere temperaturen – thuis niet afbreekbaar'},
-    {naam:'Wegwerpdoekjes', reden:'Synthetisch, breken niet af'},
-    {naam:'Luiers, maandverbanden', reden:'Bevatten plastiek en menselijke afvalstoffen'},
-  ]},
-  {groep:'🌱 Onkruidrisico', items:[
-    {naam:'Onkruid met zaad', reden:'Kans dat je onkruidzaden verspreidt via je compost'},
-  ]},
+  {naam:'Gekookt eten, sauzen, vetten', categorie:'Keukenafval', reden:'Trekt ratten, muizen en vliegen aan; verstoort het evenwicht in de compost'},
+  {naam:'Vlees, vis, botjes', categorie:'Keukenafval', reden:'Rot sneller, geeft geurhinder en trekt ongedierte aan'},
+  {naam:'Zuivel (kaas, yoghurt, melk...)', categorie:'Keukenafval', reden:'Geurt, trekt dieren aan, moeilijk afbreekbaar'},
+  {naam:'Gekleurd of glanzend papier', categorie:'Papier', reden:'Bevat inkt op petroleumbasis of plastic coatings'},
+  {naam:'Hout met verf of lak', categorie:'Hout', reden:'Bevat toxische stoffen of chemische verbindingen'},
+  {naam:'Sigarettenpeuken', categorie:'Vervuilend', reden:'Bevatten nicotine, plastic vezels en zware metalen'},
+  {naam:'Katten- of hondenpoep', categorie:'Ziektekiemen', reden:'Kan ziektekiemen bevatten (toxoplasmose, wormen, bacteriën)'},
+  {naam:'Onkruid met zaad', categorie:'Tuin', reden:'Kans dat je onkruidzaden verspreidt via je compost'},
+  {naam:'Zieke plantenresten', categorie:'Ziektekiemen', reden:'Schimmels of virussen kunnen overleven in koude compost'},
+  {naam:'Bioplastics (composteerbare zakjes)', categorie:'Plastic', reden:'Hebben industriële compostinstallaties nodig – thuis niet afbreekbaar'},
+  {naam:'Aarde, zand, stenen, metaal, plastiek, glas', categorie:'Niet biologisch', reden:'Zijn niet biologisch en breken niet af'},
+  {naam:'Stof uit de stofzuigerzak', categorie:'Vervuilend', reden:'Kan synthetische vezels en chemicaliën bevatten'},
+  {naam:'Menselijke uitwerpselen', categorie:'Ziektekiemen', reden:'Kan ziekteverwekkers bevatten'},
+  {naam:'Kattenbak vulling (met uitwerpselen)', categorie:'Ziektekiemen', reden:'Kan ziekteverwekkers bevatten'},
+  {naam:'Luiers, maandverbanden', categorie:'Plastic', reden:'Bevatten plastiek en menselijke afvalstoffen'},
+  {naam:'Wegwerpdoekjes', categorie:'Plastic', reden:'Synthetisch, breken niet af'},
 ];
 
-// ── SYNONIEMEN ────────────────────────────────────────────
-const SYNONIEMEN = {
-  'gras': 'Vers grasmaaisel',
-  'grasmaaisel': 'Vers grasmaaisel',
-  'maaisel': 'Vers grasmaaisel',
-  'blad': 'Bladeren (vers)',
-  'bladeren': 'Bladeren (vers)',
-  'herfstbladeren': 'Droge bladeren (grote hoeveelheden)',
-  'koffie': 'Koffiedik',
-  'koffiedik': 'Koffiedik',
-  'koffieprut': 'Koffiedik',
-  'bloem': 'Bloemen',
-  'bloemen': 'Bloemen',
-  'schillen': 'Fruit- en groenteschillen',
-  'groenteschillen': 'Fruit- en groenteschillen',
-  'fruitschillen': 'Fruit- en groenteschillen',
-  'aardappelschillen': 'Fruit- en groenteschillen',
-  'onkruid': 'Onkruid (zonder zaad)',
-  'wieren': 'Zeewier',
-  'zeewier': 'Zeewier',
-  'thee': 'Theezakjes (zonder plastic)',
-  'theezakje': 'Theezakjes (zonder plastic)',
-  'theezakjes': 'Theezakjes (zonder plastic)',
-  'brood': 'Brood (zonder boter of beleg)',
-  'boterham': 'Brood (zonder boter of beleg)',
-  'kippenmest': 'Kippenmest (vers)',
-  'mest': 'Kippenmest (vers)',
-  'karton': 'Dun karton (wc-rolletjes, eierdozen)',
-  'wc-rolletje': 'Dun karton (wc-rolletjes, eierdozen)',
-  'eierdoos': 'Dun karton (wc-rolletjes, eierdozen)',
-  'papier': 'Kleine hoeveelheden ongebleekt papier',
-  'keukenpapier': 'Keukenpapier & servetten (zonder vet)',
-  'servet': 'Keukenpapier & servetten (zonder vet)',
-  'servetten': 'Keukenpapier & servetten (zonder vet)',
-  'eierschaal': 'Eierschalen (verpoederd)',
-  'eierschalen': 'Eierschalen (verpoederd)',
-  'kruiden': 'Oude gedroogde kruiden',
-  'kokosvezel': 'Turf, kokosvezels',
-  'kokosvezels': 'Turf, kokosvezels',
-  'turf': 'Turf, kokosvezels',
-  'vogelnest': 'Oude vogelnesten',
-  'zaagsel': 'Houtkrullen & zaagsel (onbehandeld hout)',
-  'houtkrullen': 'Houtkrullen & zaagsel (onbehandeld hout)',
-  'wol': 'Stof van natuurlijke vezels (katoen, wol)',
-  'katoen': 'Stof van natuurlijke vezels (katoen, wol)',
-  'takjes': 'Kleine takjes & stengels (versnipperd)',
-  'stengels': 'Kleine takjes & stengels (versnipperd)',
-  'hooi': 'Hooi, stro',
-  'stro': 'Hooi, stro',
-  'mais': 'Maïsstengels, zonnebloemstelen',
-  'maïs': 'Maïsstengels, zonnebloemstelen',
-  'zonnebloem': 'Maïsstengels, zonnebloemstelen',
-  'sinaasappel': 'Sinaasappelschillen (stukjes)',
-  'sinaasappelschil': 'Sinaasappelschillen (stukjes)',
-  'citrusschil': 'Sinaasappelschillen (stukjes)',
-  'broccoli': 'Maiskolven en broccolistelen',
-  'maiskolf': 'Maiskolven en broccolistelen',
-  'dennennaald': 'Dennennaalden',
-  'dennennaalden': 'Dennennaalden',
-  'noten': 'Harde notendoppen',
-  'notendop': 'Harde notendoppen',
-  'notendoppen': 'Harde notendoppen',
-  'pit': 'Harde pitten (perzik, avocado, olijf)',
-  'pitten': 'Harde pitten (perzik, avocado, olijf)',
-  'avocado': 'Harde pitten (perzik, avocado, olijf)',
-  'perzik': 'Harde pitten (perzik, avocado, olijf)',
-  'eikels': 'Eikels, kastanjes',
-  'kastanjes': 'Eikels, kastanjes',
-  'schors': 'Houtkrullen en schors',
-  'hout': 'Gehakseld hout',
-  'takken': 'Grote stukken hout of takken',
-  // mag niet
-  'vlees': 'Vlees, vis, botjes',
-  'vis': 'Vlees, vis, botjes',
-  'bot': 'Vlees, vis, botjes',
-  'botten': 'Vlees, vis, botjes',
-  'kaas': 'Zuivel (kaas, yoghurt, melk...)',
-  'yoghurt': 'Zuivel (kaas, yoghurt, melk...)',
-  'melk': 'Zuivel (kaas, yoghurt, melk...)',
-  'zuivel': 'Zuivel (kaas, yoghurt, melk...)',
-  'vet': 'Gekookt eten, sauzen, vetten',
-  'saus': 'Gekookt eten, sauzen, vetten',
-  'gekookt': 'Gekookt eten, sauzen, vetten',
-  'sigaretten': 'Sigarettenpeuken',
-  'peuk': 'Sigarettenpeuken',
-  'peuken': 'Sigarettenpeuken',
-  'poep': 'Katten- of hondenpoep',
-  'hondenpoep': 'Katten- of hondenpoep',
-  'kattenpoep': 'Katten- of hondenpoep',
-  'plastiek': 'Aarde, zand, stenen, metaal, plastiek, glas',
-  'plastic': 'Aarde, zand, stenen, metaal, plastiek, glas',
-  'glas': 'Aarde, zand, stenen, metaal, plastiek, glas',
-  'metaal': 'Aarde, zand, stenen, metaal, plastiek, glas',
-  'zand': 'Aarde, zand, stenen, metaal, plastiek, glas',
-  'bioplastic': 'Bioplastics (composteerbare zakjes)',
-  'luier': 'Luiers, maandverbanden',
-  'luiers': 'Luiers, maandverbanden',
-  'doekjes': 'Wegwerpdoekjes',
-};
+// ── SYNONIEMEN laden ──────────────────────────────────────
+let SYNONIEMEN = {};
+fetch('../data/synoniemen.json')
+  .then(r => r.ok ? r.json() : {})
+  .then(data => { SYNONIEMEN = data; })
+  .catch(() => {});
 
-// ── KLEUR op basis van composteertijd ─────────────────────
-function tijdKleur(maanden) {
-  // groen (snel) → oranje → rood (traag)
-  const max = 39;
-  const ratio = Math.min(maanden / max, 1);
-  if (ratio < 0.3) return '#5C7A3A';       // groen
-  if (ratio < 0.6) return '#C8A96E';       // straw/oranje
-  return '#8B4513';                         // rood/bruin
+// ── FUSE.JS SETUP ─────────────────────────────────────────
+// Bouw een gecombineerde zoeklijst
+const zoekLijst = [
+  ...MAG_WEL.map(i => ({...i, type:'ja'})),
+  ...MAG_NIET.map(i => ({...i, type:'nee'})),
+];
+
+const fuse = new Fuse(zoekLijst, {
+  keys: ['naam', 'categorie'],
+  threshold: 0.4,
+  includeScore: true,
+});
+
+// ── HELPERS ───────────────────────────────────────────────
+function tijdLabel(m) {
+  if (m < 1) return Math.round(m * 4.33) + ' weken';
+  if (m < 2) return '± 1 maand';
+  return '± ' + m.toFixed(1).replace('.',',') + ' maanden';
 }
 
-function tijdLabel(maanden) {
-  if (maanden < 1) return Math.round(maanden * 4.33) + ' weken';
-  if (maanden === 1) return '1 maand';
-  return '± ' + maanden.toFixed(1).replace('.', ',') + ' maanden';
-}
-
-// ── RENDER MAG WEL ────────────────────────────────────────
-function renderWel() {
-  const grid = document.getElementById('welGrid');
-  const maxM = 38.8;
-  grid.innerHTML = MAG_WEL.map(item => {
-    const kleur = tijdKleur(item.maanden);
-    const breedte = Math.max(4, Math.round((item.maanden / maxM) * 100));
-    return `<div class="wel-kaart">
-      <div class="wel-balk-wrap"><div class="wel-balk" style="width:${breedte}%;background:${kleur};"></div></div>
-      <div class="wel-naam">${item.naam}</div>
-      <div class="wel-tijd" style="color:${kleur};">${tijdLabel(item.maanden)}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── RENDER MAG NIET ───────────────────────────────────────
-function renderNiet() {
-  const wrap = document.getElementById('nietGroepen');
-  wrap.innerHTML = MAG_NIET.map(groep => `
-    <div class="niet-groep">
-      <div class="niet-groep-titel">${groep.groep}</div>
-      ${groep.items.map(item => `
-        <div class="niet-item">
-          <div class="niet-icon">❌</div>
-          <div>
-            <div class="niet-naam">${item.naam}</div>
-            <div class="niet-reden">${item.reden}</div>
-          </div>
-        </div>`).join('')}
-    </div>`).join('');
+function tijdKleur(m) {
+  if (m <= 4)  return {bg:'#eef5e8', fg:'#3D5229'};
+  if (m <= 10) return {bg:'#fdf6e8', fg:'#8a6010'};
+  return {bg:'#fdf0ec', fg:'#8B4513'};
 }
 
 // ── ZOEKEN ────────────────────────────────────────────────
@@ -452,64 +385,92 @@ function zoek(query) {
   const q = query.toLowerCase().trim();
   if (!q) return null;
 
-  // Zoek via synoniemen
+  // 1. Exacte synoniem-match
   const synTarget = SYNONIEMEN[q];
-
-  // Zoek in mag wel
-  const welMatch = MAG_WEL.find(item =>
-    item.naam.toLowerCase().includes(q) ||
-    (synTarget && item.naam === synTarget)
-  );
-  if (welMatch) return {type:'ja', item: welMatch};
-
-  // Zoek in mag niet
-  for (const groep of MAG_NIET) {
-    const nietMatch = groep.items.find(item =>
-      item.naam.toLowerCase().includes(q) ||
-      (synTarget && item.naam === synTarget)
-    );
-    if (nietMatch) return {type:'nee', item: nietMatch, groep: groep.groep};
+  if (synTarget) {
+    const exact = zoekLijst.find(i => i.naam === synTarget);
+    if (exact) return exact;
   }
 
-  return {type:'niets'};
+  // 2. Fuzzy match
+  const results = fuse.search(q);
+  if (results.length > 0) return results[0].item;
+
+  return null;
 }
 
-document.getElementById('compostSearch').addEventListener('input', function() {
-  const resultEl = document.getElementById('compostResult');
-  const val = this.value.trim();
-  if (!val) { resultEl.style.display = 'none'; return; }
+// ── COMPOSTCHECK ──────────────────────────────────────────
+function toonResultaat() {
+  const val = document.getElementById('checkInput').value.trim();
+  const el = document.getElementById('checkResult');
+  if (!val) { el.style.display = 'none'; return; }
 
   const res = zoek(val);
-  resultEl.style.display = 'block';
-  resultEl.className = 'compost-search-result';
+  el.style.display = 'block';
+  el.className = 'check-result';
 
-  if (!res || res.type === 'niets') {
-    resultEl.classList.add('niets');
-    resultEl.innerHTML = '🤔 Niet gevonden. Probeer een ander woord.';
-  } else if (res.type === 'ja') {
-    resultEl.classList.add('ja');
-    resultEl.innerHTML = `✅ <strong>${res.item.naam}</strong> mag op de composthoop — duurt ${tijdLabel(res.item.maanden)}.`;
-  } else {
-    resultEl.classList.add('nee');
-    resultEl.innerHTML = `❌ <strong>${res.item.naam}</strong> mag <em>niet</em> op de composthoop.<br><span style="font-size:0.88rem;">${res.item.reden}</span>`;
+  if (!res) {
+    el.classList.add('onbekend');
+    el.innerHTML = `<div class="check-result-titel">⚠️ Materiaal niet gevonden</div>
+      <div style="font-weight:300;font-size:0.9rem;">Probeer een eenvoudiger woord of raadpleeg de tabellen hieronder.</div>`;
+    return;
   }
+
+  if (res.type === 'ja') {
+    const k = tijdKleur(res.maanden);
+    el.classList.add('ja');
+    el.innerHTML = `<div class="check-result-titel">✅ Ja, dit mag op de composthoop</div>
+      <div style="font-weight:300;font-size:0.9rem;">${res.naam} behoort tot <em>${res.categorie}</em> en composteert goed.</div>
+      <div class="check-result-tijd" style="color:${k.fg};">⏱ Composteert in ${tijdLabel(res.maanden)}</div>`;
+  } else {
+    el.classList.add('nee');
+    el.innerHTML = `<div class="check-result-titel">❌ Nee, dit hoort niet op de composthoop</div>
+      <div style="font-weight:300;font-size:0.9rem;">${res.naam} behoort tot <em>${res.categorie}</em>.</div>
+      <div class="check-result-reden">🔎 ${res.reden}</div>`;
+  }
+}
+
+document.getElementById('checkBtn').addEventListener('click', toonResultaat);
+document.getElementById('checkInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') toonResultaat();
 });
 
-// ── TABBLADEN ─────────────────────────────────────────────
-document.querySelectorAll('.compost-tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    document.querySelectorAll('.compost-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.compost-panel').forEach(p => p.classList.remove('active'));
-    this.classList.add('active');
-    document.getElementById('panel-' + this.dataset.tab).classList.add('active');
-  });
+// ── TABEL MAG WEL ─────────────────────────────────────────
+const TOON_INITIEEL = 10;
+let welUitgeklapt = false;
+
+function renderWel() {
+  const tbody = document.getElementById('welTbody');
+  tbody.innerHTML = MAG_WEL.map((item, i) => {
+    const k = tijdKleur(item.maanden);
+    const verborgen = (!welUitgeklapt && i >= TOON_INITIEEL) ? 'verborgen' : '';
+    return `<tr class="${verborgen}">
+      <td>${item.naam}</td>
+      <td><span class="tijd-chip" style="background:${k.bg};color:${k.fg};">${tijdLabel(item.maanden)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('toonMeerBtn').addEventListener('click', function() {
+  welUitgeklapt = !welUitgeklapt;
+  renderWel();
+  this.textContent = welUitgeklapt ? 'Toon minder ▲' : 'Toon volledige lijst ▾';
 });
+
+// ── TABEL MAG NIET ────────────────────────────────────────
+function renderNiet() {
+  document.getElementById('nietTbody').innerHTML = MAG_NIET.map(item =>
+    `<tr>
+      <td>${item.naam}</td>
+      <td class="reden-cel">${item.reden}</td>
+    </tr>`
+  ).join('');
+}
 
 // ── INIT ──────────────────────────────────────────────────
 renderWel();
 renderNiet();
 </script>
-
 <script src="/components/includes.js"></script>
 </body>
 </html>
