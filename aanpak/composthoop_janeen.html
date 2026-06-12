@@ -429,8 +429,16 @@ function zoek(query) {
     if (exact) return exact;
   }
 
-  // 2. Fuzzy match
-  const results = fuse.search(q);
+  // 2. Gedeeltelijke synoniem-match
+  for (const [syn, target] of Object.entries(SYNONIEMEN)) {
+    if (syn === q || syn.startsWith(q) || q.startsWith(syn)) {
+      const item = zoekLijst.find(i => i.naam === target);
+      if (item) return item;
+    }
+  }
+
+  // 3. Fuzzy match alleen als er echt niets anders is, en streng
+  const results = fuse.search(q).filter(r => r.score < 0.2);
   if (results.length > 0) return results[0].item;
 
   return null;
@@ -444,17 +452,21 @@ function bouwSuggesties(query) {
 
   const gevonden = new Map(); // naam -> item
 
-  // Directe fuzzy match op zoeklijst
-  const fuseRes = fuse.search(q, {limit: 8});
-  fuseRes.forEach(r => gevonden.set(r.item.naam, r.item));
-
-  // Ook synoniemen doorzoeken — exacte en gedeeltelijke match
+  // 1. Eerst synoniemen checken — meest betrouwbaar
   Object.entries(SYNONIEMEN).forEach(([syn, target]) => {
-    if (syn.startsWith(q) || syn.includes(q) || q.startsWith(syn)) {
+    if (syn.startsWith(q) || syn === q || (q.length >= 4 && syn.includes(q))) {
       const item = zoekLijst.find(i => i.naam === target);
       if (item && !gevonden.has(item.naam)) gevonden.set(item.naam, item);
     }
   });
+
+  // 2. Alleen fuzzy gebruiken als synoniemen niets opleverden
+  if (gevonden.size === 0) {
+    const fuseRes = fuse.search(q, {limit: 6});
+    fuseRes
+      .filter(r => r.score < 0.2) // strenger: alleen goede matches
+      .forEach(r => gevonden.set(r.item.naam, r.item));
+  }
 
   return Array.from(gevonden.values()).slice(0, 6);
 }
