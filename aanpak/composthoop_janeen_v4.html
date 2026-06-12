@@ -448,9 +448,9 @@ function bouwSuggesties(query) {
   const fuseRes = fuse.search(q, {limit: 8});
   fuseRes.forEach(r => gevonden.set(r.item.naam, r.item));
 
-  // Ook synoniemen doorzoeken — exacte en gedeeltelijke match
+  // Ook synoniemen doorzoeken
   Object.entries(SYNONIEMEN).forEach(([syn, target]) => {
-    if (syn.startsWith(q) || syn.includes(q) || q.startsWith(syn)) {
+    if (syn.includes(q) || q.includes(syn.substring(0, Math.max(3, q.length)))) {
       const item = zoekLijst.find(i => i.naam === target);
       if (item && !gevonden.has(item.naam)) gevonden.set(item.naam, item);
     }
