@@ -192,6 +192,39 @@
     }
     .cta-box p { font-weight: 300; color: #5a4a30; margin-bottom: 0.5rem; }
 
+    /* AUTOCOMPLETE */
+    .autocomplete-wrap { position: relative; flex: 1; }
+    .autocomplete-lijst {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--fog);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 8px 24px rgba(44,36,22,0.12);
+      z-index: 100;
+      max-height: 280px;
+      overflow-y: auto;
+      display: none;
+    }
+    .autocomplete-lijst.open { display: block; }
+    .autocomplete-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--fog);
+      transition: background 0.15s;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover, .autocomplete-item.actief { background: var(--fog); }
+    .autocomplete-icon { font-size: 0.9rem; flex-shrink: 0; }
+    .autocomplete-naam { font-size: 0.9rem; font-weight: 400; color: #3a3020; }
+    .autocomplete-cat { font-size: 0.78rem; font-weight: 300; color: #7a6a50; margin-left: auto; }
+
     @media (max-width: 600px) {
       .check-input-row { flex-direction: column; }
       .fout-vergelijk { grid-template-columns: 1fr; }
@@ -220,7 +253,10 @@
       <div class="check-title">Mag dit op de composthoop?</div>
       <div class="check-examples">Typ een materiaal, bijvoorbeeld: <em>kaas</em>, <em>bananenschil</em>, <em>karton</em></div>
       <div class="check-input-row">
-        <input type="text" class="check-input" id="checkInput" placeholder="Typ een materiaal..." autocomplete="off">
+        <div class="autocomplete-wrap">
+          <input type="text" class="check-input" id="checkInput" placeholder="Typ een materiaal..." autocomplete="off">
+          <div class="autocomplete-lijst" id="autoLijst"></div>
+        </div>
         <button class="check-btn" id="checkBtn">Controleer</button>
       </div>
       <div class="check-result" id="checkResult"></div>
@@ -301,6 +337,8 @@ const MAG_WEL = [
   {naam:'Theezakjes (zonder plastic)', maanden:2.7, categorie:'Keukenresten'},
   {naam:'Brood (zonder boter of beleg)', maanden:2.8, categorie:'Keukenresten'},
   {naam:'Kippenmest (vers)', maanden:3.0, categorie:'Organisch'},
+  {naam:'Konijnenmest (vers)', maanden:3.0, categorie:'Organisch'},
+  {naam:'Mest van kippen of konijnen (vers)', maanden:3.0, categorie:'Organisch'},
   {naam:'Dun karton (wc-rolletjes, eierdozen)', maanden:3.0, categorie:'Papier en karton'},
   {naam:'Kleine hoeveelheden ongebleekt papier', maanden:3.2, categorie:'Papier en karton'},
   {naam:'Keukenpapier & servetten (zonder vet)', maanden:3.2, categorie:'Papier en karton'},
@@ -393,12 +431,114 @@ function zoek(query) {
     if (exact) return exact;
   }
 
-  // 2. Fuzzy match
-  const results = fuse.search(q);
+  // 2. Gedeeltelijke synoniem-match
+  for (const [syn, target] of Object.entries(SYNONIEMEN)) {
+    if (syn === q || syn.startsWith(q) || q.startsWith(syn)) {
+      const item = zoekLijst.find(i => i.naam === target);
+      if (item) return item;
+    }
+  }
+
+  // 3. Fuzzy match alleen als er echt niets anders is, en streng
+  const results = fuse.search(q).filter(r => r.score < 0.2);
   if (results.length > 0) return results[0].item;
 
   return null;
 }
+
+// ── AUTOCOMPLETE ─────────────────────────────────────────
+// Bouw zoeklijst met alle namen + synoniemen
+function bouwSuggesties(query) {
+  const q = query.toLowerCase().trim();
+  if (q.length < 2) return [];
+
+  const gevonden = new Map(); // naam -> item
+
+  // 1. Eerst synoniemen checken — meest betrouwbaar
+  Object.entries(SYNONIEMEN).forEach(([syn, target]) => {
+    if (syn.startsWith(q) || syn === q || (q.length >= 4 && syn.includes(q))) {
+      const item = zoekLijst.find(i => i.naam === target);
+      if (item && !gevonden.has(item.naam)) gevonden.set(item.naam, item);
+    }
+  });
+
+  // 2. Alleen fuzzy gebruiken als synoniemen niets opleverden
+  if (gevonden.size === 0) {
+    const fuseRes = fuse.search(q, {limit: 6});
+    fuseRes
+      .filter(r => r.score < 0.2) // strenger: alleen goede matches
+      .forEach(r => gevonden.set(r.item.naam, r.item));
+  }
+
+  return Array.from(gevonden.values()).slice(0, 6);
+}
+
+let actieveIndex = -1;
+
+function toonAutoComplete(query) {
+  const lijst = document.getElementById('autoLijst');
+  const suggesties = bouwSuggesties(query);
+  actieveIndex = -1;
+
+  if (!suggesties.length || !query.trim()) {
+    lijst.classList.remove('open');
+    lijst.innerHTML = '';
+    return;
+  }
+
+  lijst.innerHTML = suggesties.map((item, i) => {
+    const icon = item.type === 'ja' ? '✅' : '❌';
+    return `<div class="autocomplete-item" data-index="${i}" data-naam="${item.naam}">
+      <span class="autocomplete-icon">${icon}</span>
+      <span class="autocomplete-naam">${item.naam}</span>
+      <span class="autocomplete-cat">${item.categorie}</span>
+    </div>`;
+  }).join('');
+
+  lijst.classList.add('open');
+
+  // Klik op suggestie
+  lijst.querySelectorAll('.autocomplete-item').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault();
+      document.getElementById('checkInput').value = el.dataset.naam;
+      lijst.classList.remove('open');
+      toonResultaat();
+    });
+  });
+}
+
+document.getElementById('checkInput').addEventListener('input', function() {
+  toonAutoComplete(this.value);
+});
+
+// Keyboard navigatie
+document.getElementById('checkInput').addEventListener('keydown', function(e) {
+  const lijst = document.getElementById('autoLijst');
+  const items = lijst.querySelectorAll('.autocomplete-item');
+  if (!lijst.classList.contains('open')) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    actieveIndex = Math.min(actieveIndex + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    actieveIndex = Math.max(actieveIndex - 1, -1);
+  } else if (e.key === 'Escape') {
+    lijst.classList.remove('open');
+    return;
+  } else { return; }
+
+  items.forEach((el, i) => el.classList.toggle('actief', i === actieveIndex));
+  if (actieveIndex >= 0) this.value = items[actieveIndex].dataset.naam;
+});
+
+// Sluit dropdown bij klik buiten
+document.addEventListener('click', e => {
+  if (!e.target.closest('.autocomplete-wrap')) {
+    document.getElementById('autoLijst').classList.remove('open');
+  }
+});
 
 // ── COMPOSTCHECK ──────────────────────────────────────────
 function toonResultaat() {
