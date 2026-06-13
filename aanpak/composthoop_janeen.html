@@ -320,6 +320,10 @@
   </div>
 </main>
 
+  <nav class="page-nav" style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+    <a href="composteren.html" class="page-nav-up">↑ Composteren</a>
+  </nav>
+
 <div id="footer-placeholder"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
@@ -456,10 +460,7 @@ function bouwSuggesties(query) {
 
   // 1. Eerst synoniemen checken — meest betrouwbaar
   Object.entries(SYNONIEMEN).forEach(([syn, target]) => {
-    const exactMatch = syn === q;
-    const begintMet = syn.startsWith(q) && syn.length <= q.length + 4;
-    const bevatQ = q.length >= 5 && syn.includes(q) && !syn.startsWith(q);
-    if (exactMatch || begintMet || bevatQ) {
+    if (syn.startsWith(q) || syn === q || (q.length >= 4 && syn.includes(q))) {
       const item = zoekLijst.find(i => i.naam === target);
       if (item && !gevonden.has(item.naam)) gevonden.set(item.naam, item);
     }
