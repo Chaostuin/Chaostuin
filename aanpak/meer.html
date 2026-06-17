@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="nl" data-root="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGINATITEL — Ecologisch tuinieren · Chaostuinieren</title>
+  <meta name="description" content="Leer hoe je plantjes eenvoudig in een levende, gemulchte bodem zet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .detail-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; max-width:1100px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .detail-figure { position:sticky; top:calc(var(--nav-height) + 1rem); }
+    .detail-figure img { width:100%; border-radius:4px; box-shadow:0 8px 40px rgba(44,36,22,0.15); display:block; }
+    .detail-figure figcaption { font-size:0.78rem; color:var(--sage); margin-top:0.75rem; line-height:1.5; text-align:center; font-style:italic; }
+    .detail-text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.3rem,2vw,1.7rem); color:var(--moss); margin:2rem 0 0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--fog); }
+    .detail-text h2:first-child { margin-top:0; }
+    .detail-text p { font-size:1rem; font-weight:300; line-height:1.85; color:#4a3f2f; margin-bottom:0.75rem; }
+    .detail-text ul { list-style:none; padding:0; margin:0.5rem 0 1rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .detail-text ul li { font-size:1rem; font-weight:300; line-height:1.7; color:#4a3f2f; display:flex; gap:0.75rem; align-items:flex-start; }
+    .detail-text ul li::before { content:'→'; color:var(--straw); font-weight:500; flex-shrink:0; margin-top:0.05rem; }
+    .nuance-box { background:var(--fog); border-left:3px solid var(--straw); border-radius:2px; padding:1.25rem 1.5rem; margin-top:2rem; }
+    .nuance-box .nuance-label { font-size:0.8rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--moss); margin-bottom:0.5rem; }
+    .nuance-box p { margin:0; font-style:italic; color:#5a5040; }
+    @media (max-width:600px) { .detail-layout { grid-template-columns:1fr; padding:3rem 2rem 4rem; gap:2rem; } .detail-figure { position:static; } }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div style="height:var(--nav-height);"></div>
+<header class="page-header" style="padding-top:calc(var(--nav-height) + 1.5rem);padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">Meer uit je tuin met wat chaos</h1>
+    <p class="page-lead">Met een chaostuin haal je niet alleen meer oogst uit je tuin, maar ook meer leven, rust en verrassing.</p>
+  </div>
+</header>
+
+<main>
+  <div class="detail-layout">
+    <figure class="detail-figure">
+      <img src="../pictures/meer.png" alt="meer uit je tuin">
+      <figcaption>Een chaostuin geeft meer terug op meer manieren dan alleen oogst.</figcaption>
+    </figure>
+    <div class="detail-text">
+      <h2>➡️ Wat betekent “meer”?</h2>
+      <h2>🌿 Meer opbrengst</h2>
+      <p>Planten staan dichter bij elkaar en worden beter gecombineerd.
+      <br>De tuin levert meer voedsel op dezelfde ruimte.</p>
+      <h2>🥕 Meer soorten</h2>
+      <p>Niet één soort per vak, maar veel soorten door elkaar.
+      <br>Dat maakt je tuin rijker en veerkrachtiger.</p>
+      <h2>🧘 Meer rust (minder werk)</h2>
+      <p>Minder spitten, minder harken, minder ingrijpen.
+      <br>De tuin doet meer zelf, jij doet minder maar slimmer.</p>
+      <h2>🌸 Meer leven</h2>
+      <p>Meer bloemen, meer insecten, meer vogels.
+      <br>Je tuin wordt een klein ecosysteem in plaats van een productievlak.</p>
+      <h2>🌿 Meer schoonheid</h2>
+      <p>Geen strak veld, maar een levend landschap.
+      <br>Een tuin die eruitziet als een klein natuurgebied.</p>
+      <h2>🔍 Meer ontdekking</h2>
+      <p>Je ziet wat werkt en wat niet.
+      <br>Elk seizoen wordt een experiment.</p>
+      <h2>🎲 Meer verrassing</h2>
+      <p>Combinaties geven onverwachte resultaten.
+      <br>Dat maakt tuinieren spannender en dynamischer.</p>
+        
+    <div class="nuance-box">
+        <p class="nuance-label">“Meer uit je tuin” ontstaat door:</p>
+        <ul>
+        <li>🌱 bodem opbouwen</li>
+        <li>🌿 diversiteit verhogen</li>
+        <li>🚶 paden respecteren</li>
+        <li>🧩 slim indelen</li>
+        <li>⚖️ leren bijsturen</li>
+        </ul>
+    </div>
+  </div>
+</div>
+  <nav class="page-nav" style="max-width:1100px;margin:0 auto;padding:0 4rem 4rem;">
+    <a href="/aanpak/zaaien.html" class="page-nav-prev">← zaaien</a>
+    <a href="../index.html#themas" class="page-nav-up">↑ Kies je aanpak</a>
+    <a href="/aanpak/oogsten.html" class="page-nav-next">oogsten →</a>
+  </nav>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>
