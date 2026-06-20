@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Voorbeeld: zwevend muziekspelertje</title>
+<style>
+  :root{
+    --bg:#101114;
+    --card:#1a1c20;
+    --text:#f2f2f0;
+    --muted:#8a8d93;
+    --accent:#e8b04b;
+  }
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: system-ui, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  p.hint{ color:var(--muted); max-width:420px; text-align:center; padding:0 20px; }
+
+  /* --- de zwevende "pop-up" knop, altijd zichtbaar --- */
+  #openBtn{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:var(--accent);
+    border:none;
+    cursor:pointer;
+    font-size:20px;
+    box-shadow:0 6px 16px rgba(0,0,0,.4);
+  }
+
+  /* --- het mini-venster met de hoes/foto --- */
+  #player{
+    position:fixed;
+    bottom:88px;
+    right:24px;
+    width:220px;
+    background:var(--card);
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);
+    transform:translateY(12px) scale(.96);
+    opacity:0;
+    pointer-events:none;
+    transition:transform .18s ease, opacity .18s ease;
+  }
+  #player.open{
+    transform:translateY(0) scale(1);
+    opacity:1;
+    pointer-events:auto;
+  }
+  #cover{
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:10px;
+    background:linear-gradient(135deg,#3a3d44,#1a1c20);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    margin-bottom:10px;
+  }
+  #player h3{ margin:0; font-size:14px; }
+  #player p{ margin:2px 0 10px; color:var(--muted); font-size:12px; }
+  #controls{ display:flex; align-items:center; gap:10px; }
+  #playBtn{
+    width:34px; height:34px; border-radius:50%;
+    border:none; background:var(--accent); cursor:pointer; font-size:14px;
+  }
+  #seek{ flex:1; accent-color:var(--accent); }
+</style>
+</head>
+<body>
+
+<p class="hint">Klik rechtsonder op het bolletje 🎵 — dat opent het kleine pop-upvenster met hoes en speler.</p>
+
+<!-- Het echte audiobestand: vervang src door jouw eigen mp3-pad -->
+<audio id="audio" src="jouw-liedje.mp3" preload="metadata"></audio>
+
+<button id="openBtn" aria-label="Open speler">🎵</button>
+
+<div id="player">
+  <div id="cover">🎧</div>
+  <h3>Titel van het nummer</h3>
+  <p>Naam artiest</p>
+  <div id="controls">
+    <button id="playBtn">▶</button>
+    <input id="seek" type="range" min="0" max="100" value="0">
+  </div>
+</div>
+
+<script>
+  const audio   = document.getElementById('audio');
+  const player  = document.getElementById('player');
+  const openBtn = document.getElementById('openBtn');
+  const playBtn = document.getElementById('playBtn');
+  const seek    = document.getElementById('seek');
+
+  openBtn.addEventListener('click', () => player.classList.toggle('open'));
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) { audio.play(); playBtn.textContent = '❚❚'; }
+    else { audio.pause(); playBtn.textContent = '▶'; }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) seek.value = (audio.currentTime / audio.duration) * 100;
+  });
+  seek.addEventListener('input', () => {
+    if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
+  });
+</script>
+
+</body>
+</html>

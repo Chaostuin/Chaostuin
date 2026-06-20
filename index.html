@@ -1049,6 +1049,103 @@ footer p {
 .missed-btn:hover { background: rgba(200,169,110,0.1); }
 .missed-btn.has-items { display: inline-block; }
 
+/* ── MOESTUINMUZIEK MINI-PLAYER ──────────────────────── */
+.song-player-toggle {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--straw);
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 0 8px 22px rgba(44,36,22,0.35);
+  z-index: 500;
+  transition: transform 0.2s, background 0.2s;
+}
+.song-player-toggle:hover { transform: translateY(-2px); background: #d4b47a; }
+
+.song-player {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  width: 230px;
+  background: var(--cream);
+  border-radius: 8px;
+  border: 1px solid rgba(61,82,41,0.15);
+  box-shadow: 0 16px 40px rgba(44,36,22,0.25);
+  padding: 1.1rem;
+  transform: translateY(14px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 500;
+}
+.song-player.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.song-player-cover {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--moss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+.song-player-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.song-player-cover span { font-size: 2rem; }
+
+.song-player-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--moss);
+  margin-bottom: 0.15rem;
+}
+.song-player-artist {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: #6a5f4a;
+  margin-bottom: 0.9rem;
+}
+
+.song-player-controls { display: flex; align-items: center; gap: 0.6rem; }
+
+.song-player-play {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--moss);
+  color: var(--cream);
+  cursor: pointer;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.song-player-play:hover { background: var(--leaf); }
+
+.song-player-seek { flex: 1; accent-color: var(--straw); }
+
+.song-player-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: #9a8f78;
+  cursor: pointer;
+  line-height: 1;
+}
+.song-player-close:hover { color: var(--earth); }
 </style>
 </head>
 <body>
@@ -1372,6 +1469,14 @@ footer p {
             <a href="/aanpak/tiengeboden.html" class="pillar-link">Lees de 10 geboden →</a>
           </div>
         </li>
+        <li>
+          <span class="aanpak-link-icon">🎶</span>
+          <div>
+            <strong>Moestuinmuziek</strong>
+            <p>Muzikale beleving van de moestuin.</p>
+            <button type="button" id="songOpenFromList" class="pillar-link" style="background:none;border:none;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;">Beluister het lied →</button>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -1467,6 +1572,58 @@ footer p {
     </div>
   </div>
 </section>
+
+<!-- MOESTUINMUZIEK MINI-PLAYER -->
+<audio id="songAudio" src="/media/tuinlied1.mp3" preload="metadata"></audio>
+
+<button class="song-player-toggle" id="songToggle" aria-label="Open moestuinmuziek">🎵</button>
+
+<div class="song-player" id="songPlayer">
+  <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
+  <div class="song-player-cover">
+    <img src="pictures/courgetplant.jpg" alt="Moestuinmuziek"
+         onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
+  </div>
+  <div class="song-player-title">Tuinlied1</div>
+  <div class="song-player-artist">Chaostuinier</div>
+  <div class="song-player-controls">
+    <button class="song-player-play" id="songPlayBtn">▶</button>
+    <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
+  </div>
+</div>
+
+<script>
+(function(){
+  const audio    = document.getElementById('songAudio');
+  const panel    = document.getElementById('songPlayer');
+  const toggle   = document.getElementById('songToggle');
+  const closeBtn = document.getElementById('songClose');
+  const playBtn  = document.getElementById('songPlayBtn');
+  const seek     = document.getElementById('songSeek');
+  const listBtn  = document.getElementById('songOpenFromList');
+
+  function openPlayer()   { panel.classList.add('open'); }
+  function closePlayer()  { panel.classList.remove('open'); }
+  function togglePlayer() { panel.classList.toggle('open'); }
+
+  toggle.addEventListener('click', togglePlayer);
+  closeBtn.addEventListener('click', closePlayer);
+  if (listBtn) listBtn.addEventListener('click', openPlayer);
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) { audio.play(); playBtn.textContent = '❚❚'; }
+    else { audio.pause(); playBtn.textContent = '▶'; }
+  });
+  audio.addEventListener('ended', () => { playBtn.textContent = '▶'; });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) seek.value = (audio.currentTime / audio.duration) * 100;
+  });
+  seek.addEventListener('input', () => {
+    if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
+  });
+})();
+</script>
 
 <!-- FOOTER -->
 <div id="footer-placeholder"></div>
