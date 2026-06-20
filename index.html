@@ -1581,11 +1581,12 @@ footer p {
 <div class="song-player" id="songPlayer">
   <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
   <div class="song-player-cover">
-    <img src="pictures/courgetplant.jpg" alt="Moestuinmuziek"
+    <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
+    <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
          onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
   </div>
-  <div class="song-player-title">Tuinlied1</div>
-  <div class="song-player-artist">Chaostuinier</div>
+  <div class="song-player-title">Tuinlied</div>
+  <div class="song-player-artist">Moestuinmuziek</div>
   <div class="song-player-controls">
     <button class="song-player-play" id="songPlayBtn">▶</button>
     <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
@@ -1593,7 +1594,7 @@ footer p {
 </div>
 
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const audio    = document.getElementById('songAudio');
   const panel    = document.getElementById('songPlayer');
   const toggle   = document.getElementById('songToggle');
@@ -1601,6 +1602,11 @@ footer p {
   const playBtn  = document.getElementById('songPlayBtn');
   const seek     = document.getElementById('songSeek');
   const listBtn  = document.getElementById('songOpenFromList');
+
+  if (!audio || !panel || !toggle || !closeBtn || !playBtn || !seek) {
+    console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, toggle, closeBtn, playBtn, seek});
+    return;
+  }
 
   function openPlayer()   { panel.classList.add('open'); }
   function closePlayer()  { panel.classList.remove('open'); }
@@ -1622,7 +1628,7 @@ footer p {
   seek.addEventListener('input', () => {
     if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
   });
-})();
+});
 </script>
 
 <!-- FOOTER -->
