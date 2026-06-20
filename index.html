@@ -1601,7 +1601,6 @@ document.addEventListener('DOMContentLoaded', function(){
   const closeBtn = document.getElementById('songClose');
   const playBtn  = document.getElementById('songPlayBtn');
   const seek     = document.getElementById('songSeek');
-  const listBtn  = document.getElementById('songOpenFromList');
 
   if (!audio || !panel || !toggle || !closeBtn || !playBtn || !seek) {
     console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, toggle, closeBtn, playBtn, seek});
@@ -1614,7 +1613,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
   toggle.addEventListener('click', togglePlayer);
   closeBtn.addEventListener('click', closePlayer);
-  if (listBtn) listBtn.addEventListener('click', openPlayer);
+
+  /* Event delegation voor de "Beluister het lied"-link in de Extra-sectie:
+     werkt ook als dat element pas later toegevoegd/herladen wordt. */
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('#songOpenFromList')) {
+      e.preventDefault();
+      openPlayer();
+    }
+  });
 
   playBtn.addEventListener('click', () => {
     if (audio.paused) { audio.play(); playBtn.textContent = '❚❚'; }
