@@ -1582,7 +1582,7 @@ footer p {
   <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
   <div class="song-player-cover">
     <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
-    <img src="pictures/courgetplant.jpg" alt="courgetplant"
+    <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
          onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
   </div>
   <div class="song-player-title">Tuinlied</div>
@@ -1636,11 +1636,27 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script src="/components/includes.js"></script>
 <script>
+/* Wacht tot includes.js de navbar (incl. zoekbalk) effectief in
+   #nav-placeholder heeft gezet, voor we elementen erin opvragen. */
+function whenNavReady(callback) {
+  const placeholder = document.getElementById('nav-placeholder');
+  if (placeholder && placeholder.children.length > 0) { callback(); return; }
+  if (!placeholder) return;
+  const obs = new MutationObserver(() => {
+    if (placeholder.children.length > 0) { obs.disconnect(); callback(); }
+  });
+  obs.observe(placeholder, { childList: true, subtree: true });
+}
+
+whenNavReady(function() {
+
 /* NAV scroll */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
-});
+if (nav) {
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+}
 
 /* Dropdown fix */
 document.querySelectorAll('.nav-dropdown-item').forEach(item => {
@@ -1659,6 +1675,8 @@ document.querySelectorAll('.nav-dropdown-item').forEach(item => {
     if (!isOver(e)) closeTimer = setTimeout(() => dropdown.classList.remove('open'), 100);
   });
 });
+
+}); // einde whenNavReady (nav scroll + dropdown)
 
 /* Reveal on scroll */
 const reveals = document.querySelectorAll('.reveal');
@@ -1727,9 +1745,12 @@ const begrippen = [
   { woord: 'voedselbos',     tag: 'verwant',    url: '#filosofie',  omschrijving: 'Laat-successie voedselproductie' },
 ];
 
+whenNavReady(function() {
+
 const input = document.getElementById('searchInput');
 const dropdown = document.getElementById('searchDropdown');
 const missedBtn = document.getElementById('missedBtn');
+if (!input || !dropdown || !missedBtn) return;
 
 const STORAGE_KEY = 'chaostuin_missed_words';
 
@@ -1835,6 +1856,8 @@ document.addEventListener('click', function(e) {
 });
 
 updateMissedBtn();
+
+}); // einde whenNavReady (zoekfunctie)
 
 </script>
 </body>
