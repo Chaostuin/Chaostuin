@@ -1050,38 +1050,27 @@ footer p {
 .missed-btn.has-items { display: inline-block; }
 
 /* ── MOESTUINMUZIEK MINI-PLAYER ──────────────────────── */
-.song-player-toggle {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--straw);
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  box-shadow: 0 8px 22px rgba(44,36,22,0.35);
-  z-index: 500;
-  transition: transform 0.2s, background 0.2s;
+.song-player-anchor {
+  position: relative;
+  display: inline-block;
 }
-.song-player-toggle:hover { transform: translateY(-2px); background: #d4b47a; }
 
 .song-player {
-  position: fixed;
-  bottom: 96px;
-  right: 28px;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
   width: 230px;
+  max-width: calc(100vw - 40px);
   background: var(--cream);
   border-radius: 8px;
   border: 1px solid rgba(61,82,41,0.15);
   box-shadow: 0 16px 40px rgba(44,36,22,0.25);
   padding: 1.1rem;
-  transform: translateY(14px) scale(0.96);
+  transform: translateY(8px) scale(0.96);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: 500;
+  z-index: 50;
 }
 .song-player.open {
   transform: translateY(0) scale(1);
@@ -1471,10 +1460,25 @@ footer p {
         </li>
         <li>
           <span class="aanpak-link-icon">🎶</span>
-          <div>
+          <div class="song-player-anchor">
             <strong>Moestuinmuziek</strong>
             <p>Muzikale beleving van de moestuin.</p>
             <button type="button" id="songOpenFromList" class="pillar-link" style="background:none;border:none;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;">Beluister het lied →</button>
+
+            <div class="song-player" id="songPlayer">
+              <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
+              <div class="song-player-cover">
+                <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
+                <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
+                     onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
+              </div>
+              <div class="song-player-title">Tuinlied</div>
+              <div class="song-player-artist">Moestuinmuziek</div>
+              <div class="song-player-controls">
+                <button class="song-player-play" id="songPlayBtn">▶</button>
+                <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
+              </div>
+            </div>
           </div>
         </li>
       </ul>
@@ -1573,37 +1577,19 @@ footer p {
   </div>
 </section>
 
-<!-- MOESTUINMUZIEK MINI-PLAYER -->
+<!-- MOESTUINMUZIEK: audio-element (knop + pop-up staan nu bij de link in de Extra-sectie) -->
 <audio id="songAudio" src="/media/tuinlied1.mp3" preload="metadata"></audio>
-
-<button class="song-player-toggle" id="songToggle" aria-label="Open moestuinmuziek">🎵</button>
-
-<div class="song-player" id="songPlayer">
-  <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
-  <div class="song-player-cover">
-    <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
-    <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
-         onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
-  </div>
-  <div class="song-player-title">Tuinlied</div>
-  <div class="song-player-artist">Moestuinmuziek</div>
-  <div class="song-player-controls">
-    <button class="song-player-play" id="songPlayBtn">▶</button>
-    <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
-  </div>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   const audio    = document.getElementById('songAudio');
   const panel    = document.getElementById('songPlayer');
-  const toggle   = document.getElementById('songToggle');
   const closeBtn = document.getElementById('songClose');
   const playBtn  = document.getElementById('songPlayBtn');
   const seek     = document.getElementById('songSeek');
 
-  if (!audio || !panel || !toggle || !closeBtn || !playBtn || !seek) {
-    console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, toggle, closeBtn, playBtn, seek});
+  if (!audio || !panel || !closeBtn || !playBtn || !seek) {
+    console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, closeBtn, playBtn, seek});
     return;
   }
 
@@ -1611,7 +1597,6 @@ document.addEventListener('DOMContentLoaded', function(){
   function closePlayer()  { panel.classList.remove('open'); }
   function togglePlayer() { panel.classList.toggle('open'); }
 
-  toggle.addEventListener('click', togglePlayer);
   closeBtn.addEventListener('click', closePlayer);
 
   /* Event delegation voor de "Beluister het lied"-link in de Extra-sectie:
@@ -1619,7 +1604,12 @@ document.addEventListener('DOMContentLoaded', function(){
   document.addEventListener('click', function(e) {
     if (e.target.closest('#songOpenFromList')) {
       e.preventDefault();
-      openPlayer();
+      togglePlayer();
+      return;
+    }
+    /* sluit het venster als er ergens anders geklikt wordt */
+    if (panel.classList.contains('open') && !e.target.closest('#songPlayer')) {
+      closePlayer();
     }
   });
 
