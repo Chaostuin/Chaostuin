@@ -1050,38 +1050,27 @@ footer p {
 .missed-btn.has-items { display: inline-block; }
 
 /* ── MOESTUINMUZIEK MINI-PLAYER ──────────────────────── */
-.song-player-toggle {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--straw);
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  box-shadow: 0 8px 22px rgba(44,36,22,0.35);
-  z-index: 500;
-  transition: transform 0.2s, background 0.2s;
+.song-player-anchor {
+  position: relative;
+  display: inline-block;
 }
-.song-player-toggle:hover { transform: translateY(-2px); background: #d4b47a; }
 
 .song-player {
-  position: fixed;
-  bottom: 96px;
-  right: 28px;
+  position: absolute;
+  top: calc(100% - 64px);
+  left: 32px;
   width: 230px;
+  max-width: calc(100vw - 40px);
   background: var(--cream);
   border-radius: 8px;
   border: 1px solid rgba(61,82,41,0.15);
   box-shadow: 0 16px 40px rgba(44,36,22,0.25);
   padding: 1.1rem;
-  transform: translateY(14px) scale(0.96);
+  transform: translateY(8px) scale(0.96);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: 500;
+  z-index: 50;
 }
 .song-player.open {
   transform: translateY(0) scale(1);
@@ -1312,9 +1301,9 @@ footer p {
         <li>
           <span class="aanpak-link-icon">🌸</span>
           <div>
-            <strong>Wat met bloemen en struiken</strong>
+            <strong>Wat met bloemen en kruiden</strong>
             <p>Niet alle planten moeten eetbaar zijn, mooi is ook goed.</p>
-            <a href="/aanpak/binnenkort.html" class="pillar-link">Bloemen en struiken →</a>
+            <a href="/aanpak/bloemen_kruiden.html" class="pillar-link">Bloemen en kruiden →</a>
           </div>
         </li>
         <li>
@@ -1322,7 +1311,7 @@ footer p {
           <div>
             <strong>Wat met vaste planten</strong>
             <p>Vaste planten staan per definitie vast. Schik de rest er rond.</p>
-            <a href="/aanpak/binnenkort.html" class="pillar-link">Vaste planten →</a>
+            <a href="/aanpak/vaste_planten.html" class="pillar-link">Vaste planten →</a>
           </div>
         </li>
       </ul>
@@ -1457,7 +1446,7 @@ footer p {
           <span class="aanpak-link-icon">🐞</span>
           <div>
             <strong>Voor de kinderen</strong>
-            <p>Ontdek de tuin door de ogen van Lientje.</p>
+            <p>Ontdek de werking van de composthoop door de ogen van Lientje.</p>
             <a href="/aanpak/avonturen.html" class="pillar-link">De avonturen van Lientje →</a>
           </div>
         </li>
@@ -1470,11 +1459,34 @@ footer p {
           </div>
         </li>
         <li>
-          <span class="aanpak-link-icon">🎶</span>
+          <span class="aanpak-link-icon">❓</span>
           <div>
+            <strong>Als je je afvraagt...</strong>
+            <p>Verder kijken, aan de hand van enkele bedenkingen.</p>
+            <a href="/bedenkingen/bedenkingen.html" class="pillar-link">bekijk de lijst van onderwerpen →</a>
+          </div>
+        </li>
+        <li>
+           <span class="aanpak-link-icon">🎶</span>
+          <div class="song-player-anchor">
             <strong>Moestuinmuziek</strong>
             <p>Muzikale beleving van de moestuin.</p>
             <button type="button" id="songOpenFromList" class="pillar-link" style="background:none;border:none;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;">Beluister het lied →</button>
+
+            <div class="song-player" id="songPlayer">
+              <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
+              <div class="song-player-cover">
+                <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
+                <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
+                     onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
+              </div>
+              <div class="song-player-title">Tuinlied</div>
+              <div class="song-player-artist">Moestuinmuziek</div>
+              <div class="song-player-controls">
+                <button class="song-player-play" id="songPlayBtn">▶</button>
+                <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
+              </div>
+            </div>
           </div>
         </li>
       </ul>
@@ -1573,45 +1585,30 @@ footer p {
   </div>
 </section>
 
-<!-- MOESTUINMUZIEK MINI-PLAYER -->
+<!-- MOESTUINMUZIEK: audio-element (knop + pop-up staan nu bij de link in de Extra-sectie) -->
 <audio id="songAudio" src="/media/tuinlied1.mp3" preload="metadata"></audio>
-
-<button class="song-player-toggle" id="songToggle" aria-label="Open moestuinmuziek">🎵</button>
-
-<div class="song-player" id="songPlayer">
-  <button class="song-player-close" id="songClose" aria-label="Sluiten">✕</button>
-  <div class="song-player-cover">
-    <!-- verander "moestuinmuziek.jpg" naar jouw bestandsnaam in de map pictures/ -->
-    <img src="pictures/moestuinmuziek.jpg" alt="Moestuinmuziek"
-         onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'🌻'}))">
-  </div>
-  <div class="song-player-title">Tuinlied</div>
-  <div class="song-player-artist">Moestuinmuziek</div>
-  <div class="song-player-controls">
-    <button class="song-player-play" id="songPlayBtn">▶</button>
-    <input type="range" class="song-player-seek" id="songSeek" min="0" max="100" value="0">
-  </div>
-</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   const audio    = document.getElementById('songAudio');
   const panel    = document.getElementById('songPlayer');
-  const toggle   = document.getElementById('songToggle');
   const closeBtn = document.getElementById('songClose');
   const playBtn  = document.getElementById('songPlayBtn');
   const seek     = document.getElementById('songSeek');
 
-  if (!audio || !panel || !toggle || !closeBtn || !playBtn || !seek) {
-    console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, toggle, closeBtn, playBtn, seek});
+  if (!audio || !panel || !closeBtn || !playBtn || !seek) {
+    console.warn('Moestuinmuziek-speler: niet alle elementen gevonden op de pagina, speler wordt niet geactiveerd.', {audio, panel, closeBtn, playBtn, seek});
     return;
   }
 
   function openPlayer()   { panel.classList.add('open'); }
-  function closePlayer()  { panel.classList.remove('open'); }
-  function togglePlayer() { panel.classList.toggle('open'); }
+  function closePlayer()  {
+    panel.classList.remove('open');
+    audio.pause();
+    playBtn.textContent = '▶';
+  }
+  function togglePlayer() { panel.classList.contains('open') ? closePlayer() : openPlayer(); }
 
-  toggle.addEventListener('click', togglePlayer);
   closeBtn.addEventListener('click', closePlayer);
 
   /* Event delegation voor de "Beluister het lied"-link in de Extra-sectie:
@@ -1619,7 +1616,12 @@ document.addEventListener('DOMContentLoaded', function(){
   document.addEventListener('click', function(e) {
     if (e.target.closest('#songOpenFromList')) {
       e.preventDefault();
-      openPlayer();
+      togglePlayer();
+      return;
+    }
+    /* sluit het venster als er ergens anders geklikt wordt */
+    if (panel.classList.contains('open') && !e.target.closest('#songPlayer')) {
+      closePlayer();
     }
   });
 
@@ -1646,13 +1648,11 @@ document.addEventListener('DOMContentLoaded', function(){
 /* Wacht tot includes.js de navbar (incl. zoekbalk) effectief in
    #nav-placeholder heeft gezet, voor we elementen erin opvragen. */
 function whenNavReady(callback) {
-  const placeholder = document.getElementById('nav-placeholder');
-  if (placeholder && placeholder.children.length > 0) { callback(); return; }
-  if (!placeholder) return;
+  if (document.getElementById('nav')) { callback(); return; }
   const obs = new MutationObserver(() => {
-    if (placeholder.children.length > 0) { obs.disconnect(); callback(); }
+    if (document.getElementById('nav')) { obs.disconnect(); callback(); }
   });
-  obs.observe(placeholder, { childList: true, subtree: true });
+  obs.observe(document.body, { childList: true, subtree: true });
 }
 
 whenNavReady(function() {
@@ -1750,6 +1750,68 @@ const begrippen = [
   { woord: 'vruchtwisseling',tag: 'techniek',   url: '#themas',     omschrijving: 'Zinloos bij doorgedreven combinatie' },
   { woord: 'moestuin',       tag: 'basis',      url: '#filosofie',  omschrijving: 'Jouw vroeg-successie ecosysteem' },
   { woord: 'voedselbos',     tag: 'verwant',    url: '#filosofie',  omschrijving: 'Laat-successie voedselproductie' },
+  { woord: 'mulchlaag',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Laag mulch op de bodem' },
+  { woord: 'bladmulch',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Mulchen met bladeren' },
+  { woord: 'bladeren',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Waardevolle grondstof voor de tuin' },
+  { woord: 'blad',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Natuurlijk mulchmateriaal' },
+  { woord: 'grasmaaisel',       tag: 'praktijk',   url: '#themas',    omschrijving: 'Vers mulchmateriaal' },
+  { woord: 'gras',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Mulch en bodemvoeding' },
+  { woord: 'snoeisel',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Takken en plantenresten' },
+  { woord: 'takken',            tag: 'praktijk',   url: '#themas',    omschrijving: 'Houtig tuinmateriaal' },
+  { woord: 'twijgen',           tag: 'praktijk',   url: '#themas',    omschrijving: 'Fijn snoeihout' },
+  { woord: 'houtsnippers',      tag: 'praktijk',   url: '#themas',    omschrijving: 'Versnipperd hout als mulch' },
+  { woord: 'hakselen',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Takken versnipperen' },
+  { woord: 'hakselhout',        tag: 'praktijk',   url: '#themas',    omschrijving: 'Versnipperd snoeihout' },
+  { woord: 'groenafval',        tag: 'praktijk',   url: '#themas',    omschrijving: 'Organisch afval uit de tuin' },
+  { woord: 'tuinafval',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Waardevolle grondstof' },
+  { woord: 'keukenafval',       tag: 'praktijk',   url: '#themas',    omschrijving: 'Organisch afval voor compost' },
+
+  { woord: 'bodemleven',        tag: 'bodem',      url: '#themas',    omschrijving: 'Alle organismen in de bodem' },
+  { woord: 'bodemstructuur',    tag: 'bodem',      url: '#themas',    omschrijving: 'Opbouw van de bodem' },
+  { woord: 'bodemvruchtbaarheid',tag:'bodem',      url: '#themas',    omschrijving: 'Vermogen van de bodem om planten te voeden' },
+  { woord: 'bodemgezondheid',   tag: 'bodem',      url: '#themas',    omschrijving: 'Kwaliteit van het bodemleven' },
+  { woord: 'regenwormen',       tag: 'bodem',      url: '#themas',    omschrijving: 'Belangrijke bodemwerkers' },
+  { woord: 'wormen',            tag: 'bodem',      url: '#themas',    omschrijving: 'Onmisbaar voor de bodem' },
+  { woord: 'schimmels',         tag: 'bodem',      url: '#themas',    omschrijving: 'Onzichtbare helpers' },
+  { woord: 'mycelium',          tag: 'bodem',      url: '#themas',    omschrijving: 'Netwerk van schimmeldraden' },
+  { woord: 'bacteriën',         tag: 'bodem',      url: '#themas',    omschrijving: 'Microscopische afbrekers' },
+  { woord: 'microleven',        tag: 'bodem',      url: '#themas',    omschrijving: 'Leven dat de bodem vruchtbaar maakt' },
+  { woord: 'koolstof',          tag: 'bodem',      url: '#filosofie', omschrijving: 'Belangrijk element in de bodemkringloop' },
+  { woord: 'fosfor',            tag: 'bodem',      url: '#filosofie', omschrijving: 'Voedingsstof voor planten' },
+  { woord: 'kalium',            tag: 'bodem',      url: '#filosofie', omschrijving: 'Essentiële plantenvoeding' },
+
+  { woord: 'bijen',             tag: 'natuur',     url: '#themas',    omschrijving: 'Belangrijke bestuivers' },
+  { woord: 'hommels',           tag: 'natuur',     url: '#themas',    omschrijving: 'Sterke bestuivers' },
+  { woord: 'vlinders',          tag: 'natuur',     url: '#themas',    omschrijving: 'Nuttige insecten' },
+  { woord: 'zweefvliegen',      tag: 'natuur',     url: '#themas',    omschrijving: 'Natuurlijke bladluisbestrijders' },
+  { woord: 'gaasvliegen',       tag: 'natuur',     url: '#themas',    omschrijving: 'Natuurlijke vijanden van bladluizen' },
+  { woord: 'lieveheersbeestjes',tag: 'natuur',     url: '#themas',    omschrijving: 'Eten bladluizen' },
+  { woord: 'oorwormen',         tag: 'natuur',     url: '#themas',    omschrijving: 'Nuttige roofinsecten' },
+  { woord: 'pissebedden',       tag: 'natuur',     url: '#themas',    omschrijving: 'Afbrekers van organisch materiaal' },
+  { woord: 'springstaarten',    tag: 'natuur',     url: '#themas',    omschrijving: 'Belangrijk bodemleven' },
+  { woord: 'duizendpoten',      tag: 'natuur',     url: '#themas',    omschrijving: 'Roofdieren in de bodem' },
+
+  { woord: 'mest',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding voor de bodem' },
+  { woord: 'kunstmest',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Minerale meststoffen' },
+  { woord: 'plantenvoeding',    tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding voor planten' },
+  { woord: 'bemesten',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding toevoegen aan de bodem' },
+
+  { woord: 'tomaten',           tag: 'planten',    url: '#themas',    omschrijving: 'Populaire moestuinplant' },
+  { woord: 'aardappelen',       tag: 'planten',    url: '#themas',    omschrijving: 'Klassieke moestuinteelt' },
+  { woord: 'courgette',         tag: 'planten',    url: '#themas',    omschrijving: 'Productieve zomerplant' },
+  { woord: 'pompoen',           tag: 'planten',    url: '#themas',    omschrijving: 'Ideale bodembedekker' },
+  { woord: 'bonen',             tag: 'planten',    url: '#themas',    omschrijving: 'Stikstofbinders' },
+  { woord: 'erwten',            tag: 'planten',    url: '#themas',    omschrijving: 'Peulgewassen' },
+  { woord: 'kolen',             tag: 'planten',    url: '#themas',    omschrijving: 'Voedzame wintergroenten' },
+  { woord: 'sla',               tag: 'planten',    url: '#themas',    omschrijving: 'Makkelijke bladgroente' },
+
+  { woord: 'chaostuin',         tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin gebaseerd op natuurlijke processen' },
+  { woord: 'chaostuinieren',    tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuinieren met de natuur mee' },
+  { woord: 'natuurtuin',        tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin met ruimte voor biodiversiteit' },
+  { woord: 'kringlooptuin',     tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin zonder afval' },
+  { woord: 'duurzaam',          tag: 'filosofie',  url: '#filosofie', omschrijving: 'Werken met respect voor de natuur' },
+  { woord: 'biodiversiteit',    tag: 'filosofie',  url: '#filosofie', omschrijving: 'Rijkdom aan soorten' },
+  { woord: 'ecosysteem',        tag: 'filosofie',  url: '#filosofie', omschrijving: 'Samenhang van alle levende organismen' }
 ];
 
 whenNavReady(function() {

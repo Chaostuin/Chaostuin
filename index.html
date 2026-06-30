@@ -573,14 +573,10 @@ nav.scrolled {
   color: rgba(245,240,232,0.85);
 }
 
-/* ── CALCULATOR SECTION ──────────────────────────────── */
+/* ── TOOLS SECTION ───────────────────────────────────── */
 .calc-section {
   background: var(--moss);
   padding: 7rem 6rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: start;
 }
 
 .calc-intro .section-label { color: var(--straw); }
@@ -589,95 +585,72 @@ nav.scrolled {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   color: var(--cream);
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 .calc-intro p {
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.8;
   color: rgba(245,240,232,0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.calculator-widget {
-  background: var(--cream);
-  border-radius: 4px;
-  padding: 2.5rem;
+.tool-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.calc-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  color: var(--moss);
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--fog);
-}
-
-.calc-row {
+.tool-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.calc-row label {
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: #5a5040;
-  min-width: 170px;
-}
-
-.calc-row input[type=range] {
-  flex: 1;
-  accent-color: var(--leaf);
-}
-
-.calc-row .val {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--moss);
-  min-width: 52px;
-  text-align: right;
-}
-
-.calc-result {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: var(--moss);
-  border-radius: 2px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.calc-result-item { text-align: center; }
-.calc-result-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(245,240,232,0.6);
-  display: block;
-  margin-bottom: 4px;
-}
-.calc-result-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: var(--straw);
-}
-
-.calc-link {
-  display: inline-block;
-  margin-top: 1.25rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--sage);
+  gap: 1.75rem;
+  background: rgba(245,240,232,0.07);
+  border: 1px solid rgba(245,240,232,0.12);
+  border-radius: 4px;
+  padding: 1.75rem 2rem;
   text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
-.calc-link:hover { color: var(--straw); }
+.tool-card:hover {
+  background: rgba(245,240,232,0.13);
+  border-color: rgba(200,169,110,0.4);
+  transform: translateX(4px);
+}
+
+.tool-card-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.tool-card-body {
+  flex: 1;
+}
+.tool-card-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--straw);
+  margin-bottom: 0.5rem;
+}
+.tool-card-body p {
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.7);
+  margin: 0;
+}
+
+.tool-card-arrow {
+  font-size: 1.3rem;
+  color: var(--straw);
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.tool-card:hover .tool-card-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
 
 /* ── 10 GEBODEN ──────────────────────────────────────── */
 .geboden {
@@ -1497,42 +1470,33 @@ footer p {
   <div class="calc-intro">
     <p class="section-label">Interactieve tools</p>
     <h2>Hulpmiddelen voor de ecologische tuinier</h2>
-    <p>Van mulch berekenen tot je volledige tuin plannen en groenten willekeurig verdelen — alles lokaal, zonder account of cloud.</p>
-    <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem">
-      <a href="tools/mulchcalculator.html" class="btn-primary">🌱 Mulch &amp; Humus calculator</a>
-      <a href="tools/padplanner.html" class="btn-primary" style="background:var(--moss);color:var(--cream)">🗺 Tuinplanner — paden &amp; stapstenen</a>
-      <a href="tools/groentenplanner.html" class="btn-primary" style="background:var(--leaf);color:var(--cream)">🥕 Groententool — verdeling &amp; combinaties</a>
-    </div>
+    <p>Eenvoudige tools om je tuin beter te plannen — alles werkt lokaal in je browser, zonder account of registratie.</p>
   </div>
-
-  <div class="calculator-widget">
-    <div class="calc-title">Snelle berekening</div>
-    <div class="calc-row">
-      <label>Mulch per jaar (kg/m²)</label>
-      <input type="range" min="1" max="10" value="3" step="0.5" id="cA" oninput="calcUpdate()">
-      <span class="val" id="oA">3 kg</span>
-    </div>
-    <div class="calc-row">
-      <label>Humificatiefactor</label>
-      <input type="range" min="5" max="25" value="12" step="1" id="cH" oninput="calcUpdate()">
-      <span class="val" id="oH">12%</span>
-    </div>
-    <div class="calc-row">
-      <label>Afbraak humus (k)</label>
-      <input type="range" min="1" max="5" value="2.5" step="0.5" id="cK" oninput="calcUpdate()">
-      <span class="val" id="oK">2.5%</span>
-    </div>
-    <div class="calc-result">
-      <div class="calc-result-item">
-        <span class="calc-result-label">Evenwicht</span>
-        <span class="calc-result-val" id="rEq">14.4 kg/m²</span>
+  <div class="tool-cards">
+    <a href="tools/mulchcalculator.html" class="tool-card">
+      <span class="tool-card-icon">🌱</span>
+      <div class="tool-card-body">
+        <h3>Mulch &amp; Humus calculator</h3>
+        <p>Hoeveel mulch heb je nodig voor jouw tuin? Geef je oppervlakte en gewenste mulchdikte in, en de calculator toont hoeveel materiaal je nodig hebt — en wat dat op termijn doet voor je bodem.</p>
       </div>
-      <div class="calc-result-item">
-        <span class="calc-result-label">Organische stof</span>
-        <span class="calc-result-val" id="rPct">4.4%</span>
+      <span class="tool-card-arrow">→</span>
+    </a>
+    <a href="tools/padplanner.html" class="tool-card">
+      <span class="tool-card-icon">🗺</span>
+      <div class="tool-card-body">
+        <h3>Tuinplanner — paden &amp; stapstenen</h3>
+        <p>Teken de indeling van je tuin: waar komen de vaste paden, waar de bedden? Een goede padenstructuur is de basis van elke ecologische tuin — zo kom je nooit op je bodem te staan.</p>
       </div>
-    </div>
-    <a href="tools/mulchcalculator.html" class="calc-link">Uitgebreide versie met grafiek →</a>
+      <span class="tool-card-arrow">→</span>
+    </a>
+    <a href="tools/groentenplanner.html" class="tool-card">
+      <span class="tool-card-icon">🥕</span>
+      <div class="tool-card-body">
+        <h3>Groententool — verdeling &amp; combinaties</h3>
+        <p>Welke groenten passen goed samen, en hoe verdeel je ze over je bedden? Dit tool helpt je combinaties kiezen die elkaar versterken en rekening houden met vruchtwisseling.</p>
+      </div>
+      <span class="tool-card-arrow">→</span>
+    </a>
   </div>
 </section>
 
@@ -1696,21 +1660,6 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 reveals.forEach(r => observer.observe(r));
-
-/* Mini calculator */
-function calcUpdate() {
-  const a = parseFloat(document.getElementById('cA').value);
-  const h = parseInt(document.getElementById('cH').value) / 100;
-  const k = parseFloat(document.getElementById('cK').value) / 100;
-  document.getElementById('oA').textContent = a + ' kg';
-  document.getElementById('oH').textContent = (h*100).toFixed(0) + '%';
-  document.getElementById('oK').textContent = (k*100).toFixed(1) + '%';
-  const eq = (a * h) / k;
-  const pct = eq / 325 * 100;
-  document.getElementById('rEq').textContent = eq.toFixed(1) + ' kg/m²';
-  document.getElementById('rPct').textContent = pct.toFixed(1) + '%';
-}
-calcUpdate();
 
 /* ── ZOEKFUNCTIE ─────────────────────────────────────── */
 const begrippen = [
