@@ -45,48 +45,7 @@ body{
   display:flex; justify-content:space-between; align-items:baseline;
   margin-bottom:.6rem; gap:10px;
 }
-.mc-label-wrap{ display:flex; align-items:center; gap:7px; }
-.mc-info-btn{
-  width:19px; height:19px; border-radius:50%; flex-shrink:0;
-  border:1.5px solid var(--moss); background:transparent; color:var(--moss);
-  font-size:11px; font-weight:700; line-height:1;
-  display:inline-flex; align-items:center; justify-content:center;
-  cursor:pointer; padding:0;
-  transition:background .15s, color .15s;
-}
-.mc-info-btn:hover{ background:var(--moss); color:var(--cream); }
-
-.mc-popup-overlay{
-  display:none; position:fixed; inset:0; z-index:999;
-  background:rgba(20,16,10,0.55);
-  align-items:center; justify-content:center;
-  padding:1.5rem;
-}
-.mc-popup-overlay.open{ display:flex; }
-.mc-popup{
-  background:var(--cream); color:#4a3f2f;
-  border-radius:6px; max-width:440px; width:100%;
-  max-height:80vh; overflow-y:auto;
-  padding:1.75rem 1.75rem 1.5rem;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,0.4);
-}
-.mc-popup-close{
-  position:absolute; top:12px; right:14px;
-  background:none; border:none; font-size:16px; color:#8a7f68;
-  cursor:pointer; line-height:1; padding:4px;
-}
-.mc-popup-close:hover{ color:var(--rust); }
-.mc-popup h3{
-  font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700;
-  color:var(--moss); margin-bottom:.9rem; padding-right:1.5rem;
-}
-.mc-popup p{ font-size:.9rem; font-weight:300; line-height:1.65; margin-bottom:.85rem; }
-.mc-popup p:last-child{ margin-bottom:0; }
-.mc-popup ul{ padding-left:1.2rem; margin-bottom:.85rem; }
-.mc-popup li{ font-size:.9rem; font-weight:300; line-height:1.6; margin-bottom:.35rem; }
 .mc-label{ font-size:.98rem; font-weight:500; color:var(--moss); }
-.mc-popup strong{ font-weight:500; color:var(--earth); }
 .mc-value{
   font-family:'Playfair Display',serif;
   font-size:1.15rem; font-weight:700;
@@ -247,10 +206,7 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
     <div class="mc-group">
       <div class="mc-label-row">
-        <span class="mc-label-wrap">
-          <span class="mc-label">Hoeveel organische stof zit er nu in mijn bodem?</span>
-          <button class="mc-info-btn" data-info="current" aria-label="Meer uitleg">?</button>
-        </span>
+        <span class="mc-label">Hoeveel organische stof zit er nu in mijn bodem?</span>
         <span class="mc-value" id="val-current">2,8% org. stof</span>
       </div>
       <input type="range" id="slider-current" min="0" max="9" step="1" value="4">
@@ -263,10 +219,7 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
     <div class="mc-group">
       <div class="mc-label-row">
-        <span class="mc-label-wrap">
-          <span class="mc-label">Wat heb ik nu om te mulchen?</span>
-          <button class="mc-info-btn" data-info="available" aria-label="Meer uitleg">?</button>
-        </span>
+        <span class="mc-label">Wat heb ik nu om te mulchen?</span>
         <span class="mc-value" id="val-available">9 kg/m²/jaar</span>
       </div>
       <input type="range" id="slider-available" min="0" max="9" step="1" value="4">
@@ -279,10 +232,7 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
     <div class="mc-group">
       <div class="mc-label-row">
-        <span class="mc-label-wrap">
-          <span class="mc-label">Hoeveel organische stof wil ik bereiken?</span>
-          <button class="mc-info-btn" data-info="goal" aria-label="Meer uitleg">?</button>
-        </span>
+        <span class="mc-label">Hoeveel organische stof wil ik bereiken?</span>
         <span class="mc-value" id="val-goal">6,6% org. stof</span>
       </div>
       <input type="range" id="slider-goal" min="0" max="9" step="1" value="4">
@@ -295,10 +245,7 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
     <div class="mc-group">
       <div class="mc-label-row">
-        <span class="mc-label-wrap">
-          <span class="mc-label">In hoeveel jaar wil ik dat bereiken?</span>
-          <button class="mc-info-btn" data-info="years" aria-label="Meer uitleg">?</button>
-        </span>
+        <span class="mc-label">In hoeveel jaar wil ik dat bereiken?</span>
         <span class="mc-value" id="val-years">5 jaar</span>
       </div>
       <input type="range" id="slider-years" min="0" max="4" step="1" value="2">
@@ -342,13 +289,6 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
   <p class="mc-footnote">Rekenmodel: humificatiefactor 10% · afbraak humus 2,5%/jaar · 10 kg humus/m² ≈ 3% org. stof · mulchdichtheid ≈ 200 kg/m³</p>
 
-</div>
-
-<div class="mc-popup-overlay" id="popupOverlay">
-  <div class="mc-popup">
-    <button class="mc-popup-close" id="popupClose" aria-label="Sluiten">✕</button>
-    <div id="popupBody"></div>
-  </div>
 </div>
 
 <div id="footer-placeholder"></div>
@@ -495,49 +435,6 @@ function update(){
 
 [sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
 update();
-
-// ---- info-popups ----
-const infoContent = {
-  current: `
-    <h3>Hoeveel organische stof zit er nu in mijn bodem?</h3>
-    <p><strong>Laag (~1%):</strong> jarenlang niets of weinig toegevoegd. Typisch bij een grasperk dat enkel gemaaid wordt, een verwaarloosde border, of grond die pas is afgegraven of opgehoogd bij een verbouwing/nieuwbouw.</p>
-    <p><strong>Gemiddeld (~3%):</strong> af en toe of jaarlijks wat compost, stalmest of mulch toegevoegd. Dit is waar de meeste gewone hobbytuinen zich bevinden.</p>
-    <p><strong>Hoog (~5%):</strong> jaar na jaar veel organisch materiaal toegevoegd, zoals bij langdurig no-dig beheer of een chaostuin.</p>
-    <p>Twijfel je? Kies gemiddeld — een echte bodemtest geeft het exacte percentage, maar voor deze calculator is een schatting ruim voldoende.</p>
-  `,
-  available: `
-    <h3>Wat kan ik gebruiken om te mulchen?</h3>
-    <p>Materiaal uit de moestuin zelf (plantenresten, oogstafval) is meestal beperkt in volume. Grasmaaisel, herfstbladeren en snoeisel van hagen of struiken uit de rest van de tuin leveren doorgaans veel meer op. Wie nog meer nodig heeft, kan aanvullen met aangevoerd materiaal: compost van het containerpark, boomschors of stalmest.</p>
-    <p><strong>Ruwe indicatie:</strong> een gewone tuin met een gazon, enkele bomen en een haag levert vaak al snel enkele honderden kg organisch materiaal per jaar op — vaak genoeg om een moestuin van zo'n 20 à 30 m² op het middelste niveau (ongeveer 9 kg/m²/jaar) te mulchen. Hoe groter je siertuin in verhouding tot je moestuin, hoe minder je van buitenaf hoeft aan te voeren.</p>
-    <p>Dit is een vuistregel, geen exacte meting — elke tuin verschilt sterk in begroeiing en onderhoud.</p>
-  `,
-  goal: `
-    <h3>Hoeveel organische stof wil ik bereiken?</h3>
-    <p>Dit is geen precisiewerk. Belangrijker dan het exacte percentage is dat je boven de ondergrens van 3% uitkomt én dat niveau kan volhouden.</p>
-    <p>Zodra je voldoende en regelmatig mulcht, stijgt het percentage organische stof vanzelf mee — je hoeft niet naar een exact getal te mikken. Zie de schuiver dus vooral als een richting ("ik wil een vruchtbaardere bodem" versus "ik wil een uitzonderlijk humusrijke bodem"), niet als een doel dat je op de komma nauwkeurig moet halen.</p>
-  `,
-  years: `
-    <h3>Opbouwfase versus onderhoudsfase</h3>
-    <p>Zolang je bezig bent je bodem te verrijken (de <strong>opbouwfase</strong>), heb je relatief veel mulch nodig: je moet niet alleen de jaarlijkse afbraak van humus (~2,5%) compenseren, maar er ook netto bovenop bouwen.</p>
-    <p>Eens je je doel bereikt hebt, kom je in de <strong>onderhoudsfase</strong> terecht. Dan moet je alleen nog de jaarlijkse afbraak compenseren — normaal gezien een pak minder dan tijdens de opbouw. Laat het cijfer van de opbouwfase je dus niet ontmoedigen: het is een tijdelijke piek, geen blijvende inspanning.</p>
-    <p>Deze schuiver bepaalt hoe snel je door de opbouwfase gaat: sneller opbouwen vraagt meer mulch per jaar, rustiger aan doen spreidt de inspanning over meer jaren.</p>
-  `
-};
-
-const popupOverlay = document.getElementById('popupOverlay');
-const popupBody = document.getElementById('popupBody');
-
-document.querySelectorAll('.mc-info-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    popupBody.innerHTML = infoContent[btn.dataset.info];
-    popupOverlay.classList.add('open');
-  });
-});
-
-function closePopup(){ popupOverlay.classList.remove('open'); }
-document.getElementById('popupClose').addEventListener('click', closePopup);
-popupOverlay.addEventListener('click', e=>{ if (e.target === popupOverlay) closePopup(); });
-document.addEventListener('keydown', e=>{ if (e.key === 'Escape') closePopup(); });
 </script>
 
 <script src="../components/includes.js"></script>
