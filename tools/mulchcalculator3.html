@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulchcalculator — Chaostuin</title>
+<style>
+  :root{
+    --soil-dark:   #2A2015;
+    --soil:        #3D2F20;
+    --bg:          #F1EDE0;
+    --panel:       #FBF9F2;
+    --ink:         #2A2015;
+    --ink-soft:    #6B5D48;
+    --moss:        #6E8259;
+    --moss-dark:   #4E6140;
+    --gold:        #C0973F;
+    --green:       #5F8552;
+    --yellow:      #C68A2E;
+    --red:         #B5563C;
+    --line:        #DCD5C2;
+    --radius: 14px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: 'Iowan Old Style','Georgia','Palatino Linotype',serif;
+    padding: 28px 16px 60px;
+  }
+  .wrap{ max-width: 720px; margin:0 auto; }
+
+  header{ margin-bottom: 28px; }
+  .eyebrow{
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--moss-dark);
+    margin: 0 0 6px;
+  }
+  h1{
+    font-size: 30px;
+    margin: 0 0 8px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .sub{
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 56ch;
+  }
+
+  .block{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 22px 24px;
+    margin-bottom: 18px;
+  }
+  .block-title{
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--moss-dark);
+    margin: 0 0 4px;
+  }
+  .block-question{
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 18px;
+  }
+
+  .slider-group{ margin-bottom: 4px; }
+  .slider-group + .slider-group{ margin-top: 30px; padding-top: 26px; border-top: 1px dashed var(--line); }
+
+  .slider-label-row{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  .slider-label{ font-size: 16px; font-weight: 700; color: var(--ink); }
+  .slider-value{
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--moss-dark);
+    white-space: nowrap;
+  }
+
+  input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    width:100%; height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--moss) 0%, var(--gold) 100%);
+    outline:none;
+    margin: 10px 0 14px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width:36px; height:30px; border-radius: 9px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+      var(--gold);
+    border: 2px solid var(--soil);
+    cursor: grab;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  input[type=range]:hover::-webkit-slider-thumb{
+    transform: scale(1.08);
+    box-shadow: 0 4px 9px rgba(0,0,0,0.35);
+  }
+  input[type=range]:active::-webkit-slider-thumb{
+    cursor: grabbing;
+    transform: scale(1.04);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:32px; height:28px; border-radius: 9px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+      var(--gold);
+    border: 2px solid var(--soil);
+    cursor: grab;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  input[type=range]:hover::-moz-range-thumb{
+    transform: scale(1.08);
+  }
+  input[type=range]:active::-moz-range-thumb{
+    cursor: grabbing;
+  }
+
+  /* three-box description row, aligned under equal thirds of the slider */
+  .desc-row{
+    display:flex;
+    gap: 8px;
+  }
+  .desc-box{
+    flex: 1 1 0;
+    position: relative;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 10px 10px;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .desc-box:hover{
+    border-color: var(--moss);
+    background: #fff;
+  }
+  .desc-box.active:hover{
+    background: var(--moss-dark);
+  }
+  .desc-box::before{
+    content:"";
+    position:absolute;
+    top:-7px; left:50%;
+    transform: translateX(-50%);
+    width:0; height:0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 7px solid var(--line);
+    transition: border-bottom-color 0.2s ease;
+  }
+  .desc-box.active{
+    background: var(--moss-dark);
+    border-color: var(--moss-dark);
+    color: #F1EDE0;
+    font-weight: 600;
+  }
+  .desc-box.active::before{
+    border-bottom-color: var(--moss-dark);
+  }
+
+  /* Result block */
+  .result-block{
+    background: var(--soil-dark);
+    color: #F1EDE0;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+  }
+  .result-block .block-title{ color: #C8BE9E; }
+  .result-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0 20px;
+  }
+  @media (max-width: 480px){ .result-grid{ grid-template-columns: 1fr; } }
+  .stat{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-label{
+    font-family:'Courier New', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #E7DFC8;
+    margin-bottom: 6px;
+  }
+  .stat-value{
+    font-family:'Courier New', monospace;
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .stat-sub{ font-size: 15px; color: #D8CFAF; margin-top: 4px; }
+
+  /* mulch bed visual */
+  .bed{
+    position: relative;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(90deg, #453522 0%, #2A2015 100%);
+    margin-bottom: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .bed-fill{
+    position:absolute; top:0; bottom:0; left:0;
+    transition: width 0.35s ease, background 0.35s ease;
+    border-right: 3px solid rgba(0,0,0,0.25);
+  }
+  .bed-avail-line{
+    position:absolute; top:0; bottom:0;
+    border-left: 2px solid #F1EDE0;
+    transition: left 0.35s ease;
+  }
+  .bed-avail-tag{
+    position:absolute; top: 6px;
+    transform: translateX(-50%);
+    font-family:'Courier New',monospace;
+    font-size: 11px;
+    font-weight:700;
+    background:#F1EDE0;
+    color:#2A2015;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: left 0.35s ease;
+    white-space: nowrap;
+  }
+  .bed-scale{
+    display:flex;
+    justify-content: space-between;
+    font-family:'Courier New',monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+
+  .status{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+  .status.green{ background: rgba(95,133,82,0.25); border: 1px solid rgba(95,133,82,0.5); }
+  .status.yellow{ background: rgba(198,138,46,0.22); border: 1px solid rgba(198,138,46,0.5); }
+  .status.red{ background: rgba(181,86,60,0.22); border: 1px solid rgba(181,86,60,0.5); }
+  .status .dot{ font-size: 18px; line-height: 1; }
+
+  footer{
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Chaostuin · rekenmodule</p>
+    <h1>Mulch calculator</h1>
+    <p class="sub">Vier schuivers, één eenvoudig antwoord: hoeveel mulch je nodig hebt om je bodem geleidelijk humusrijker te maken — en of wat je nu ter beschikking hebt, daarvoor volstaat.</p>
+  </header>
+
+  <div class="block">
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-label">Hoeveel organische stof zit er nu in mijn bodem?</span>
+        <span class="slider-value" id="val-current">2,8% org. stof</span>
+      </div>
+      <input type="range" id="slider-current" min="0" max="9" step="1" value="4">
+      <div class="desc-row">
+        <div class="desc-box" data-slider="current" data-third="low">Jarenlang niets of weinig organische stof toegevoegd.</div>
+        <div class="desc-box" data-slider="current" data-third="mid">Af en toe of jaarlijks wat compost, stalmest of mulch toegevoegd.</div>
+        <div class="desc-box" data-slider="current" data-third="high">Jaar na jaar veel compost, stalmest of mulch toegevoegd.</div>
+      </div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-label">Wat heb ik nu om te mulchen?</span>
+        <span class="slider-value" id="val-available">9 kg/m²/jaar</span>
+      </div>
+      <input type="range" id="slider-available" min="0" max="9" step="1" value="4">
+      <div class="desc-row">
+        <div class="desc-box" data-slider="available" data-third="low">Alleen plantenresten uit de moestuin.</div>
+        <div class="desc-box" data-slider="available" data-third="mid">Ook gras, bladeren en snoeisel uit een kleine tuin.</div>
+        <div class="desc-box" data-slider="available" data-third="high">Veel gras, bladeren, hagen- en struikensnoeisel uit een grote siertuin, of aanvoer van buitenaf.</div>
+      </div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-label">Hoeveel organische stof wil ik bereiken?</span>
+        <span class="slider-value" id="val-goal">6,6% org. stof</span>
+      </div>
+      <input type="range" id="slider-goal" min="0" max="9" step="1" value="4">
+      <div class="desc-row">
+        <div class="desc-box" data-slider="goal" data-third="low">3% — voldoende voor een gezonde moestuinbodem.</div>
+        <div class="desc-box" data-slider="goal" data-third="mid">Rond 7% — zeer vruchtbare bodem met goede waterbuffering.</div>
+        <div class="desc-box" data-slider="goal" data-third="high">10% — uitzonderlijk humusrijke bodem.</div>
+      </div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-label">In hoeveel jaar wil ik dat bereiken?</span>
+        <span class="slider-value" id="val-years">5 jaar</span>
+      </div>
+      <input type="range" id="slider-years" min="0" max="4" step="1" value="2">
+      <div class="desc-row">
+        <div class="desc-box" data-slider="years" data-third="low">Zo snel mogelijk opbouwen.</div>
+        <div class="desc-box" data-slider="years" data-third="mid">Gemiddeld tempo.</div>
+        <div class="desc-box" data-slider="years" data-third="high">Rustig aan, over lange termijn.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESULTAAT -->
+  <div class="result-block">
+    <p class="block-title">Resultaat</p>
+    <p class="block-question" style="color:#F1EDE0;">Wat betekent dit voor jouw tuin?</p>
+
+    <div class="result-grid">
+      <div class="stat">
+        <div class="stat-label" id="stat-needed-label">Nodig</div>
+        <div class="stat-value" id="stat-needed">— kg/m²/jaar</div>
+        <div class="stat-sub" id="stat-needed-cm">≈ — cm mulchlaag per jaar</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Beschikbaar</div>
+        <div class="stat-value" id="stat-avail">— kg/m²/jaar</div>
+        <div class="stat-sub" id="stat-avail-cm">≈ — cm mulchlaag per jaar</div>
+      </div>
+    </div>
+
+    <div class="bed" id="bed">
+      <div class="bed-fill" id="bed-fill"></div>
+      <div class="bed-avail-line" id="bed-avail-line"></div>
+      <div class="bed-avail-tag" id="bed-avail-tag">beschikbaar</div>
+    </div>
+    <div class="bed-scale"><span>0 cm</span><span>30 cm mulchlaag/jaar</span></div>
+
+    <div class="status" id="status">
+      <span class="dot" id="status-dot">🟢</span>
+      <span id="status-text">Genoeg mulch beschikbaar.</span>
+    </div>
+  </div>
+
+  <footer>Rekenmodel: humificatiefactor 10% · afbraak humus 2,5%/jaar · 10 kg humus/m² ≈ 3% org. stof · mulchdichtheid ≈ 200 kg/m³</footer>
+</div>
+
+<script>
+// ---- constants (validated) ----
+const H_FACTOR = 0.10;   // 10 kg mulch -> 1 kg humus
+const K = 0.025;         // afbraak humus per jaar
+const CONV = 10/3;       // kg humus/m2 per 1% org. stof
+const DENSITY_DIVISOR = 2; // kg/m2 -> cm laagdikte (200 kg/m3 => /2)
+const MAX_REALISTIC = 50; // kg/m2/jaar, ~25 cm laag, praktisch plafond
+
+// ---- slider scales ----
+const currentSteps = [1.0,1.4,1.9,2.3,2.8,3.2,3.6,4.1,4.6,5.0]; // %OS
+const goalSteps    = [3.0,3.8,4.6,5.4,6.2,7.0,7.8,8.6,9.3,10.0]; // %OS
+const availSteps   = [1,2,4,6,9,13,18,25,35,50]; // kg/m2/jaar
+const yearSteps    = [3,4,5,6,7];
+
+// third based on step index (equal division of the bar in 3)
+function thirdForIndex(idx, totalSteps){
+  if (totalSteps === 5){ // years: 0,1 -> low, 2 -> mid, 3,4 -> high
+    if (idx <= 0) return 'low';
+    if (idx >= 4) return 'high';
+    return 'mid';
+  }
+  if (idx <= 2) return 'low';
+  if (idx <= 5) return 'mid';
+  return 'high';
+}
+
+function setActiveDesc(sliderName, third){
+  document.querySelectorAll('.desc-box[data-slider="'+sliderName+'"]').forEach(box=>{
+    box.classList.toggle('active', box.dataset.third === third);
+  });
+}
+
+// representatieve schuifpositie per slider + derde, voor klikbare beschrijvingen
+const jumpIndex = {
+  current:   { low:1, mid:4, high:8 },
+  available: { low:1, mid:4, high:8 },
+  goal:      { low:1, mid:4, high:8 },
+  years:     { low:0, mid:2, high:4 }
+};
+const sliderEls = { current: null, available: null, goal: null, years: null }; // gevuld na DOM refs hieronder
+
+// ---- DOM refs ----
+const sCurrent = document.getElementById('slider-current');
+const sAvail   = document.getElementById('slider-available');
+const sGoal    = document.getElementById('slider-goal');
+const sYears   = document.getElementById('slider-years');
+
+sliderEls.current = sCurrent;
+sliderEls.available = sAvail;
+sliderEls.goal = sGoal;
+sliderEls.years = sYears;
+
+document.querySelectorAll('.desc-box').forEach(box=>{
+  box.addEventListener('click', ()=>{
+    const name = box.dataset.slider;
+    const third = box.dataset.third;
+    const idx = jumpIndex[name][third];
+    sliderEls[name].value = idx;
+    update();
+  });
+});
+
+function fmt(n, d=1){ return n.toLocaleString('nl-BE', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+function calcNeeded(currentPct, goalPct, years){
+  const H0 = currentPct * CONV;
+  const Hgoal = goalPct * CONV;
+
+  // Doel al bereikt: geen opbouw nodig, maar de bestaande humus breekt nog
+  // steeds af aan 2,5%/jaar. De onderhoudsdosis houdt het huidige niveau vast.
+  if (goalPct <= currentPct){
+    return (K/H_FACTOR) * H0;
+  }
+
+  const e = Math.exp(-K*years);
+  let m = (K/H_FACTOR) * (Hgoal - H0*e) / (1 - e);
+  if (m < 0) m = (K/H_FACTOR) * H0; // veiligheidsvangnet
+  return m;
+}
+
+function update(){
+  const currentPct = currentSteps[sCurrent.value];
+  const goalPct    = goalSteps[sGoal.value];
+  const years      = yearSteps[sYears.value];
+  const availKg    = availSteps[sAvail.value];
+
+  document.getElementById('val-current').textContent = fmt(currentPct)+"% org. stof";
+  setActiveDesc('current', thirdForIndex(+sCurrent.value, 10));
+
+  document.getElementById('val-goal').textContent = fmt(goalPct)+"% org. stof";
+  setActiveDesc('goal', thirdForIndex(+sGoal.value, 10));
+
+  document.getElementById('val-years').textContent = years+" jaar";
+  setActiveDesc('years', thirdForIndex(+sYears.value, 5));
+
+  document.getElementById('val-available').textContent = availKg+" kg/m²/jaar";
+  setActiveDesc('available', thirdForIndex(+sAvail.value, 10));
+
+  const needed = calcNeeded(currentPct, goalPct, years);
+  const neededCm = needed/DENSITY_DIVISOR;
+  const availCm = availKg/DENSITY_DIVISOR;
+
+  document.getElementById('stat-needed-label').textContent = (goalPct <= currentPct) ? 'Onderhoudsdosis nodig' : 'Nodig';
+  document.getElementById('stat-needed').textContent = fmt(needed,1)+" kg/m²/jaar";
+  document.getElementById('stat-needed-cm').textContent = "≈ "+fmt(neededCm,1)+" cm mulchlaag per jaar";
+  document.getElementById('stat-avail').textContent = fmt(availKg,1)+" kg/m²/jaar";
+  document.getElementById('stat-avail-cm').textContent = "≈ "+fmt(availCm,1)+" cm mulchlaag per jaar";
+
+  // status
+  let statusClass, dot, text;
+  if (goalPct <= currentPct){
+    statusClass='green'; dot='🟢';
+    text='Je bodem zit al op of boven je doel. Onderhoud van ongeveer '+fmt(needed,1)+' kg/m²/jaar (≈ '+fmt(neededCm,1)+' cm mulch) volstaat om dit niveau te behouden — anders breekt de humus gewoon weer af.';
+  } else if (needed > MAX_REALISTIC){
+    statusClass='red'; dot='🔴'; text='Dit doel vraagt een onrealistisch dikke mulchlaag (meer dan ~25 cm/jaar). Neem meer tijd of stel het doel wat bij.';
+  } else {
+    const ratio = availKg/needed;
+    if (ratio >= 1){
+      statusClass='green'; dot='🟢'; text='Genoeg mulch beschikbaar.';
+    } else if (ratio >= 0.6){
+      statusClass='yellow'; dot='🟡'; text='Haalbaar als je ook buiten de moestuin mulch verzamelt.';
+    } else {
+      statusClass='red'; dot='🔴'; text='Voor dit doel heb je meer mulch nodig, of moet je meer tijd nemen.';
+    }
+  }
+  const statusEl = document.getElementById('status');
+  statusEl.className = 'status '+statusClass;
+  document.getElementById('status-dot').textContent = dot;
+  document.getElementById('status-text').textContent = text;
+
+  // bed visual: scale 0-30cm
+  const SCALE_MAX = 30;
+  const neededPct = Math.min(100, (neededCm/SCALE_MAX)*100);
+  const availPct  = Math.min(100, (availCm/SCALE_MAX)*100);
+  const fillColor = statusClass==='green' ? 'var(--green)' : statusClass==='yellow' ? 'var(--yellow)' : 'var(--red)';
+
+  const bedFill = document.getElementById('bed-fill');
+  bedFill.style.width = neededPct+'%';
+  bedFill.style.background = fillColor;
+
+  const availLine = document.getElementById('bed-avail-line');
+  availLine.style.left = availPct+'%';
+  const availTag = document.getElementById('bed-avail-tag');
+  availTag.style.left = availPct+'%';
+}
+
+[sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
+update();
+</script>
+</body>
+</html>

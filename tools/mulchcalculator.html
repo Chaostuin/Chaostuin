@@ -1,344 +1,440 @@
 <!DOCTYPE html>
 <html lang="nl" data-root="../">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mulch & Humus Calculator — Chaostuin</title>
-  <meta name="description" content="Bereken hoeveel mulch je nodig hebt en hoe je bodem evolueert. Simulatie op basis van wetenschappelijk model.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/main.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <style>
-    /* ── TOOL-SPECIFIEKE STIJLEN ─────────────────────────── */
-    .tool-body {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 2rem 4rem;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaostuin — Mulchcalculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/main.css">
+<style>
+:root{--earth:#2C2416;--moss:#3D5229;--sage:#7A8C5E;--straw:#C8A96E;--cream:#F5F0E8;--fog:#EAE4D8;--leaf:#5C7A3A;--rust:#8B4513}
 
-    .panel {
-      background: #fff;
-      border: 0.5px solid var(--fog);
-      border-radius: 8px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .panel-title {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--sage);
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--earth);
+  color:var(--cream);
+  min-height:100vh;
+  padding:6rem 1.5rem 4rem;
+}
 
-    .sliders {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 2rem;
-    }
-    @media (max-width: 600px) { .sliders { grid-template-columns: 1fr; } }
+.mc-page{ max-width:720px; margin:0 auto; }
 
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .slider-row label {
-      font-size: 13px;
-      color: #5a5040;
-      min-width: 175px;
-    }
-    .slider-row input[type=range] {
-      flex: 1;
-      accent-color: var(--leaf);
-      height: 4px;
-    }
-    .slider-row .val {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--moss);
-      min-width: 44px;
-      text-align: right;
-    }
+.mc-header{ margin-bottom:2rem; }
+.mc-header h1{
+  font-family:'Playfair Display',serif;
+  font-weight:400;
+  font-size:clamp(1.8rem, 4vw, 2.4rem);
+  margin-bottom:.4rem;
+}
+.mc-header h1 span{ font-style:italic; color:var(--straw); }
+.mc-header .subtitle{
+  font-size:.92rem;
+  font-weight:300;
+  line-height:1.6;
+  color:rgba(245,240,232,.6);
+  max-width:52ch;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 1.25rem;
-    }
-    @media (max-width: 600px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+/* ── SLIDER WIDGET (cream card, zoals calculator-widget) ── */
+.calculator-widget{ margin-bottom:1.5rem; }
 
-    .card {
-      background: var(--fog);
-      border-radius: 6px;
-      padding: 0.75rem;
-    }
-    .card-label {
-      font-size: 11px;
-      color: var(--sage);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .card-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: var(--moss);
-    }
-    .card-sub { font-size: 11px; color: var(--sage); margin-top: 3px; }
+.mc-group{ margin-bottom:4px; }
+.mc-group + .mc-group{ margin-top:2rem; padding-top:1.75rem; border-top:1px dashed var(--fog); }
 
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      font-size: 12px;
-      color: var(--sage);
-      margin-bottom: 10px;
-    }
-    .legend span { display: flex; align-items: center; gap: 5px; }
-    .leg-line { width: 20px; height: 3px; border-radius: 2px; display: inline-block; }
+.mc-label-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:.6rem; gap:10px;
+}
+.mc-label{ font-size:.98rem; font-weight:500; color:var(--moss); }
+.mc-value{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem; font-weight:700;
+  color:var(--moss);
+  white-space:nowrap;
+}
 
-    .chart-wrap { position: relative; width: 100%; height: 360px; }
+input[type=range]{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:8px; border-radius:4px;
+  background:linear-gradient(90deg, var(--sage) 0%, var(--straw) 100%);
+  outline:none; margin:8px 0 12px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:34px; height:28px; border-radius:8px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+    var(--straw);
+  border:2px solid var(--moss);
+  cursor:grab;
+  box-shadow:0 3px 6px rgba(44,36,22,0.35);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+input[type=range]:hover::-webkit-slider-thumb{ transform:scale(1.07); box-shadow:0 4px 9px rgba(44,36,22,0.4); }
+input[type=range]:active::-webkit-slider-thumb{ cursor:grabbing; transform:scale(1.03); }
+input[type=range]::-moz-range-thumb{
+  width:30px; height:26px; border-radius:8px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+    var(--straw);
+  border:2px solid var(--moss);
+  cursor:grab;
+  box-shadow:0 3px 6px rgba(44,36,22,0.35);
+}
+input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
 
-    .info-box {
-      background: var(--fog);
-      border-left: 3px solid var(--straw);
-      border-radius: 2px;
-      padding: 0.75rem 1rem;
-      font-size: 12px;
-      color: #5a5040;
-      margin-top: 1rem;
-      line-height: 1.6;
-    }
-    .info-box strong { color: var(--earth); font-weight: 500; }
+/* three-box beschrijvingen, klikbaar, gelijk verdeeld onder de balk */
+.mc-desc-row{ display:flex; gap:8px; }
+.mc-desc-box{
+  flex:1 1 0; position:relative;
+  background:var(--fog);
+  border:1px solid rgba(61,82,41,0.15);
+  border-radius:6px;
+  padding:13px 10px 9px;
+  font-size:.78rem; font-weight:300; line-height:1.4;
+  color:#5a5040; text-align:center;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.mc-desc-box::before{
+  content:""; position:absolute; top:-7px; left:50%; transform:translateX(-50%);
+  width:0; height:0;
+  border-left:6px solid transparent; border-right:6px solid transparent;
+  border-bottom:7px solid rgba(61,82,41,0.15);
+  transition:border-bottom-color .2s ease;
+}
+.mc-desc-box:hover{ border-color:var(--straw); background:#fff; }
+.mc-desc-box.active{ background:var(--moss); border-color:var(--moss); color:var(--cream); font-weight:500; }
+.mc-desc-box.active::before{ border-bottom-color:var(--moss); }
+.mc-desc-box.active:hover{ background:#46602f; }
 
-    .tool-footer {
-      margin-top: 2rem;
-      font-size: 11px;
-      color: var(--sage);
-      text-align: center;
-    }
-  </style>
+/* ── RESULTAAT (donker paneel, straw-accenten, zoals calc-result) ── */
+.mc-result{
+  background:var(--moss);
+  border-radius:4px;
+  padding:1.75rem 2rem 2rem;
+}
+.mc-result-title{
+  font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--straw); margin-bottom:1.25rem;
+}
+.mc-stat-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+  margin-bottom:1.5rem;
+}
+@media (max-width:480px){ .mc-stat-grid{ grid-template-columns:1fr; } }
+.mc-stat{
+  background:rgba(245,240,232,0.08);
+  border:1px solid rgba(245,240,232,0.12);
+  border-radius:4px;
+  padding:1rem 1.1rem;
+}
+.mc-stat-label{
+  font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+  color:rgba(245,240,232,.65); margin-bottom:.4rem;
+}
+.mc-stat-val{
+  font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700;
+  color:var(--straw);
+}
+.mc-stat-sub{ font-size:.85rem; color:rgba(245,240,232,.7); margin-top:.3rem; }
+
+/* mulchbed-balk: horizontaal, links → rechts */
+.mc-bed{
+  position:relative; height:56px;
+  border-radius:6px; overflow:hidden;
+  background:linear-gradient(90deg, #241c14 0%, var(--earth) 100%);
+  margin-bottom:6px;
+  border:1px solid rgba(245,240,232,0.1);
+}
+.mc-bed-fill{
+  position:absolute; top:0; bottom:0; left:0;
+  transition:width .35s ease, background .35s ease;
+  border-right:3px solid rgba(0,0,0,0.25);
+}
+.mc-bed-avail-line{
+  position:absolute; top:0; bottom:0;
+  border-left:2px solid var(--cream);
+  transition:left .35s ease;
+}
+.mc-bed-avail-tag{
+  position:absolute; top:6px; transform:translateX(-50%);
+  font-size:10px; font-weight:700;
+  background:var(--cream); color:var(--earth);
+  padding:2px 6px; border-radius:3px;
+  white-space:nowrap;
+  transition:left .35s ease;
+}
+.mc-bed-scale{
+  display:flex; justify-content:space-between;
+  font-size:10px; color:rgba(245,240,232,.45);
+  margin-bottom:1.25rem;
+}
+
+.mc-status{
+  display:flex; align-items:flex-start; gap:10px;
+  padding:14px 16px; border-radius:6px;
+  font-size:.92rem; font-weight:500; line-height:1.5;
+}
+.mc-status.green{ background:rgba(92,122,58,0.28); border:1px solid rgba(92,122,58,0.55); }
+.mc-status.yellow{ background:rgba(200,169,110,0.22); border:1px solid rgba(200,169,110,0.5); }
+.mc-status.red{ background:rgba(139,69,19,0.28); border:1px solid rgba(139,69,19,0.55); }
+.mc-status .dot{ font-size:18px; line-height:1; }
+
+.mc-footnote{
+  margin-top:1.5rem; font-size:.78rem; color:rgba(245,240,232,.4); text-align:center;
+}
+
+@media (max-width:600px){
+  .mc-desc-row{ flex-direction:column; }
+  .mc-desc-box::before{ display:none; }
+}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
 <div id="nav-placeholder"></div>
 
-<!-- PAGE HEADER -->
-<header class="page-header">
-  <div class="page-header-inner">
-    <p class="breadcrumb"><a href="/">Home</a> · <a href="/#tools">Tools</a> · Mulchcalculator</p>
-    <h1 class="page-title">Mulch & Humus Calculator</h1>
-    <p class="page-lead">Simulatie van opbouw organisch materiaal in moestuinbodem · tweefase-strategie</p>
+<div class="mc-page">
+
+  <div class="mc-header">
+    <h1>chaos<span>tuin</span> mulchcalculator</h1>
+    <p class="subtitle">Vier schuivers, één eenvoudig antwoord: hoeveel mulch je nodig hebt om je bodem geleidelijk humusrijker te maken — en of wat je nu ter beschikking hebt, daarvoor volstaat.</p>
   </div>
-</header>
 
-<!-- TOOL INHOUD -->
-<div class="tool-body">
+  <div class="calculator-widget">
 
-  <div class="panel">
-    <div class="panel-title">Parameters</div>
-    <div class="sliders">
-      <div class="slider-row">
-        <label>Opstartdosis (jaren 1–N)</label>
-        <input type="range" min="2" max="25" value="20" step="1" id="sA1">
-        <span class="val" id="oA1">20 kg</span>
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label">Hoeveel organische stof zit er nu in mijn bodem?</span>
+        <span class="mc-value" id="val-current">2,8% org. stof</span>
       </div>
-      <div class="slider-row">
-        <label>Humificatiefactor</label>
-        <input type="range" min="5" max="25" value="15" step="1" id="sH">
-        <span class="val" id="oH">15%</span>
+      <input type="range" id="slider-current" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="current" data-third="low">Jarenlang niets of weinig organische stof toegevoegd.</div>
+        <div class="mc-desc-box" data-slider="current" data-third="mid">Af en toe of jaarlijks wat compost, stalmest of mulch toegevoegd.</div>
+        <div class="mc-desc-box" data-slider="current" data-third="high">Jaar na jaar veel compost, stalmest of mulch toegevoegd.</div>
       </div>
-      <div class="slider-row">
-        <label>Aantal opstartjaren (N)</label>
-        <input type="range" min="1" max="30" value="4" step="1" id="sN">
-        <span class="val" id="oN">4 j</span>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label">Wat heb ik nu om te mulchen?</span>
+        <span class="mc-value" id="val-available">9 kg/m²/jaar</span>
       </div>
-      <div class="slider-row">
-        <label>Afbraak humus (k)</label>
-        <input type="range" min="1" max="5" value="2.5" step="0.5" id="sK">
-        <span class="val" id="oK">2.5%</span>
+      <input type="range" id="slider-available" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="available" data-third="low">Alleen plantenresten uit de moestuin.</div>
+        <div class="mc-desc-box" data-slider="available" data-third="mid">Ook gras, bladeren en snoeisel uit een kleine tuin.</div>
+        <div class="mc-desc-box" data-slider="available" data-third="high">Veel gras, bladeren, hagen- en struikensnoeisel uit een grote siertuin, of aanvoer van buitenaf.</div>
       </div>
-      <div class="slider-row">
-        <label>Onderhoudsdosis (daarna)</label>
-        <input type="range" min="1" max="10" value="5" step="0.5" id="sA2">
-        <span class="val" id="oA2">5 kg</span>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label">Hoeveel organische stof wil ik bereiken?</span>
+        <span class="mc-value" id="val-goal">6,6% org. stof</span>
       </div>
-      <div class="slider-row">
-        <label>Beginwaarde M₀</label>
-        <input type="range" min="5" max="50" value="20" step="1" id="sM0">
-        <span class="val" id="oM0">20 kg</span>
+      <input type="range" id="slider-goal" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="goal" data-third="low">3% — voldoende voor een gezonde moestuinbodem.</div>
+        <div class="mc-desc-box" data-slider="goal" data-third="mid">Rond 7% — zeer vruchtbare bodem met goede waterbuffering.</div>
+        <div class="mc-desc-box" data-slider="goal" data-third="high">10% — uitzonderlijk humusrijke bodem.</div>
       </div>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label">In hoeveel jaar wil ik dat bereiken?</span>
+        <span class="mc-value" id="val-years">5 jaar</span>
+      </div>
+      <input type="range" id="slider-years" min="0" max="4" step="1" value="2">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="years" data-third="low">Zo snel mogelijk opbouwen.</div>
+        <div class="mc-desc-box" data-slider="years" data-third="mid">Gemiddeld tempo.</div>
+        <div class="mc-desc-box" data-slider="years" data-third="high">Rustig aan, over lange termijn.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mc-result">
+    <p class="mc-result-title">Resultaat</p>
+
+    <div class="mc-stat-grid">
+      <div class="mc-stat">
+        <div class="mc-stat-label" id="stat-needed-label">Nodig</div>
+        <div class="mc-stat-val" id="stat-needed">— kg/m²/jaar</div>
+        <div class="mc-stat-sub" id="stat-needed-cm">≈ — cm mulchlaag per jaar</div>
+      </div>
+      <div class="mc-stat">
+        <div class="mc-stat-label">Beschikbaar</div>
+        <div class="mc-stat-val" id="stat-avail">— kg/m²/jaar</div>
+        <div class="mc-stat-sub" id="stat-avail-cm">≈ — cm mulchlaag per jaar</div>
+      </div>
+    </div>
+
+    <div class="mc-bed" id="bed">
+      <div class="mc-bed-fill" id="bed-fill"></div>
+      <div class="mc-bed-avail-line" id="bed-avail-line"></div>
+      <div class="mc-bed-avail-tag" id="bed-avail-tag">beschikbaar</div>
+    </div>
+    <div class="mc-bed-scale"><span>0 cm</span><span>30 cm mulchlaag/jaar</span></div>
+
+    <div class="mc-status" id="status">
+      <span class="dot" id="status-dot">🟢</span>
+      <span id="status-text">Genoeg mulch beschikbaar.</span>
     </div>
   </div>
 
-  <div class="cards" id="cards"></div>
-
-  <div class="panel">
-    <div class="legend">
-      <span><span class="leg-line" style="background:#3D5229;"></span>Tweefase-strategie</span>
-      <span><span class="leg-line" style="background:#7A8C5E;border-top:2px dashed #7A8C5E;height:0;"></span>Alleen onderhoudsdosis</span>
-      <span><span class="leg-line" style="background:#5C7A3A;"></span>Doelzone 3–10% org. stof</span>
-      <span><span style="width:10px;height:10px;border-radius:50%;background:#C8A96E;display:inline-block;"></span>Overgang jaar N</span>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="mainChart"></canvas>
-    </div>
-    <div class="info-box" id="infoBox"></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-title">Volume verse mulch — opstartdosis (<span id="labelA1">20</span> kg/m²)</div>
-    <div class="cards" id="volCards"></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-title">Volume verse mulch — onderhoudsdosis (<span id="labelA2">5</span> kg/m²)</div>
-    <div class="cards" id="volCardsB"></div>
-  </div>
-
-  <p class="tool-footer">Model: M(t+1) = M(t)·(1−k) + a·h &nbsp;·&nbsp; Grondgewicht aanname: 325 kg/m² (laag 25 cm, dichtheid 1300 kg/m³)</p>
+  <p class="mc-footnote">Rekenmodel: humificatiefactor 10% · afbraak humus 2,5%/jaar · 10 kg humus/m² ≈ 3% org. stof · mulchdichtheid ≈ 200 kg/m³</p>
 
 </div>
 
-<!-- FOOTER -->
 <div id="footer-placeholder"></div>
 
 <script>
-const groundWeight = 325;
-const labels = Array.from({length: 151}, (_, i) => i);
-let chart = null;
+// ---- constants (validated) ----
+const H_FACTOR = 0.10;   // 10 kg mulch -> 1 kg humus
+const K = 0.025;         // afbraak humus per jaar
+const CONV = 10/3;       // kg humus/m2 per 1% org. stof
+const DENSITY_DIVISOR = 2; // kg/m2 -> cm laagdikte (200 kg/m3 => /2)
+const MAX_REALISTIC = 50; // kg/m2/jaar, ~25 cm laag, praktisch plafond
 
-function simulate(a1, a2, N, h, k, M0) {
-  const d = [M0];
-  for (let t = 0; t < 150; t++) {
-    const a = t < N ? a1 : a2;
-    d.push(parseFloat((d[t] * (1 - k) + a * h).toFixed(4)));
+// ---- slider scales ----
+const currentSteps = [1.0,1.4,1.9,2.3,2.8,3.2,3.6,4.1,4.6,5.0]; // %OS
+const goalSteps    = [3.0,3.8,4.6,5.4,6.2,7.0,7.8,8.6,9.3,10.0]; // %OS
+const availSteps   = [1,2,4,6,9,13,18,25,35,50]; // kg/m2/jaar
+const yearSteps    = [3,4,5,6,7];
+
+function thirdForIndex(idx, totalSteps){
+  if (totalSteps === 5){
+    if (idx <= 0) return 'low';
+    if (idx >= 4) return 'high';
+    return 'mid';
   }
-  return d;
+  if (idx <= 2) return 'low';
+  if (idx <= 5) return 'mid';
+  return 'high';
 }
 
-function fmt(v, dec=1) { return parseFloat(v).toFixed(dec); }
-
-function render() {
-  const a1 = parseFloat(document.getElementById('sA1').value);
-  const N  = parseInt(document.getElementById('sN').value);
-  const a2 = parseFloat(document.getElementById('sA2').value);
-  const h  = parseInt(document.getElementById('sH').value) / 100;
-  const k  = parseFloat(document.getElementById('sK').value) / 100;
-  const M0 = parseInt(document.getElementById('sM0').value);
-
-  document.getElementById('oA1').textContent = a1 + ' kg';
-  document.getElementById('oN').textContent  = N + ' j';
-  document.getElementById('oA2').textContent = a2 + ' kg';
-  document.getElementById('oH').textContent  = (h*100).toFixed(0) + '%';
-  document.getElementById('oK').textContent  = (k*100).toFixed(1) + '%';
-  document.getElementById('oM0').textContent = M0 + ' kg';
-
-  const dataMain  = simulate(a1, a2, N, h, k, M0);
-  const dataConst = simulate(a2, a2, 151, h, k, M0);
-  const Meq  = (a2 * h) / k;
-  const peak = Math.max(...dataMain);
-  const atN  = dataMain[N];
-  const pctStart = fmt(M0 / groundWeight * 100);
-  const pctN     = fmt(atN / groundWeight * 100);
-  const pctPeak  = fmt(peak / groundWeight * 100);
-  const pctEq    = fmt(Meq / groundWeight * 100);
-  const optLow   = 0.03 * groundWeight;
-  const optHigh  = 0.10 * groundWeight;
-
-  const cards = document.getElementById('cards');
-  cards.innerHTML = '';
-  [
-    { label: 'Begin M₀',          val: fmt(M0) + ' kg/m²',   sub: pctStart + '% org. stof' },
-    { label: 'Na ' + N + ' jaar', val: fmt(atN) + ' kg/m²',  sub: pctN + '% org. stof' },
-    { label: 'Piek (max)',         val: fmt(peak) + ' kg/m²', sub: pctPeak + '% org. stof' },
-    { label: 'Eindevenwicht',      val: fmt(Meq) + ' kg/m²',  sub: pctEq + '% org. stof' },
-  ].forEach(c => {
-    const d = document.createElement('div');
-    d.className = 'card';
-    d.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div><div class="card-sub">${c.sub}</div>`;
-    cards.appendChild(d);
-  });
-
-  const maxY = Math.ceil(Math.max(peak, Meq, optHigh) * 1.15 / 10) * 10;
-  const datasets = [
-    { label: 'Tweefase-strategie', data: dataMain,  borderColor: '#3D5229', backgroundColor: 'rgba(61,82,41,0.07)', borderWidth: 2.5, pointRadius: 0, fill: true,  tension: 0.3 },
-    { label: 'Constant onderhoud', data: dataConst, borderColor: '#7A8C5E', borderWidth: 1.5, borderDash: [6,4], pointRadius: 0, fill: false, tension: 0.3 },
-    { label: 'Doelzone boven (10%)', data: labels.map(() => optHigh), borderColor: '#5C7A3A', borderWidth: 1, borderDash: [3,3], pointRadius: 0, fill: false },
-    { label: 'Doelzone onder (3%)',  data: labels.map(() => optLow),  borderColor: '#5C7A3A', borderWidth: 1, borderDash: [3,3], pointRadius: 0, fill: false },
-    { label: 'Overgang', data: labels.map(t => t === N ? dataMain[N] : null), borderColor: '#C8A96E', pointRadius: labels.map(t => t === N ? 6 : 0), pointBackgroundColor: '#C8A96E', showLine: false, fill: false }
-  ];
-
-  if (chart) {
-    chart.data.datasets = datasets;
-    chart.options.scales.y.max = maxY;
-    chart.update();
-  } else {
-    chart = new Chart(document.getElementById('mainChart'), {
-      type: 'line',
-      data: { labels, datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { title: { display: true, text: 'Jaar', font: { size: 12 } }, ticks: { autoSkip: true, maxTicksLimit: 11 } },
-          y: { title: { display: true, text: 'Humus (kg/m²)', font: { size: 12 } }, min: 0, max: maxY }
-        }
-      }
-    });
-  }
-
-  document.getElementById('infoBox').innerHTML =
-    `<strong>Leeswijzer:</strong> De groene curve toont de tweefase-strategie (${a1} kg/m²/jaar gedurende ${N} jaar, daarna ${a2} kg/m²/jaar). ` +
-    `De stippellijn toont wat er gebeurt als je meteen de onderhoudsdosis gebruikt. ` +
-    `De groene stippellijnen markeren de doelzone 3–10% organische stof (${fmt(optLow,0)}–${fmt(optHigh,0)} kg/m²). ` +
-    `Het gouden punt is het moment van overschakeling (jaar ${N}).`;
-
-  const oppervlakten = [
-    { opp: 10,  label: '10 m²' },
-    { opp: 25,  label: '25 m²' },
-    { opp: 50,  label: '50 m²' },
-    { opp: 100, label: '100 m²' },
-  ];
-
-  document.getElementById('labelA1').textContent = a1;
-  const volCards = document.getElementById('volCards');
-  volCards.innerHTML = '';
-  oppervlakten.forEach(r => {
-    const kg = a1 * r.opp;
-    const m3 = (kg / 125).toFixed(1);
-    const cm = fmt(a1 / 125 * 100, 0);
-    const d = document.createElement('div');
-    d.className = 'card';
-    d.innerHTML = `<div class="card-label">Tuin ${r.label}</div><div class="card-value">${kg} kg</div><div class="card-sub">${m3} m³ · laag ${cm} cm</div>`;
-    volCards.appendChild(d);
-  });
-
-  document.getElementById('labelA2').textContent = a2;
-  const volCardsB = document.getElementById('volCardsB');
-  volCardsB.innerHTML = '';
-  oppervlakten.forEach(r => {
-    const kg = a2 * r.opp;
-    const m3 = (kg / 125).toFixed(1);
-    const cm = fmt(a2 / 125 * 100, 0);
-    const d = document.createElement('div');
-    d.className = 'card';
-    d.innerHTML = `<div class="card-label">Tuin ${r.label}</div><div class="card-value">${kg} kg</div><div class="card-sub">${m3} m³ · laag ${cm} cm</div>`;
-    volCardsB.appendChild(d);
+function setActiveDesc(sliderName, third){
+  document.querySelectorAll('.mc-desc-box[data-slider="'+sliderName+'"]').forEach(box=>{
+    box.classList.toggle('active', box.dataset.third === third);
   });
 }
 
-['sA1','sN','sA2','sH','sK','sM0'].forEach(id => {
-  document.getElementById(id).addEventListener('input', render);
+const jumpIndex = {
+  current:   { low:1, mid:4, high:8 },
+  available: { low:1, mid:4, high:8 },
+  goal:      { low:1, mid:4, high:8 },
+  years:     { low:0, mid:2, high:4 }
+};
+const sliderEls = { current:null, available:null, goal:null, years:null };
+
+// ---- DOM refs ----
+const sCurrent = document.getElementById('slider-current');
+const sAvail   = document.getElementById('slider-available');
+const sGoal    = document.getElementById('slider-goal');
+const sYears   = document.getElementById('slider-years');
+
+sliderEls.current = sCurrent;
+sliderEls.available = sAvail;
+sliderEls.goal = sGoal;
+sliderEls.years = sYears;
+
+document.querySelectorAll('.mc-desc-box').forEach(box=>{
+  box.addEventListener('click', ()=>{
+    const name = box.dataset.slider;
+    const third = box.dataset.third;
+    const idx = jumpIndex[name][third];
+    sliderEls[name].value = idx;
+    update();
+  });
 });
 
-render();
+function fmt(n, d=1){ return n.toLocaleString('nl-BE', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+function calcNeeded(currentPct, goalPct, years){
+  const H0 = currentPct * CONV;
+  const Hgoal = goalPct * CONV;
+
+  if (goalPct <= currentPct){
+    return (K/H_FACTOR) * H0;
+  }
+
+  const e = Math.exp(-K*years);
+  let m = (K/H_FACTOR) * (Hgoal - H0*e) / (1 - e);
+  if (m < 0) m = (K/H_FACTOR) * H0;
+  return m;
+}
+
+function update(){
+  const currentPct = currentSteps[sCurrent.value];
+  const goalPct    = goalSteps[sGoal.value];
+  const years      = yearSteps[sYears.value];
+  const availKg    = availSteps[sAvail.value];
+
+  document.getElementById('val-current').textContent = fmt(currentPct)+"% org. stof";
+  setActiveDesc('current', thirdForIndex(+sCurrent.value, 10));
+
+  document.getElementById('val-goal').textContent = fmt(goalPct)+"% org. stof";
+  setActiveDesc('goal', thirdForIndex(+sGoal.value, 10));
+
+  document.getElementById('val-years').textContent = years+" jaar";
+  setActiveDesc('years', thirdForIndex(+sYears.value, 5));
+
+  document.getElementById('val-available').textContent = availKg+" kg/m²/jaar";
+  setActiveDesc('available', thirdForIndex(+sAvail.value, 10));
+
+  const needed = calcNeeded(currentPct, goalPct, years);
+  const neededCm = needed/DENSITY_DIVISOR;
+  const availCm = availKg/DENSITY_DIVISOR;
+
+  document.getElementById('stat-needed-label').textContent = (goalPct <= currentPct) ? 'Onderhoudsdosis nodig' : 'Nodig';
+  document.getElementById('stat-needed').textContent = fmt(needed,1)+" kg/m²/jaar";
+  document.getElementById('stat-needed-cm').textContent = "≈ "+fmt(neededCm,1)+" cm mulchlaag per jaar";
+  document.getElementById('stat-avail').textContent = fmt(availKg,1)+" kg/m²/jaar";
+  document.getElementById('stat-avail-cm').textContent = "≈ "+fmt(availCm,1)+" cm mulchlaag per jaar";
+
+  let statusClass, dot, text;
+  if (goalPct <= currentPct){
+    statusClass='green'; dot='🟢';
+    text='Je bodem zit al op of boven je doel. Onderhoud van ongeveer '+fmt(needed,1)+' kg/m²/jaar (≈ '+fmt(neededCm,1)+' cm mulch) volstaat om dit niveau te behouden — anders breekt de humus gewoon weer af.';
+  } else if (needed > MAX_REALISTIC){
+    statusClass='red'; dot='🔴'; text='Dit doel vraagt een onrealistisch dikke mulchlaag (meer dan ~25 cm/jaar). Neem meer tijd of stel het doel wat bij.';
+  } else {
+    const ratio = availKg/needed;
+    if (ratio >= 1){
+      statusClass='green'; dot='🟢'; text='Genoeg mulch beschikbaar.';
+    } else if (ratio >= 0.6){
+      statusClass='yellow'; dot='🟡'; text='Haalbaar als je ook buiten de moestuin mulch verzamelt.';
+    } else {
+      statusClass='red'; dot='🔴'; text='Voor dit doel heb je meer mulch nodig, of moet je meer tijd nemen.';
+    }
+  }
+  const statusEl = document.getElementById('status');
+  statusEl.className = 'mc-status '+statusClass;
+  document.getElementById('status-dot').textContent = dot;
+  document.getElementById('status-text').textContent = text;
+
+  const SCALE_MAX = 30;
+  const neededPct = Math.min(100, (neededCm/SCALE_MAX)*100);
+  const availPct  = Math.min(100, (availCm/SCALE_MAX)*100);
+  const fillColor = statusClass==='green' ? 'var(--leaf)' : statusClass==='yellow' ? 'var(--straw)' : 'var(--rust)';
+
+  const bedFill = document.getElementById('bed-fill');
+  bedFill.style.width = neededPct+'%';
+  bedFill.style.background = fillColor;
+
+  const availLine = document.getElementById('bed-avail-line');
+  availLine.style.left = availPct+'%';
+  const availTag = document.getElementById('bed-avail-tag');
+  availTag.style.left = availPct+'%';
+}
+
+[sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
+update();
 </script>
 
 <script src="../components/includes.js"></script>

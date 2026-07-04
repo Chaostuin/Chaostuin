@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="nl" data-root="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mulch & Humus Calculator — Chaostuin</title>
+  <meta name="description" content="Bereken hoeveel mulch je nodig hebt en hoe je bodem evolueert. Simulatie op basis van wetenschappelijk model.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    /* ── TOOL-SPECIFIEKE STIJLEN ─────────────────────────── */
+    .tool-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .panel {
+      background: #fff;
+      border: 0.5px solid var(--fog);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .panel-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sage);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .sliders {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 2rem;
+    }
+    @media (max-width: 600px) { .sliders { grid-template-columns: 1fr; } }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .slider-row label {
+      font-size: 13px;
+      color: #5a5040;
+      min-width: 175px;
+    }
+    .slider-row input[type=range] {
+      flex: 1;
+      accent-color: var(--leaf);
+      height: 4px;
+    }
+    .slider-row .val {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--moss);
+      min-width: 44px;
+      text-align: right;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 600px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+
+    .card {
+      background: var(--fog);
+      border-radius: 6px;
+      padding: 0.75rem;
+    }
+    .card-label {
+      font-size: 11px;
+      color: var(--sage);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--moss);
+    }
+    .card-sub { font-size: 11px; color: var(--sage); margin-top: 3px; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--sage);
+      margin-bottom: 10px;
+    }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .leg-line { width: 20px; height: 3px; border-radius: 2px; display: inline-block; }
+
+    .chart-wrap { position: relative; width: 100%; height: 360px; }
+
+    .info-box {
+      background: var(--fog);
+      border-left: 3px solid var(--straw);
+      border-radius: 2px;
+      padding: 0.75rem 1rem;
+      font-size: 12px;
+      color: #5a5040;
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+    .info-box strong { color: var(--earth); font-weight: 500; }
+
+    .tool-footer {
+      margin-top: 2rem;
+      font-size: 11px;
+      color: var(--sage);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="page-header-inner">
+    <p class="breadcrumb"><a href="/">Home</a> · <a href="/#tools">Tools</a> · Mulchcalculator</p>
+    <h1 class="page-title">Mulch & Humus Calculator</h1>
+    <p class="page-lead">Simulatie van opbouw organisch materiaal in moestuinbodem · tweefase-strategie</p>
+  </div>
+</header>
+
+<!-- TOOL INHOUD -->
+<div class="tool-body">
+
+  <div class="panel">
+    <div class="panel-title">Parameters</div>
+    <div class="sliders">
+      <div class="slider-row">
+        <label>Opstartdosis (jaren 1–N)</label>
+        <input type="range" min="2" max="25" value="20" step="1" id="sA1">
+        <span class="val" id="oA1">20 kg</span>
+      </div>
+      <div class="slider-row">
+        <label>Humificatiefactor</label>
+        <input type="range" min="5" max="25" value="15" step="1" id="sH">
+        <span class="val" id="oH">15%</span>
+      </div>
+      <div class="slider-row">
+        <label>Aantal opstartjaren (N)</label>
+        <input type="range" min="1" max="30" value="4" step="1" id="sN">
+        <span class="val" id="oN">4 j</span>
+      </div>
+      <div class="slider-row">
+        <label>Afbraak humus (k)</label>
+        <input type="range" min="1" max="5" value="2.5" step="0.5" id="sK">
+        <span class="val" id="oK">2.5%</span>
+      </div>
+      <div class="slider-row">
+        <label>Onderhoudsdosis (daarna)</label>
+        <input type="range" min="1" max="10" value="5" step="0.5" id="sA2">
+        <span class="val" id="oA2">5 kg</span>
+      </div>
+      <div class="slider-row">
+        <label>Beginwaarde M₀</label>
+        <input type="range" min="5" max="50" value="20" step="1" id="sM0">
+        <span class="val" id="oM0">20 kg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="panel">
+    <div class="legend">
+      <span><span class="leg-line" style="background:#3D5229;"></span>Tweefase-strategie</span>
+      <span><span class="leg-line" style="background:#7A8C5E;border-top:2px dashed #7A8C5E;height:0;"></span>Alleen onderhoudsdosis</span>
+      <span><span class="leg-line" style="background:#5C7A3A;"></span>Doelzone 3–10% org. stof</span>
+      <span><span style="width:10px;height:10px;border-radius:50%;background:#C8A96E;display:inline-block;"></span>Overgang jaar N</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="mainChart"></canvas>
+    </div>
+    <div class="info-box" id="infoBox"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Volume verse mulch — opstartdosis (<span id="labelA1">20</span> kg/m²)</div>
+    <div class="cards" id="volCards"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Volume verse mulch — onderhoudsdosis (<span id="labelA2">5</span> kg/m²)</div>
+    <div class="cards" id="volCardsB"></div>
+  </div>
+
+  <p class="tool-footer">Model: M(t+1) = M(t)·(1−k) + a·h &nbsp;·&nbsp; Grondgewicht aanname: 325 kg/m² (laag 25 cm, dichtheid 1300 kg/m³)</p>
+
+</div>
+
+<!-- FOOTER -->
+<div id="footer-placeholder"></div>
+
+<script>
+const groundWeight = 325;
+const labels = Array.from({length: 151}, (_, i) => i);
+let chart = null;
+
+function simulate(a1, a2, N, h, k, M0) {
+  const d = [M0];
+  for (let t = 0; t < 150; t++) {
+    const a = t < N ? a1 : a2;
+    d.push(parseFloat((d[t] * (1 - k) + a * h).toFixed(4)));
+  }
+  return d;
+}
+
+function fmt(v, dec=1) { return parseFloat(v).toFixed(dec); }
+
+function render() {
+  const a1 = parseFloat(document.getElementById('sA1').value);
+  const N  = parseInt(document.getElementById('sN').value);
+  const a2 = parseFloat(document.getElementById('sA2').value);
+  const h  = parseInt(document.getElementById('sH').value) / 100;
+  const k  = parseFloat(document.getElementById('sK').value) / 100;
+  const M0 = parseInt(document.getElementById('sM0').value);
+
+  document.getElementById('oA1').textContent = a1 + ' kg';
+  document.getElementById('oN').textContent  = N + ' j';
+  document.getElementById('oA2').textContent = a2 + ' kg';
+  document.getElementById('oH').textContent  = (h*100).toFixed(0) + '%';
+  document.getElementById('oK').textContent  = (k*100).toFixed(1) + '%';
+  document.getElementById('oM0').textContent = M0 + ' kg';
+
+  const dataMain  = simulate(a1, a2, N, h, k, M0);
+  const dataConst = simulate(a2, a2, 151, h, k, M0);
+  const Meq  = (a2 * h) / k;
+  const peak = Math.max(...dataMain);
+  const atN  = dataMain[N];
+  const pctStart = fmt(M0 / groundWeight * 100);
+  const pctN     = fmt(atN / groundWeight * 100);
+  const pctPeak  = fmt(peak / groundWeight * 100);
+  const pctEq    = fmt(Meq / groundWeight * 100);
+  const optLow   = 0.03 * groundWeight;
+  const optHigh  = 0.10 * groundWeight;
+
+  const cards = document.getElementById('cards');
+  cards.innerHTML = '';
+  [
+    { label: 'Begin M₀',          val: fmt(M0) + ' kg/m²',   sub: pctStart + '% org. stof' },
+    { label: 'Na ' + N + ' jaar', val: fmt(atN) + ' kg/m²',  sub: pctN + '% org. stof' },
+    { label: 'Piek (max)',         val: fmt(peak) + ' kg/m²', sub: pctPeak + '% org. stof' },
+    { label: 'Eindevenwicht',      val: fmt(Meq) + ' kg/m²',  sub: pctEq + '% org. stof' },
+  ].forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div><div class="card-sub">${c.sub}</div>`;
+    cards.appendChild(d);
+  });
+
+  const maxY = Math.ceil(Math.max(peak, Meq, optHigh) * 1.15 / 10) * 10;
+  const datasets = [
+    { label: 'Tweefase-strategie', data: dataMain,  borderColor: '#3D5229', backgroundColor: 'rgba(61,82,41,0.07)', borderWidth: 2.5, pointRadius: 0, fill: true,  tension: 0.3 },
+    { label: 'Constant onderhoud', data: dataConst, borderColor: '#7A8C5E', borderWidth: 1.5, borderDash: [6,4], pointRadius: 0, fill: false, tension: 0.3 },
+    { label: 'Doelzone boven (10%)', data: labels.map(() => optHigh), borderColor: '#5C7A3A', borderWidth: 1, borderDash: [3,3], pointRadius: 0, fill: false },
+    { label: 'Doelzone onder (3%)',  data: labels.map(() => optLow),  borderColor: '#5C7A3A', borderWidth: 1, borderDash: [3,3], pointRadius: 0, fill: false },
+    { label: 'Overgang', data: labels.map(t => t === N ? dataMain[N] : null), borderColor: '#C8A96E', pointRadius: labels.map(t => t === N ? 6 : 0), pointBackgroundColor: '#C8A96E', showLine: false, fill: false }
+  ];
+
+  if (chart) {
+    chart.data.datasets = datasets;
+    chart.options.scales.y.max = maxY;
+    chart.update();
+  } else {
+    chart = new Chart(document.getElementById('mainChart'), {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { title: { display: true, text: 'Jaar', font: { size: 12 } }, ticks: { autoSkip: true, maxTicksLimit: 11 } },
+          y: { title: { display: true, text: 'Humus (kg/m²)', font: { size: 12 } }, min: 0, max: maxY }
+        }
+      }
+    });
+  }
+
+  document.getElementById('infoBox').innerHTML =
+    `<strong>Leeswijzer:</strong> De groene curve toont de tweefase-strategie (${a1} kg/m²/jaar gedurende ${N} jaar, daarna ${a2} kg/m²/jaar). ` +
+    `De stippellijn toont wat er gebeurt als je meteen de onderhoudsdosis gebruikt. ` +
+    `De groene stippellijnen markeren de doelzone 3–10% organische stof (${fmt(optLow,0)}–${fmt(optHigh,0)} kg/m²). ` +
+    `Het gouden punt is het moment van overschakeling (jaar ${N}).`;
+
+  const oppervlakten = [
+    { opp: 10,  label: '10 m²' },
+    { opp: 25,  label: '25 m²' },
+    { opp: 50,  label: '50 m²' },
+    { opp: 100, label: '100 m²' },
+  ];
+
+  document.getElementById('labelA1').textContent = a1;
+  const volCards = document.getElementById('volCards');
+  volCards.innerHTML = '';
+  oppervlakten.forEach(r => {
+    const kg = a1 * r.opp;
+    const m3 = (kg / 125).toFixed(1);
+    const cm = fmt(a1 / 125 * 100, 0);
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `<div class="card-label">Tuin ${r.label}</div><div class="card-value">${kg} kg</div><div class="card-sub">${m3} m³ · laag ${cm} cm</div>`;
+    volCards.appendChild(d);
+  });
+
+  document.getElementById('labelA2').textContent = a2;
+  const volCardsB = document.getElementById('volCardsB');
+  volCardsB.innerHTML = '';
+  oppervlakten.forEach(r => {
+    const kg = a2 * r.opp;
+    const m3 = (kg / 125).toFixed(1);
+    const cm = fmt(a2 / 125 * 100, 0);
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `<div class="card-label">Tuin ${r.label}</div><div class="card-value">${kg} kg</div><div class="card-sub">${m3} m³ · laag ${cm} cm</div>`;
+    volCardsB.appendChild(d);
+  });
+}
+
+['sA1','sN','sA2','sH','sK','sM0'].forEach(id => {
+  document.getElementById(id).addEventListener('input', render);
+});
+
+render();
+</script>
+
+<script src="../components/includes.js"></script>
+</body>
+</html>
