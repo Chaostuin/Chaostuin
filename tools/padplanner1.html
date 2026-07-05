@@ -48,51 +48,6 @@ canvas{border-radius:2px;display:block}
 .li{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(245,240,232,.45)}
 .ls{width:12px;height:12px;border-radius:2px;flex-shrink:0}
 .errbox{background:rgba(200,50,50,.15);border:1px solid rgba(200,50,50,.3);border-radius:4px;padding:.75rem;font-size:11px;color:rgba(255,150,150,.9);margin-top:.75rem;display:none}
-
-/* Compact field rows (replaces slider fields) */
-.frow{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
-.frow label{flex:1;font-size:11px;color:rgba(245,240,232,.65)}
-.frow input[type=number]{background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.15);border-radius:3px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:.35rem .5rem;width:70px;outline:none;text-align:right}
-.frow .unit{font-size:10px;color:rgba(245,240,232,.4);width:16px}
-
-/* Subpanels: clearly separated blocks */
-.subpanel{background:rgba(0,0,0,.16);border:1px solid rgba(245,240,232,.1);border-radius:6px;padding:.9rem 1rem;margin-bottom:.9rem}
-.subpanel.always-open{padding-bottom:1rem}
-.subpanel-header{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.subpanel-header input[type=checkbox]{accent-color:var(--straw);cursor:pointer}
-.subpanel-header .pt{margin-bottom:0}
-.subpanel-header .chev{margin-left:auto;font-size:10px;color:rgba(245,240,232,.35);transition:transform .15s}
-.subpanel.collapsed .chev{transform:rotate(-90deg)}
-.subpanel-body{margin-top:.85rem}
-.subpanel.collapsed .subpanel-body{display:none}
-.subgroup-label{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.4);margin:.9rem 0 .6rem}
-.subgroup-label:first-child{margin-top:0}
-
-/* Phase tabs */
-.phase-tabs{display:flex;gap:6px;margin-bottom:.9rem}
-.phase-tab{flex:1;background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.15);border-radius:5px;color:rgba(245,240,232,.55);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:.55rem .4rem;cursor:pointer;text-align:center;position:relative;transition:all .15s}
-.phase-tab:hover{color:var(--cream);border-color:rgba(245,240,232,.3)}
-.phase-tab.active{background:rgba(200,169,110,.16);border-color:var(--straw);color:var(--straw)}
-.phase-tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--leaf);margin-left:5px;vertical-align:middle;visibility:hidden}
-.phase-tab .dot.on{visibility:visible}
-
-/* Saved variants */
-.variant-box{margin-bottom:.9rem}
-.variant-list{display:flex;flex-direction:column;gap:4px;margin-bottom:.5rem;max-height:140px;overflow-y:auto}
-.variant-item{display:flex;align-items:center;gap:6px;background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.1);border-radius:4px;padding:.35rem .5rem;cursor:pointer;font-size:11px}
-.variant-item:hover{border-color:var(--straw)}
-.variant-item.active{border-color:var(--straw);background:rgba(200,169,110,.1)}
-.variant-item .vname{flex:1;color:rgba(245,240,232,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.variant-item .vedit,.variant-item .vdel{background:none;border:none;color:rgba(245,240,232,.35);cursor:pointer;font-size:11px;padding:0 3px;flex-shrink:0}
-.variant-item .vedit:hover{color:var(--straw)}
-.variant-item .vdel:hover{color:rgba(230,100,100,.9)}
-
-/* Results dropdown */
-.dropdown{position:relative}
-.dropdown-menu{display:none;position:absolute;left:0;right:0;bottom:calc(100% + 4px);background:rgba(30,24,16,0.97);border:1px solid rgba(200,169,110,0.35);border-radius:5px;padding:4px 0;box-shadow:0 4px 18px rgba(0,0,0,0.55);z-index:50}
-.dropdown-menu.open{display:block}
-.dropdown-menu button{display:block;width:100%;background:none;border:none;color:rgba(245,240,232,0.85);font-family:'DM Sans',sans-serif;font-size:12px;padding:8px 14px;text-align:left;cursor:pointer}
-.dropdown-menu button:hover{background:rgba(200,169,110,0.18);color:var(--cream)}
 /* Right-click context menu */
 #ctxMenu{position:fixed;z-index:9999;background:rgba(30,24,16,0.97);border:1px solid rgba(200,169,110,0.35);border-radius:5px;padding:4px 0;min-width:200px;box-shadow:0 4px 18px rgba(0,0,0,0.55);display:none;font-family:'DM Sans',sans-serif;}
 #ctxMenu button{display:block;width:100%;background:none;border:none;color:rgba(245,240,232,0.85);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 14px;text-align:left;cursor:pointer;transition:background .12s;}
@@ -112,124 +67,117 @@ canvas{border-radius:2px;display:block}
 <div class="app">
   <div class="left-col">
     <div class="panel">
-
-      <!-- ── Mijn tuin: altijd zichtbaar, gedeeld door beide fasen ── -->
-      <div class="subpanel always-open">
-        <div class="pt">Mijn tuin</div>
-        <div class="subgroup-label">Afmetingen</div>
-        <div class="frow"><label>Breedte</label><input type="number" id="iW" value="6.0" min="1" max="30" step="0.05"><span class="unit">m</span></div>
-        <div class="frow"><label>Lengte</label><input type="number" id="iL" value="4.0" min="1" max="30" step="0.05"><span class="unit">m</span></div>
-        <div class="subgroup-label">Toegangen</div>
-        <div class="agrid">
-          <div></div>
-          <button class="ab" id="btn-N" onclick="toggleSide('N')">▲ Boven</button>
-          <div></div>
-          <button class="ab" id="btn-W" onclick="toggleSide('W')">◀ Links</button>
-          <button class="ab" id="btn-draw" onclick="setDraw()" style="font-size:9px">✏ Teken<br>segment</button>
-          <button class="ab" id="btn-E" onclick="toggleSide('E')">Rechts ▶</button>
-          <div></div>
-          <button class="ab" id="btn-S" onclick="toggleSide('S')">▼ Onder</button>
-          <button class="ab danger" onclick="clearAll()">✕ Wis</button>
-        </div>
-        <div class="slist" id="segList"></div>
-        <p class="hint" id="hint">Klik een zijde aan of teken een segment.</p>
+      <div class="pt">Tuinafmetingen</div>
+      <div class="field"><label>Breedte (m)</label><div class="fr">
+        <input type="number" id="iW" value="6.0" min="1" max="30" step="0.05">
+        <input type="range"  id="rW" min="1" max="20" value="6" step="0.05" style="flex:1">
+      </div></div>
+      <div class="field"><label>Lengte (m)</label><div class="fr">
+        <input type="number" id="iL" value="4.0" min="1" max="30" step="0.05">
+        <input type="range"  id="rL" min="1" max="20" value="4" step="0.05" style="flex:1">
+      </div></div>
+      <hr class="divider">
+      <div class="pt">Te berekenen</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:.75rem">
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
+          <input type="checkbox" id="chkMain" checked onchange="onCheckChange()" style="accent-color:var(--straw)">
+          Hoofdpaden (kruiwagen)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
+          <input type="checkbox" id="chkSec" onchange="onCheckChange()" style="accent-color:var(--sage)">
+          Secundaire paden
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
+          <input type="checkbox" id="chkStones" checked onchange="onCheckChange()" style="accent-color:var(--straw)">
+          Stapstenen
+        </label>
+        <div id="chkWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:.25rem 0"></div>
       </div>
-
-      <!-- ── Fase-tabs ── -->
-      <div class="phase-tabs">
-        <button class="phase-tab active" id="tabPaths" onclick="switchPhase('paths')">① Paden <span class="dot" id="dotPaths"></span></button>
-        <button class="phase-tab" id="tabStones" onclick="switchPhase('stones')">② Stapstenen <span class="dot" id="dotStones"></span></button>
+      <hr class="divider">
+      <div class="pt">Hoofdpaden</div>
+      <div id="mainPathPanel">
+        <div class="field"><label>Padbreedte (m)</label><div class="fr">
+          <input type="number" id="iPath" value="0.60" min="0.3" max="2" step="0.05" oninput="validateParams()">
+          <input type="range"  id="rPath" min="0.3" max="2" value="0.6" step="0.05" style="flex:1" oninput="validateParams()">
+        </div></div>
+        <div class="field"><label>Werkzone naast pad (m)</label><div class="fr">
+          <input type="number" id="iWork" value="1.50" min="0.5" max="1.5" step="0.05" oninput="validateParams()">
+          <input type="range"  id="rWork" min="0.5" max="1.5" value="1.5" step="0.05" style="flex:1" oninput="validateParams()">
+        </div></div>
       </div>
-
-      <!-- ── Bewaarde varianten ── -->
-      <div class="variant-box" id="variantBox" style="display:none">
-        <div class="pt">Bewaarde varianten</div>
-        <div class="variant-list" id="variantList"></div>
+      <div id="secPathPanel" style="display:none">
+        <hr class="divider">
+        <div class="pt">Secundaire paden</div>
+        <div class="field"><label>Padbreedte (m)</label><div class="fr">
+          <input type="number" id="iPathSec" value="0.40" min="0.2" max="2" step="0.05" oninput="validateParams()">
+          <input type="range"  id="rPathSec" min="0.2" max="2" value="0.4" step="0.05" style="flex:1" oninput="validateParams()">
+        </div></div>
+        <div class="field"><label>Werkzone naast pad (m)</label><div class="fr">
+          <input type="number" id="iWorkSec" value="0.60" min="0.2" max="1.0" step="0.05" oninput="validateParams()">
+          <input type="range"  id="rWorkSec" min="0.2" max="1.0" value="0.6" step="0.05" style="flex:1" oninput="validateParams()">
+        </div></div>
+        <div id="secWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:.25rem 0"></div>
       </div>
-      <button class="ab" id="btnSaveVariant" onclick="saveVariant()" style="width:100%;margin-bottom:.9rem;display:none">💾 Bewaar deze variant</button>
-
-      <div id="chkWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:0 0 .5rem"></div>
+      <hr class="divider">
+      <div class="pt">Toegang</div>
+      <div class="agrid">
+        <div></div>
+        <button class="ab" id="btn-N" onclick="toggleSide('N')">▲ Boven</button>
+        <div></div>
+        <button class="ab" id="btn-W" onclick="toggleSide('W')">◀ Links</button>
+        <button class="ab" id="btn-draw" onclick="setDraw()" style="font-size:9px">✏ Teken<br>segment</button>
+        <button class="ab" id="btn-E" onclick="toggleSide('E')">Rechts ▶</button>
+        <div></div>
+        <button class="ab" id="btn-S" onclick="toggleSide('S')">▼ Onder</button>
+        <button class="ab danger" onclick="clearAll()">✕ Wis</button>
+      </div>
+      <div class="slist" id="segList"></div>
+      <p class="hint" id="hint">Klik een zijde aan of teken een segment.</p>
+      <button class="bcalc" onclick="calculate()">Bereken optimale indeling →</button>
+      <button class="bcalc" id="btnNext" onclick="nextSolution()" style="display:none;background:rgba(245,240,232,0.08);margin-top:4px;font-size:.78rem">Volgende mogelijkheid ↻ (<span id="solIdx">1</span>/<span id="solTotal">1</span>)</button>
+      <button class="bcalc" id="btnCopy" onclick="copyLayout()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">📋 Kopieer indeling</button>
+      <button class="bcalc" id="btnPDF" onclick="downloadPDF()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">⬇ Download PDF</button>
+      <button class="bcalc" id="btnExport" onclick="exportJSON()" style="display:none;background:rgba(61,82,41,0.6);border-color:var(--sage);margin-top:4px;font-size:.78rem">🥕 Open in Groententool</button>
+      <button class="bcalc" id="btnExportJSON" onclick="exportJSONDownload()" style="display:none;background:rgba(245,240,232,0.05);border-color:rgba(245,240,232,.2);margin-top:4px;font-size:.78rem">⬇ Download tuinplan JSON</button>
       <div class="errbox" id="errBox"></div>
-
-      <!-- ══════════ FASE 1: PADEN ══════════ -->
-      <div id="phase1Content">
-
-        <div class="subpanel" id="grpMain">
-          <div class="subpanel-header" onclick="toggleGroup('main')">
-            <input type="checkbox" id="chkMain" checked onclick="event.stopPropagation()" onchange="onCheckChange()">
-            <span class="pt">Hoofdpaden (kruiwagen)</span>
-            <span class="chev">▾</span>
-          </div>
-          <div class="subpanel-body" id="mainPathPanel">
-            <div class="frow"><label>Padbreedte</label><input type="number" id="iPath" value="0.60" min="0.3" max="2" step="0.05" oninput="validateParams()"><span class="unit">m</span></div>
-            <div class="frow"><label>Werkzone naast pad</label><input type="number" id="iWork" value="1.50" min="0.5" max="1.5" step="0.05" oninput="validateParams()"><span class="unit">m</span></div>
-          </div>
-        </div>
-
-        <div class="subpanel collapsed" id="grpSec">
-          <div class="subpanel-header" onclick="toggleGroup('sec')">
-            <input type="checkbox" id="chkSec" onclick="event.stopPropagation()" onchange="onCheckChange()">
-            <span class="pt">Secundaire paden</span>
-            <span class="chev">▾</span>
-          </div>
-          <div class="subpanel-body" id="secPathPanel" style="display:none">
-            <div class="frow"><label>Padbreedte</label><input type="number" id="iPathSec" value="0.40" min="0.2" max="2" step="0.05" oninput="validateParams()"><span class="unit">m</span></div>
-            <div class="frow"><label>Werkzone naast pad</label><input type="number" id="iWorkSec" value="0.60" min="0.2" max="1.0" step="0.05" oninput="validateParams()"><span class="unit">m</span></div>
-            <div id="secWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:.25rem 0"></div>
-          </div>
-        </div>
-
-        <div class="stats" id="stats" style="display:none">
-          <div class="stat"><span class="sv" id="sTot">—</span><span class="sl">Totaal (m²)</span></div>
-          <div class="stat"><span class="sv" id="sBed">—</span><span class="sl">Bereikbare teelt (m²)</span></div>
-          <div class="stat"><span class="sv" id="sPct">—</span><span class="sl">Benutting</span></div>
-          <div class="stat"><span class="sv" id="sPad">—</span><span class="sl">Paden (m²)</span></div>
-          <div class="stat"><span class="sv" id="sUnreach" style="color:rgba(255,120,120,0.9)">—</span><span class="sl">Onbereikbaar (m²)</span></div>
-        </div>
-        <button class="bcalc" onclick="calculate()">Bereken optimale indeling →</button>
-        <button class="bcalc" id="btnNext" onclick="nextSolution()" style="display:none;background:rgba(245,240,232,0.08);margin-top:4px;font-size:.78rem">Volgende mogelijkheid ↻ (<span id="solIdx">1</span>/<span id="solTotal">1</span>)</button>
-
-        <div class="dropdown" id="resultsDropdown" style="display:none;margin-top:4px">
-          <button class="bcalc" style="margin-top:0;background:rgba(245,240,232,0.06)" onclick="toggleResultsMenu(event)">Resultaten ▾</button>
-          <div class="dropdown-menu" id="resultsMenu">
-            <button id="btnPDF" onclick="closeResultsMenu();downloadPDF()">⬇ Download PDF</button>
-            <button id="btnCopy" onclick="closeResultsMenu();copyLayout()">📋 Kopieer indeling</button>
-            <button id="btnExport" onclick="closeResultsMenu();exportJSON()">🥕 Open in Groententool</button>
-            <button id="btnExportJSON" onclick="closeResultsMenu();exportJSONDownload()">⬇ Download tuinplan JSON</button>
-          </div>
-        </div>
+      <div class="stats" id="stats" style="display:none">
+        <div class="stat"><span class="sv" id="sTot">—</span><span class="sl">Totaal (m²)</span></div>
+        <div class="stat"><span class="sv" id="sBed">—</span><span class="sl">Bereikbare teelt (m²)</span></div>
+        <div class="stat"><span class="sv" id="sPct">—</span><span class="sl">Benutting</span></div>
+        <div class="stat"><span class="sv" id="sPad">—</span><span class="sl">Paden (m²)</span></div>
+        <div class="stat"><span class="sv" id="sUnreach" style="color:rgba(255,120,120,0.9)">—</span><span class="sl">Onbereikbaar (m²)</span></div>
       </div>
-
-      <!-- ══════════ FASE 2: STAPSTENEN ══════════ -->
-      <div id="phase2Content" style="display:none">
-
-        <div class="subpanel" id="grpStones">
-          <div class="subpanel-header" onclick="toggleGroup('stones')">
-            <input type="checkbox" id="chkStones" checked onclick="event.stopPropagation()" onchange="onCheckChange()">
-            <span class="pt">Stapstenen</span>
-            <span class="chev">▾</span>
-          </div>
-          <div class="subpanel-body" id="stonePanel">
-            <div class="frow"><label>Steenlengte</label><input type="number" id="iSL" value="0.60" min="0.1" max="2" step="0.05"><span class="unit">m</span></div>
-            <div class="frow"><label>Steenbreedte</label><input type="number" id="iSB" value="0.40" min="0.1" max="2" step="0.05"><span class="unit">m</span></div>
-            <div class="frow"><label>Staplengte</label><input type="number" id="iStep" value="0.50" min="0.1" max="1.5" step="0.05"><span class="unit">m</span></div>
-            <div class="frow"><label>Armlengte</label><input type="number" id="iArm" value="0.60" min="0.2" max="1.5" step="0.05" oninput="validateParams()"><span class="unit">m</span></div>
-            <div id="armWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:.25rem 0"></div>
-          </div>
-        </div>
-
-        <div class="stats" id="stoneStats" style="display:none">
+      <div id="stonePanel" style="display:none">
+        <hr class="divider">
+        <div class="pt">Stapstenen — fase 2</div>
+        <div class="field"><label>Steenlengte (m)</label><div class="fr">
+          <input type="number" id="iSL" value="0.60" min="0.1" max="2" step="0.05">
+          <input type="range" id="rSL" min="0.1" max="1.5" value="0.6" step="0.05" style="flex:1">
+        </div></div>
+        <div class="field"><label>Steenbreedte (m)</label><div class="fr">
+          <input type="number" id="iSB" value="0.40" min="0.1" max="2" step="0.05">
+          <input type="range" id="rSB" min="0.1" max="1.5" value="0.4" step="0.05" style="flex:1">
+        </div></div>
+        <div class="field"><label>Staplengte (m)</label><div class="fr">
+          <input type="number" id="iStep" value="0.50" min="0.1" max="1.5" step="0.05">
+          <input type="range" id="rStep" min="0.1" max="1.5" value="0.5" step="0.05" style="flex:1">
+        </div></div>
+        <div class="field"><label>Armlengte (m)</label><div class="fr">
+          <input type="number" id="iArm" value="0.60" min="0.2" max="1.5" step="0.05" oninput="validateParams()">
+          <input type="range" id="rArm" min="0.2" max="1.5" value="0.6" step="0.05" style="flex:1" oninput="validateParams()">
+        </div></div>
+        <div id="armWarn" style="display:none;font-size:10px;color:rgba(255,150,100,0.9);font-style:italic;padding:.25rem 0"></div>
+        <button class="bcalc" id="btnStones" onclick="calculateStones()" style="background:rgba(61,82,41,0.8);border-color:var(--sage)">Bereken stapstenen →</button>
+        <button class="bcalc" id="btnClearStones" onclick="clearStones()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">✕ Wis stapstenen</button>
+        <button class="bcalc" id="btnUndo" onclick="undoConnect()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">↩ Ongedaan maken</button>
+        <div id="stoneStatus" style="display:none;margin-top:.5rem;font-size:11px;text-align:center;padding:.4rem;border-radius:3px;background:rgba(200,169,110,0.12);color:rgba(200,169,110,0.9)"></div>
+        <div class="stats" id="stoneStats" style="display:none;margin-top:.5rem">
           <div class="stat"><span class="sv" id="ssStenen">—</span><span class="sl">Stenen</span></div>
           <div class="stat"><span class="sv" id="ssBed">—</span><span class="sl">Bereikbaar (m²)</span></div>
           <div class="stat"><span class="sv" id="ssPct">—</span><span class="sl">Benutting</span></div>
           <div class="stat"><span class="sv" id="ssOnreach" style="color:rgba(255,120,120,0.9)">—</span><span class="sl">Onbereikbaar (m²)</span></div>
         </div>
-        <button class="bcalc" id="btnStones" onclick="calculateStones()" style="background:rgba(61,82,41,0.8);border-color:var(--sage)">Bereken stapstenen →</button>
-        <button class="bcalc" id="btnClearStones" onclick="clearStones()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">✕ Wis stapstenen</button>
-        <button class="bcalc" id="btnUndo" onclick="undoConnect()" style="display:none;background:rgba(245,240,232,0.06);margin-top:4px;font-size:.78rem">↩ Ongedaan maken</button>
-        <div id="stoneStatus" style="display:none;margin-top:.5rem;font-size:11px;text-align:center;padding:.4rem;border-radius:3px;background:rgba(200,169,110,0.12);color:rgba(200,169,110,0.9)"></div>
       </div>
-
     </div>
   </div>
   <div class="ca">
@@ -1807,13 +1755,13 @@ function clearStones(){
   document.getElementById('stoneStats').style.display='none';
   var status=document.getElementById('stoneStatus');
   if(status) status.style.display='none';
-  updatePhaseDots();
   updateStats(); resize();
 }
 
-function syncStone(nid,varName,dec){
-  var n=document.getElementById(nid);
-  n.addEventListener('input',function(){window[varName]=parseFloat(n.value)||window[varName];});
+function syncStone(nid,rid,varName,dec){
+  var n=document.getElementById(nid),r=document.getElementById(rid);
+  n.addEventListener('input',function(){window[varName]=parseFloat(n.value)||window[varName];r.value=n.value;});
+  r.addEventListener('input',function(){window[varName]=parseFloat(r.value);n.value=(+r.value).toFixed(dec);});
 }
 
 function segToObj(seg){
@@ -2493,8 +2441,6 @@ function calculateStones(){
     showReachToggle(true);
     chint('Klik op twee stenen of paden om te verbinden. Rechterklik op steen, secundair pad of segment om te verwijderen.');
     updateStoneStats(true);
-    document.getElementById('btnSaveVariant').style.display='block';
-    updatePhaseDots();
     resize();
   }
 
@@ -2827,7 +2773,7 @@ function calculate(){
   var main=document.getElementById('chkMain').checked;
   var sec=document.getElementById('chkSec').checked;
   var stn=document.getElementById('chkStones').checked;
-  if(!main&&!sec){showErr('Vink hoofd- en/of secundaire paden aan.');return;}
+  if(!main&&!sec&&!stn){showErr('Vink minstens één optie aan.');return;}
   hideErr();
   paths=[];
   secPaths=[];
@@ -3033,9 +2979,11 @@ function calculate(){
 
   updateStats();
   document.getElementById('stats').style.display='grid';
-  document.getElementById('resultsDropdown').style.display='block';
-  document.getElementById('btnSaveVariant').style.display='block';
-  updatePhaseDots();
+  document.getElementById('btnCopy').style.display='block';
+  document.getElementById('btnPDF').style.display='block';
+  document.getElementById('btnExport').style.display='block';
+  document.getElementById('btnExportJSON').style.display='block';
+  document.getElementById('stonePanel').style.display=stn?'block':'none';
   // Turn off draw mode
   drawMode=false; drawStart=null;
   document.getElementById('btn-draw').classList.remove('active');
@@ -3076,19 +3024,13 @@ function setDraw(){
 
 function clearAll(){
   calculated=false;
-  segs=[];paths=[];secPaths=[];stones=[];drawStart=null;drawMode=false;
+  segs=[];paths=[];secPaths=[];drawStart=null;drawMode=false;
   showReachToggle(false);
   chint('');
   Object.keys(fullSides).forEach(function(k){fullSides[k]=false;});
   ['N','S','E','W','draw'].forEach(function(id){var b=document.getElementById('btn-'+id);if(b)b.classList.remove('active');});
   hint('Alles gewist.');updateList();
   document.getElementById('stats').style.display='none';
-  document.getElementById('stoneStats').style.display='none';
-  document.getElementById('resultsDropdown').style.display='none';
-  document.getElementById('btnNext').style.display='none';
-  document.getElementById('btnClearStones').style.display='none';
-  document.getElementById('btnSaveVariant').style.display='none';
-  updatePhaseDots();
   draw();
 }
 
@@ -3373,196 +3315,22 @@ cv.addEventListener('mousemove',function(e){
   if(hovered!==prevHovered) draw();
 });
 
-function setGroupOpen(panelId,bodyId,open){
-  var panel=document.getElementById(panelId);
-  var body=document.getElementById(bodyId);
-  if(!body) return;
-  body.style.display=open?'block':'none';
-  if(panel) panel.classList.toggle('collapsed',!open);
-}
-
-function toggleGroup(name){
-  var map={main:'chkMain',sec:'chkSec',stones:'chkStones'};
-  var chk=document.getElementById(map[name]);
-  if(!chk) return;
-  chk.checked=!chk.checked;
-  onCheckChange();
-}
-
 function onCheckChange(){
   var main=document.getElementById('chkMain').checked;
   var sec=document.getElementById('chkSec').checked;
   var stn=document.getElementById('chkStones').checked;
-
-  setGroupOpen('grpMain','mainPathPanel',main);
-  setGroupOpen('grpSec','secPathPanel',sec);
-  setGroupOpen('grpStones','stonePanel',stn);
-
-  // Voor fase 1 (paden) moet minstens hoofd- of secundaire paden aangevinkt zijn
+  // At least one must be checked
   var warn=document.getElementById('chkWarn');
-  if(!main&&!sec){
-    warn.textContent='Vink hoofd- en/of secundaire paden aan om paden te kunnen berekenen.';
+  if(!main&&!sec&&!stn){
+    warn.textContent='Minstens één optie moet aangevinkt zijn.';
     warn.style.display='block';
   } else {
     warn.style.display='none';
   }
+  // Show/hide panels
+  document.getElementById('mainPathPanel').style.display=main?'block':'none';
+  document.getElementById('secPathPanel').style.display=sec?'block':'none';
   validateParams();
-}
-
-function switchPhase(name){
-  var toStones=(name==='stones');
-  document.getElementById('phase1Content').style.display=toStones?'none':'block';
-  document.getElementById('phase2Content').style.display=toStones?'block':'none';
-  document.getElementById('tabPaths').classList.toggle('active',!toStones);
-  document.getElementById('tabStones').classList.toggle('active',toStones);
-}
-
-function updatePhaseDots(){
-  var dp=document.getElementById('dotPaths');
-  var ds=document.getElementById('dotStones');
-  if(dp) dp.classList.toggle('on',paths.length>0||secPaths.length>0);
-  if(ds) ds.classList.toggle('on',stones.length>0);
-}
-
-function toggleResultsMenu(e){
-  if(e) e.stopPropagation();
-  document.getElementById('resultsMenu').classList.toggle('open');
-}
-function closeResultsMenu(){
-  var m=document.getElementById('resultsMenu');
-  if(m) m.classList.remove('open');
-}
-document.addEventListener('click',function(e){
-  var dd=document.getElementById('resultsDropdown');
-  if(dd && dd.style.display!=='none' && !dd.contains(e.target)) closeResultsMenu();
-});
-
-/* ── Bewaarde varianten ── */
-var variants=[], variantCounter=0, activeVariantId=null;
-
-function snapshotState(){
-  return {
-    W:W, L:L,
-    segs:JSON.parse(JSON.stringify(segs)),
-    paths:JSON.parse(JSON.stringify(paths)),
-    secPaths:JSON.parse(JSON.stringify(secPaths)),
-    stones:JSON.parse(JSON.stringify(stones)),
-    solutions:JSON.parse(JSON.stringify(solutions||[])),
-    solIdx:solIdx,
-    chkMain:document.getElementById('chkMain').checked,
-    chkSec:document.getElementById('chkSec').checked,
-    chkStones:document.getElementById('chkStones').checked,
-    pathW:pathW, work:work, pathWSec:pathWSec, workSec:workSec,
-    stoneL:stoneL, stoneB:stoneB, stepLen:stepLen, armLen:armLen,
-    activePhase:document.getElementById('phase2Content').style.display!=='none'?'stones':'paths'
-  };
-}
-
-function saveVariant(){
-  variantCounter++;
-  var v={id:'v'+Date.now()+'_'+variantCounter, name:'Variant '+variantCounter, state:snapshotState()};
-  variants.push(v);
-  activeVariantId=v.id;
-  renderVariantList();
-}
-
-function renderVariantList(){
-  var box=document.getElementById('variantBox');
-  var list=document.getElementById('variantList');
-  if(!variants.length){ box.style.display='none'; list.innerHTML=''; return; }
-  box.style.display='block';
-  list.innerHTML='';
-  variants.forEach(function(v){
-    var row=document.createElement('div');
-    row.className='variant-item'+(v.id===activeVariantId?' active':'');
-    row.onclick=function(){loadVariant(v.id);};
-    var nameSpan=document.createElement('span');
-    nameSpan.className='vname';
-    nameSpan.textContent=v.name;
-    var editBtn=document.createElement('button');
-    editBtn.className='vedit'; editBtn.title='Naam aanpassen'; editBtn.textContent='✎';
-    editBtn.onclick=function(e){e.stopPropagation();renameVariant(v.id);};
-    var delBtn=document.createElement('button');
-    delBtn.className='vdel'; delBtn.title='Verwijder variant'; delBtn.textContent='✕';
-    delBtn.onclick=function(e){e.stopPropagation();deleteVariant(v.id);};
-    row.appendChild(nameSpan);
-    row.appendChild(editBtn);
-    row.appendChild(delBtn);
-    list.appendChild(row);
-  });
-}
-
-function renameVariant(id){
-  var v=variants.filter(function(x){return x.id===id;})[0];
-  if(!v) return;
-  var nn=prompt('Naam voor deze variant:',v.name);
-  if(nn && nn.trim()){ v.name=nn.trim(); renderVariantList(); }
-}
-
-function deleteVariant(id){
-  variants=variants.filter(function(x){return x.id!==id;});
-  if(activeVariantId===id) activeVariantId=null;
-  renderVariantList();
-}
-
-function loadVariant(id){
-  var v=variants.filter(function(x){return x.id===id;})[0];
-  if(!v) return;
-  if(calculated && !confirm('Niet-bewaarde wijzigingen aan de huidige paden/stapstenen gaan verloren. Doorgaan?')) return;
-  var s=v.state;
-
-  W=s.W; L=s.L;
-  document.getElementById('iW').value=W.toFixed(2);
-  document.getElementById('iL').value=L.toFixed(2);
-
-  segs=JSON.parse(JSON.stringify(s.segs));
-  paths=JSON.parse(JSON.stringify(s.paths));
-  secPaths=JSON.parse(JSON.stringify(s.secPaths));
-  stones=JSON.parse(JSON.stringify(s.stones));
-  solutions=JSON.parse(JSON.stringify(s.solutions||[]));
-  solIdx=s.solIdx||0;
-  undoStack=[]; selected=null;
-
-  pathW=s.pathW; work=s.work; pathWSec=s.pathWSec; workSec=s.workSec;
-  stoneL=s.stoneL; stoneB=s.stoneB; stepLen=s.stepLen; armLen=s.armLen;
-  document.getElementById('iPath').value=pathW.toFixed(2);
-  document.getElementById('iWork').value=work.toFixed(2);
-  document.getElementById('iPathSec').value=pathWSec.toFixed(2);
-  document.getElementById('iWorkSec').value=workSec.toFixed(2);
-  document.getElementById('iSL').value=stoneL.toFixed(2);
-  document.getElementById('iSB').value=stoneB.toFixed(2);
-  document.getElementById('iStep').value=stepLen.toFixed(2);
-  document.getElementById('iArm').value=armLen.toFixed(2);
-
-  document.getElementById('chkMain').checked=s.chkMain;
-  document.getElementById('chkSec').checked=s.chkSec;
-  document.getElementById('chkStones').checked=s.chkStones;
-  onCheckChange();
-
-  // Herstel "volledige zijde"-knoppen
-  Object.keys(fullSides).forEach(function(k){fullSides[k]=false;});
-  ['N','S','E','W'].forEach(function(side){document.getElementById('btn-'+side).classList.remove('active');});
-  segs.forEach(function(sg){ if(sg.from===0&&sg.to===1){ fullSides[sg.side]=true; document.getElementById('btn-'+sg.side).classList.add('active'); } });
-  updateList();
-
-  calculated=true;
-  var hasPaths=paths.length>0||secPaths.length>0;
-  document.getElementById('stats').style.display=hasPaths?'grid':'none';
-  document.getElementById('resultsDropdown').style.display=hasPaths?'block':'none';
-  document.getElementById('btnNext').style.display=(solutions.length>1)?'block':'none';
-  if(solutions.length){ document.getElementById('solIdx').textContent=solIdx+1; document.getElementById('solTotal').textContent=solutions.length; }
-  if(hasPaths) updateStats();
-
-  document.getElementById('stoneStats').style.display=stones.length?'grid':'none';
-  document.getElementById('btnClearStones').style.display=stones.length?'block':'none';
-  if(stones.length) updateStoneStats(false);
-
-  document.getElementById('btnSaveVariant').style.display='block';
-  activeVariantId=id;
-  renderVariantList();
-  switchPhase(s.activePhase==='stones'?'stones':'paths');
-  updatePhaseDots();
-  resize();
 }
 
 function validateParams(){
@@ -3614,15 +3382,16 @@ function validateParams(){
   }
 }
 
-function syncP(nid,key,dec){
-  var n=document.getElementById(nid);
-  n.addEventListener('input',function(){window[key]=parseFloat(n.value)||window[key];resize();});
+function syncP(nid,rid,key,dec){
+  var n=document.getElementById(nid),r=document.getElementById(rid);
+  n.addEventListener('input',function(){window[key]=parseFloat(n.value)||window[key];r.value=n.value;resize();});
+  r.addEventListener('input',function(){window[key]=parseFloat(r.value);n.value=(+r.value).toFixed(dec);resize();});
 }
-syncP('iW','W',2); syncP('iL','L',2);
-syncP('iPath','pathW',2); syncP('iWork','work',2);
-syncP('iPathSec','pathWSec',2); syncP('iWorkSec','workSec',2);
-syncStone('iSL','stoneL',2); syncStone('iSB','stoneB',2);
-syncStone('iStep','stepLen',2); syncStone('iArm','armLen',2);
+syncP('iW','rW','W',2); syncP('iL','rL','L',2);
+syncP('iPath','rPath','pathW',2); syncP('iWork','rWork','work',2);
+syncP('iPathSec','rPathSec','pathWSec',2); syncP('iWorkSec','rWorkSec','workSec',2);
+syncStone('iSL','rSL','stoneL',2); syncStone('iSB','rSB','stoneB',2);
+syncStone('iStep','rStep','stepLen',2); syncStone('iArm','rArm','armLen',2);
 
 // viewMode fixed to 'reach'
 
