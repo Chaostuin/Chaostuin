@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": 2,
+    "date": "2026-07-06",
+    "tool": "chaostuin-planner"
+  },
+  "tuin": {
+    "w": 6,
+    "l": 4
+  },
+  "params": {
+    "pathW": 0.6,
+    "work": 1.5,
+    "pathWSec": 0.4,
+    "workSec": 0.6,
+    "armLen": 0.6,
+    "stepLen": 0.5
+  },
+  "segs": [
+    {
+      "side": "N",
+      "from": 0,
+      "to": 1
+    },
+    {
+      "side": "W",
+      "from": 0,
+      "to": 1
+    },
+    {
+      "side": "S",
+      "from": 0,
+      "to": 1
+    },
+    {
+      "side": "E",
+      "from": 0,
+      "to": 1
+    }
+  ],
+  "paths": [
+    {
+      "x": 0,
+      "y": 1.7,
+      "w": 6,
+      "h": 0.6,
+      "conn": false,
+      "primary": false,
+      "entry": false
+    }
+  ],
+  "secPaths": [],
+  "stones": []
+}
