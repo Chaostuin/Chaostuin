@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="nl" data-root="/">
+<html lang="nl" data-root="../">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chaostuin — Groentenplanner</title>
+<title>Chaostuin Groenten v51</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="../css/main.css">
 <style>
 :root{--earth:#2C2416;--moss:#3D5229;--sage:#7A8C5E;--straw:#C8A96E;--cream:#F5F0E8;--leaf:#5C7A3A}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -129,7 +129,7 @@ canvas{border-radius:2px;display:block}
 .detail-gewas-header{display:flex;align-items:center;gap:.45rem;margin-bottom:.3rem}
 .detail-gewas-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(0,0,0,.2)}
 .detail-gewas-naam{font-size:11px;font-weight:600;color:var(--cream)}
-.detail-gewas-periode{font-size:10px;font-weight:600;color:var(--straw);margin-left:auto}
+.detail-gewas-periode{font-size:9px;color:rgba(245,240,232,.45);margin-left:auto}
 .detail-gewas-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.1rem .5rem;font-size:9px;color:rgba(245,240,232,.6);margin-bottom:.25rem}
 .detail-gewas-nota{background:rgba(245,240,232,.04);border-left:2px solid rgba(200,169,110,.4);padding:.3rem .5rem;font-size:9px;color:rgba(245,240,232,.6);white-space:pre-wrap;line-height:1.5;margin-top:.25rem}
 .plan-card.clickable{cursor:pointer;transition:border-color .15s,background .15s}
@@ -189,7 +189,7 @@ canvas{border-radius:2px;display:block}
 <!-- ── Chaostuin navigatie ── -->
 <div id="nav-placeholder"></div>
 <h1>chaos<span>tuin</span> groenten</h1>
-<p class="subtitle">Willekeurige, evenwichtige verdeling van je groenten over de tuin</p>
+<p class="subtitle">Willekeurige groenteverdeling v51 — UI verbeteringen via lokale server</p>
 <!-- ── Overdracht-notificatie van tuinplanner ── -->
 <div id="overdrachtBar" style="display:none;background:rgba(61,82,41,0.9);border-bottom:1px solid rgba(168,210,100,.3);padding:.6rem 2rem;display:none;align-items:center;gap:1rem;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(245,240,232,.9)">
   <span>🗺 Tuinplan ontvangen van de Tuinplanner —</span>
@@ -200,9 +200,20 @@ canvas{border-radius:2px;display:block}
 <div class="app">
   <div class="left-col">
     <div class="panel">
-      <div id="fsaBar" class="fsa-bar ok">
-        <span class="fsa-dot" style="background:rgba(168,210,100,.9)"></span>
-        <span style="flex:1">Automatisch bewaard in deze browser…</span>
+      <div id="tuinBar" style="display:none">
+        <div class="pt" style="margin-bottom:.35rem">Actieve tuin</div>
+        <div class="tuin-bar">
+          <select class="tuin-select" id="tuinSelect" onchange="tuinWissel()">
+            <option value="">— kies tuin —</option>
+          </select>
+          <button class="tuin-icobtn" onclick="tuinNieuw()" title="Nieuwe tuin aanmaken">＋</button>
+          <button class="tuin-icobtn" onclick="tuinHernoem()" title="Huidige tuin hernoemen">✎</button>
+          <button class="tuin-icobtn" onclick="tuinVerwijder()" title="Huidige tuin verwijderen" style="color:rgba(255,140,140,.7)">✕</button>
+        </div>
+      </div>
+      <div id="fsaBar" class="fsa-bar warn">
+        <span class="fsa-dot" style="background:rgba(200,169,110,.9)"></span>
+        <span style="flex:1">Verbinding controleren…</span>
       </div>
       <div class="pt">Tuinindeling</div>
       <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
@@ -220,14 +231,6 @@ canvas{border-radius:2px;display:block}
       <hr class="divider" style="margin:.5rem 0">
       <div class="pt" style="margin-bottom:.35rem">Backup / uitwisseling</div>
       <div style="display:flex;gap:5px">
-        <button class="btn-reset-veg" style="flex:1;border-color:var(--straw)" onclick="exportAllesJSON()">⬇ Volledig plan exporteren</button>
-        <button class="btn-reset-veg" style="flex:1;border-color:var(--straw)" onclick="document.getElementById('allesFileInput').click()">⬆ Volledig plan importeren</button>
-      </div>
-      <input type="file" id="allesFileInput" accept=".json" style="display:none" onchange="importAllesJSON(this)">
-      <div style="font-size:9px;color:rgba(245,240,232,.45);margin-top:.3rem;line-height:1.4">
-        Dit bevat alles (gewassen, tuin en planten) in één bestand — je enige echte back-up. Exporteer regelmatig, zeker vóór je iets ingrijpends verandert.
-      </div>
-      <div style="display:flex;gap:5px;margin-top:.6rem">
         <button class="btn-reset-veg" style="flex:1" onclick="exportGroenten()">Gewassen exporteren</button>
         <button class="btn-reset-veg" style="flex:1" onclick="document.getElementById('vegFileInput').click()">Gewassen importeren</button>
       </div>
@@ -336,36 +339,128 @@ function saveGroenten(){
 
 var GROENTEN=loadGroenten();
 
-// ── OPSLAGSYSTEEM (automatisch, in deze browser) ──────
-// Alles wordt automatisch bewaard in localStorage van deze browser
-// (dit toestel, deze browser). Dat overleeft geen gewiste browserdata
-// of een ander toestel — daarvoor is de knop "Volledig plan exporteren"
-// hieronder de enige echte, verplaatsbare back-up.
+// ── OPSLAGSYSTEEM VIA LOKALE SERVER ──────────────────
+// API: /api/ping, /api/tuinen, /api/load?tuin=naam, /api/save?tuin=naam
+//      /api/rename (POST body {van,naar}), /api/delete?tuin=naam
+// Bij file:// of zonder server: alleen localStorage (handmatige backup)
 
+var SERVER_MODE  = false;
 var fsaSaveTimer = null;
-var fsaStatus    = 'ok';   // 'ok' | 'saving' | 'error'
-var FSA_DEBOUNCE = 600;
-var PLAN_KEY     = 'chaostuin_plan_v1';
+var fsaStatus    = 'init';
+var FSA_DEBOUNCE = 800;
+var huidigeTuin  = '';   // naam van de actieve tuin
+
+// ── TUINKIEZER UI ────────────────────────────────────
+function tuinRefreshDropdown(tuinen, selectNaam){
+  var sel=document.getElementById('tuinSelect');
+  if(!sel) return;
+  sel.innerHTML='<option value="">— kies tuin —</option>'
+    +tuinen.map(function(t){
+      return '<option value="'+t.naam+'"'+(t.naam===selectNaam?' selected':'')+'>'+t.naam+'</option>';
+    }).join('');
+}
+
+function tuinLaadLijst(selectNaam){
+  fetch('/api/tuinen').then(function(r){return r.json();})
+  .then(function(tuinen){
+    document.getElementById('tuinBar').style.display='block';
+    tuinRefreshDropdown(tuinen, selectNaam||huidigeTuin);
+  }).catch(function(){});
+}
+
+function tuinWissel(){
+  var sel=document.getElementById('tuinSelect');
+  var naam=sel.value;
+  if(!naam) return;
+  huidigeTuin=naam;
+  localStorage.setItem('chaostuin_laatste_tuin', naam);
+  // Reset huidige state
+  plants=[]; tuinData=null; W=0; L=0;
+  paths=[]; secPaths=[]; stones=[]; segs=[]; stepLinks=[];
+  GROENTEN=loadGroenten();
+  buildVegList();
+  if(typeof resize==='function') resize();
+  // Laad de gekozen tuin
+  fetch('/api/load?tuin='+encodeURIComponent(naam))
+  .then(function(r){ return r.status===204?null:r.json(); })
+  .then(function(data){
+    if(data) fsaLaadData(data);
+    fsaStatus='server_ok'; fsaUpdateBar();
+  }).catch(function(){ fsaStatus='error'; fsaUpdateBar(); });
+}
+
+function tuinNieuw(){
+  var naam=prompt('Naam voor de nieuwe tuin:','');
+  if(!naam||!naam.trim()) return;
+  naam=naam.trim();
+  huidigeTuin=naam;
+  localStorage.setItem('chaostuin_laatste_tuin', naam);
+  // Reset state
+  plants=[]; tuinData=null; W=0; L=0;
+  paths=[]; secPaths=[]; stones=[]; segs=[]; stepLinks=[];
+  GROENTEN=loadGroenten(); buildVegList();
+  if(typeof resize==='function') resize();
+  // Sla meteen op zodat het bestand aangemaakt wordt
+  serverSlaOp(function(){
+    tuinLaadLijst(naam);
+    fsaUpdateBar();
+  });
+}
+
+function tuinHernoem(){
+  if(!huidigeTuin){ alert('Kies eerst een tuin.'); return; }
+  var nieuw=prompt('Nieuwe naam voor "'+huidigeTuin+'":', huidigeTuin);
+  if(!nieuw||!nieuw.trim()||nieuw.trim()===huidigeTuin) return;
+  nieuw=nieuw.trim();
+  fetch('/api/rename',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({van:huidigeTuin,naar:nieuw})
+  }).then(function(r){
+    if(r.ok){ huidigeTuin=nieuw; localStorage.setItem('chaostuin_laatste_tuin',nieuw); tuinLaadLijst(nieuw); fsaUpdateBar(); }
+    else r.text().then(function(t){ alert('Hernoemen mislukt: '+t); });
+  });
+}
+
+function tuinVerwijder(){
+  if(!huidigeTuin){ alert('Kies eerst een tuin.'); return; }
+  if(!confirm('Tuin "'+huidigeTuin+'" definitief verwijderen?')) return;
+  fetch('/api/delete?tuin='+encodeURIComponent(huidigeTuin),{method:'POST'})
+  .then(function(){
+    huidigeTuin='';
+    localStorage.removeItem('chaostuin_laatste_tuin');
+    plants=[]; tuinData=null; W=0; L=0;
+    paths=[]; secPaths=[]; stones=[]; segs=[]; stepLinks=[];
+    GROENTEN=loadGroenten(); buildVegList();
+    if(typeof resize==='function') resize();
+    tuinLaadLijst('');
+    fsaStatus='server_ok'; fsaUpdateBar();
+  });
+}
 
 // ── STATUSBALK ────────────────────────────────────────
 function fsaUpdateBar(){
   var bar=document.getElementById('fsaBar');
   if(!bar) return;
   var html='',cls='';
-  if(fsaStatus==='saving'){
-    cls='ok';
-    html='<span class="fsa-dot" style="background:rgba(168,210,100,.5)"></span>'
-      +'<span style="flex:1">Bewaren…</span>';
-  } else if(fsaStatus==='error'){
-    cls='err';
-    html='<span class="fsa-dot" style="background:rgba(255,140,140,.9)"></span>'
-      +'<span style="flex:1">Automatisch bewaren is mislukt in deze browser.</span>'
-      +'<button class="fsa-btn" onclick="exportAllesJSON()">⬇ Exporteer nu</button>';
-  } else {
+  if(SERVER_MODE && fsaStatus==='server_ok'){
     cls='ok';
     html='<span class="fsa-dot" style="background:rgba(168,210,100,.9)"></span>'
-      +'<span style="flex:1">Automatisch bewaard in deze browser — exporteer regelmatig, dat is je enige echte back-up.</span>'
-      +'<button class="fsa-btn" onclick="exportAllesJSON()">⬇ Exporteer</button>';
+      +'<span style="flex:1">Opgeslagen'+(huidigeTuin?' — <b>'+huidigeTuin+'</b>':'')+'</span>'
+      +'<button class="fsa-btn" onclick="exportAllesJSON()">⬇ Backup</button>';
+  } else if(SERVER_MODE && fsaStatus==='saving'){
+    cls='ok';
+    html='<span class="fsa-dot" style="background:rgba(168,210,100,.5)"></span>'
+      +'<span style="flex:1">Opslaan…</span>';
+  } else if(SERVER_MODE && fsaStatus==='error'){
+    cls='err';
+    html='<span class="fsa-dot" style="background:rgba(255,140,140,.9)"></span>'
+      +'<span style="flex:1">Opslaan mislukt.</span>'
+      +'<button class="fsa-btn" onclick="serverSlaOp()">↺ Opnieuw</button>';
+  } else {
+    cls='warn';
+    html='<span class="fsa-dot" style="background:rgba(200,169,110,.9)"></span>'
+      +'<span style="flex:1">Start via <b>chaostuin_start.bat</b> voor automatisch opslaan.</span>'
+      +'<button class="fsa-btn" onclick="exportAllesJSON()">⬇ Backup</button>';
   }
   bar.className='fsa-bar '+cls;
   bar.innerHTML=html;
@@ -389,16 +484,27 @@ function fsaBouwData(){
   return data;
 }
 
-// Automatisch bewaren in localStorage (gedebounced), telkens er iets wijzigt
 function serverSlaOp(callback){
-  fsaStatus='saving'; fsaUpdateBar();
-  try{
-    localStorage.setItem(PLAN_KEY, JSON.stringify(fsaBouwData()));
-    fsaStatus='ok'; fsaUpdateBar();
-    if(typeof callback==='function') callback();
-  }catch(e){
-    fsaStatus='error'; fsaUpdateBar();
+  if(!SERVER_MODE) return;
+  if(!huidigeTuin){
+    // Nog geen tuinnaam — vraag om een naam
+    var naam=prompt('Geef een naam voor deze tuin:','Mijn tuin');
+    if(!naam||!naam.trim()) return;
+    huidigeTuin=naam.trim();
+    localStorage.setItem('chaostuin_laatste_tuin', huidigeTuin);
+    tuinLaadLijst(huidigeTuin);
   }
+  fsaStatus='saving'; fsaUpdateBar();
+  fetch('/api/save?tuin='+encodeURIComponent(huidigeTuin),{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(fsaBouwData(),null,2)
+  }).then(function(r){
+    fsaStatus=r.ok?'server_ok':'error'; fsaUpdateBar();
+    if(r.ok && typeof callback==='function') callback();
+  }).catch(function(){
+    fsaStatus='error'; fsaUpdateBar();
+  });
 }
 
 function fsaLaadData(data){
@@ -436,39 +542,19 @@ function fsaLaadData(data){
 }
 
 function fsaAutoSave(){
+  if(!SERVER_MODE){ fsaUpdateBar(); return; }
   clearTimeout(fsaSaveTimer);
   fsaSaveTimer=setTimeout(serverSlaOp, FSA_DEBOUNCE);
 }
 
 function exportAllesJSON(){
   var datum=new Date().toISOString().slice(0,10);
+  var naam=(huidigeTuin||'data').replace(/[^\w\-]/g,'_');
   var blob=new Blob([JSON.stringify(fsaBouwData(),null,2)],{type:'application/json'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
-  a.href=url; a.download='chaostuin_plan_'+datum+'.json'; a.click();
+  a.href=url; a.download='chaostuin_'+naam+'_'+datum+'.json'; a.click();
   setTimeout(function(){ URL.revokeObjectURL(url); },1000);
-}
-
-// Volledig plan (gewassen + tuin + paden + planten) terug inladen
-// vanuit een bestand dat met "Volledig plan exporteren" is gemaakt.
-function importAllesJSON(input){
-  var file=input.files[0]; if(!file) return;
-  if(plants.length && !confirm('Dit vervangt je huidige, onbewaarde tuinplan door het geïmporteerde bestand. Doorgaan?')){
-    input.value=''; return;
-  }
-  var reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      var data=JSON.parse(e.target.result);
-      fsaLaadData(data);
-      fsaAutoSave();
-      input.value='';
-    }catch(err){
-      showErr('Ongeldig plan-bestand: '+err.message);
-      input.value='';
-    }
-  };
-  reader.readAsText(file);
 }
 
 // ── OVERDRACHT VAN TUINPLANNER ───────────────────────
@@ -509,16 +595,29 @@ function overdrachtNegeren(){
   if(bar) bar.style.display='none';
 }
 
-// Herstel de vorige sessie uit deze browser bij het opstarten
-(function herstelSessie(){
-  try{
-    var raw=localStorage.getItem(PLAN_KEY);
-    if(raw){
-      var data=JSON.parse(raw);
-      fsaLaadData(data);
-    }
-  }catch(e){}
-  fsaStatus='ok'; fsaUpdateBar();
+// Ping de server bij opstarten
+(function detectServer(){
+  fetch('/api/ping').then(function(r){ return r.text(); })
+  .then(function(t){
+    if(t.trim()==='ok'){
+      SERVER_MODE=true;
+      // Laad tuinlijst en herstel laatste sessie
+      tuinLaadLijst('');
+      var laatste=localStorage.getItem('chaostuin_laatste_tuin');
+      if(laatste){
+        huidigeTuin=laatste;
+        fetch('/api/load?tuin='+encodeURIComponent(laatste))
+        .then(function(r){ return r.status===204?null:r.json(); })
+        .then(function(data){
+          if(data) fsaLaadData(data);
+          tuinLaadLijst(laatste);
+          fsaStatus='server_ok'; fsaUpdateBar();
+        }).catch(function(){ fsaStatus='server_ok'; fsaUpdateBar(); });
+      } else {
+        fsaStatus='server_ok'; fsaUpdateBar();
+      }
+    } else { fsaStatus='no_server'; fsaUpdateBar(); }
+  }).catch(function(){ fsaStatus='no_server'; fsaUpdateBar(); });
 })();
 
 // ── STATE ─────────────────────────────────────────────
@@ -1002,12 +1101,12 @@ function seizoenLabel(groep){
   return 'Winter';
 }
 
-// Kleur per seizoenlabel — helder en goed leesbaar op de donkere achtergrond
+// Kleur per seizoenlabel
 var SEIZOEN_KLEUR={
-  'Lente':'#A8E85C',
-  'Zomer':'#FFCF4D',
-  'Herfst':'#FF9B4D',
-  'Winter':'#7DD3F0'
+  'Lente':'rgba(180,210,100,0.85)',
+  'Zomer':'rgba(92,122,58,0.9)',
+  'Herfst':'rgba(200,169,110,0.85)',
+  'Winter':'rgba(130,160,190,0.85)'
 };
 
 function genereerPlannen(basis, maxPlannen){
@@ -2772,6 +2871,6 @@ resize();
   </div>
 </div>
 
-<script src="/components/includes.js"></script>
+<script src="../components/includes.js"></script>
 </body>
 </html>
