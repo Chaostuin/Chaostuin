@@ -87,7 +87,7 @@ canvas{border-radius:2px;display:block}
 .plan-fase{display:flex;gap:.4rem;align-items:baseline;margin-bottom:.2rem;font-size:11px;line-height:1.4}
 .plan-fase:last-child{margin-bottom:0}
 .fase-label{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--straw);min-width:36px;flex-shrink:0}
-.fase-maanden{font-size:10px;font-weight:600;color:var(--straw);flex-shrink:0}
+.fase-maanden{font-size:9px;color:rgba(245,240,232,.3);flex-shrink:0}
 .fase-planten{color:rgba(245,240,232,.75);flex:1}
 .combo-count{font-size:10px;color:rgba(245,240,232,.35);margin-bottom:.6rem;font-style:italic}
 .combo-none{font-size:11px;color:rgba(245,240,232,.3);font-style:italic;padding:.5rem 0}
@@ -129,7 +129,7 @@ canvas{border-radius:2px;display:block}
 .detail-gewas-header{display:flex;align-items:center;gap:.45rem;margin-bottom:.3rem}
 .detail-gewas-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(0,0,0,.2)}
 .detail-gewas-naam{font-size:11px;font-weight:600;color:var(--cream)}
-.detail-gewas-periode{font-size:10px;font-weight:700;color:var(--earth);background:var(--straw);padding:.12rem .4rem;border-radius:3px;margin-left:auto;white-space:nowrap}
+.detail-gewas-periode{font-size:10px;font-weight:600;color:var(--straw);margin-left:auto}
 .detail-gewas-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.1rem .5rem;font-size:9px;color:rgba(245,240,232,.6);margin-bottom:.25rem}
 .detail-gewas-nota{background:rgba(245,240,232,.04);border-left:2px solid rgba(200,169,110,.4);padding:.3rem .5rem;font-size:9px;color:rgba(245,240,232,.6);white-space:pre-wrap;line-height:1.5;margin-top:.25rem}
 .plan-card.clickable{cursor:pointer;transition:border-color .15s,background .15s}
@@ -227,28 +227,20 @@ canvas{border-radius:2px;display:block}
       <div style="font-size:9px;color:rgba(245,240,232,.45);margin-top:.3rem;line-height:1.4">
         Dit bevat alles (gewassen, tuin en planten) in één bestand — je enige echte back-up. Exporteer regelmatig, zeker vóór je iets ingrijpends verandert.
       </div>
-
-      <details style="margin-top:.6rem">
-        <summary style="cursor:pointer;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,232,.45)">Geavanceerd</summary>
-        <div style="font-size:9px;color:rgba(245,240,232,.4);margin:.4rem 0;line-height:1.4">
-          Enkel nodig om een gewassenlijst of tuinindeling apart te delen of te hergebruiken, zonder de rest te overschrijven.
-        </div>
-        <div style="display:flex;gap:5px">
-          <button class="btn-reset-veg" style="flex:1" onclick="exportGroenten()">Gewassen exporteren</button>
-          <button class="btn-reset-veg" style="flex:1" onclick="document.getElementById('vegFileInput').click()">Gewassen importeren</button>
-        </div>
-        <input type="file" id="vegFileInput" accept=".json" style="display:none" onchange="importGroenten(this)">
-        <div style="display:flex;gap:5px;margin-top:5px">
-          <button class="btn-reset-veg" style="flex:1" onclick="exportTuinplan()">Tuinplan exporteren</button>
-          <button class="btn-reset-veg" style="flex:1" onclick="document.getElementById('tuinplanFileInput').click()">Tuinplan importeren</button>
-        </div>
-        <input type="file" id="tuinplanFileInput" accept=".json" style="display:none" onchange="importTuinplan(this)">
-      </details>
-
       <div style="display:flex;gap:5px;margin-top:.6rem">
+        <button class="btn-reset-veg" style="flex:1" onclick="exportGroenten()">Gewassen exporteren</button>
+        <button class="btn-reset-veg" style="flex:1" onclick="document.getElementById('vegFileInput').click()">Gewassen importeren</button>
+      </div>
+      <input type="file" id="vegFileInput" accept=".json" style="display:none" onchange="importGroenten(this)">
+      <div style="display:flex;gap:5px;margin-top:5px">
+        <button class="btn-reset-veg" style="flex:1" onclick="exportTuinplan()">Tuinplan exporteren</button>
+        <button class="btn-reset-veg" style="flex:1" onclick="document.getElementById('tuinplanFileInput').click()">Tuinplan importeren</button>
+      </div>
+      <div style="display:flex;gap:5px;margin-top:5px">
         <button class="btn-reset-veg" style="flex:1" onclick="printTuinplan()">🖨 Afdrukken</button>
         <button class="btn-reset-veg" style="flex:1" onclick="exportTuinplanPDF()">Opslaan als PDF</button>
       </div>
+      <input type="file" id="tuinplanFileInput" accept=".json" style="display:none" onchange="importTuinplan(this)">
 
       <hr class="divider">
       <div class="pt">Opties</div>
