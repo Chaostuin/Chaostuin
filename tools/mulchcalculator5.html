@@ -159,14 +159,6 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
   font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
   color:var(--straw); margin-bottom:1.25rem;
 }
-.mc-detail-link{
-  text-transform:none; letter-spacing:normal; font-weight:400;
-  color:rgba(245,240,232,.55);
-  text-decoration:underline;
-  font-size:.75rem;
-  margin-left:4px;
-}
-.mc-detail-link:hover{ color:var(--straw); }
 .mc-stat-grid{
   display:grid; grid-template-columns:1fr 1fr; gap:1rem;
   margin-bottom:1.5rem;
@@ -320,7 +312,7 @@ input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
   </div>
 
   <div class="mc-result">
-    <p class="mc-result-title">Resultaat <a href="mulchcalculator_detail.html" id="detailLink" class="mc-detail-link">(details van de berekening)</a></p>
+    <p class="mc-result-title">Resultaat</p>
 
     <div class="mc-stat-grid">
       <div class="mc-stat">
@@ -499,11 +491,6 @@ function update(){
   availLine.style.left = availPct+'%';
   const availTag = document.getElementById('bed-avail-tag');
   availTag.style.left = availPct+'%';
-
-  const detailLink = document.getElementById('detailLink');
-  if (detailLink){
-    detailLink.href = 'mulchcalculator_detail.html?current='+sCurrent.value+'&available='+sAvail.value+'&goal='+sGoal.value+'&years='+sYears.value;
-  }
 }
 
 [sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
