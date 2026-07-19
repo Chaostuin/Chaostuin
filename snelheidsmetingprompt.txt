@@ -1,0 +1,89 @@
+Hier is een prompt om mee te starten:
+
+```
+Ik ben Geert, ik beheer en ontwikkel chaostuin.be, een Nederlandstalige
+site over ecologisch/permacultuur-tuinieren (Vlaanderen). Ik doe zelf
+zowel de inhoud als de volledige technische ontwikkeling.
+
+Context over de site:
+- Statische site, gedeeld CSS-designsysteem (donkere aardetinten,
+  --earth/--straw/--cream), gedeelde /components/includes.js voor
+  navigatie (laadt nav.html/footer.html, absolute paden via
+  data-root="/").
+- Sitezoekfunctie zit in index.html: een array `begrippen` (elk item:
+  {woord, tag, url, omschrijving}), doorzocht door een simpele
+  substring-match (zoek() met .includes() op woord/omschrijving/tag),
+  klikbare resultaten zijn gewone <a href="r.url">-links — een gewoon
+  paginapad (i.p.v. een #anker) werkt daar probleemloos in.
+- Een van de tools op de site is /tools/tuinplanner.html: een
+  samengevoegde paden-/stapstenen-/groentenplanner (voorheen twee
+  aparte tools). Groenten worden willekeurig verdeeld over de
+  bereikbare oppervlakte via een functie doPlace()/genereerPlannen(),
+  in twee fases (fase 1: één-per-soort-per-ronde plaatsen; fase 2:
+  overige lege ruimte opvullen). Het aantal verwachte "rondes" in
+  fase 1 wordt nu al vooraf berekend uit: bereikbare oppervlakte,
+  gemiddelde plantgrootte, en aantal geselecteerde soorten.
+
+Het probleem dat we willen oplossen:
+Bij grote tuinen/veel groenten kan het plaatsen enkele minuten duren.
+Nu tonen we een generieke melding ("even geduld, dit kan een paar
+seconden duren") en een voortgangsbalk die gebaseerd is op
+rondes-voltooid/rondes-verwacht — niet op echte verstreken tijd. Later
+rondes duren merkelijk langer dan vroege (de tuin raakt voller, dus
+moeilijker een plek vinden), waardoor de balk "hangt" net op het
+einde. We willen een eerlijkere tijdsinschatting vooraf, en/of een
+beter voortgangsgevoel.
+
+Wat we al hebben afgesproken (nog NIET uitgevoerd, enkel ontworpen):
+1. Een intern testhulpmiddel bouwen dat systematisch, automatisch,
+   één variabele per keer laat variëren (oppervlakte / aantal
+   soorten / gemiddelde plantgrootte + spreiding daarvan) en telkens
+   de effectieve plaatsingstijd meet — inclusief renderen (dus MET
+   het canvas laten tekenen tijdens het meten, niet op de achtergrond
+   zonder tekenen — anders meten we iets anders dan wat een bezoeker
+   ervaart).
+2. Totaal aantal geplaatste planten is een AFHANKELIJKE uitkomst
+   (volgt uit oppervlakte/grootte), geen onafhankelijke testvariabele
+   — wel mee loggen als controle-uitkomst, niet als model-input.
+   Aantal geselecteerde SOORTEN is wél een echte, onafhankelijke
+   inputvariabele (zit al in de bestaande rondes-formule).
+3. Computersnelheid verschilt per bezoeker. Aanpak: bij het opstarten
+   een klein vast, onbeduidend rekenklusje laten uitvoeren en de
+   duur daarvan meten als "snelheidsfactor" van dat toestel — zowel
+   tijdens het verzamelen van testdata (om metingen van verschillende
+   computers vergelijkbaar/normaliseerbaar te maken) als achteraf bij
+   een echte bezoeker (om de getoonde schatting aan zijn toestel aan
+   te passen).
+4. Opslag: geen server beschikbaar die kan schrijven. Metingen gaan
+   naar localStorage plus een downloadknop die het verzamelde logje
+   als JSON-bestand exporteert (zelfde patroon als de bestaande
+   export/import-knoppen elders op de site). Geert verzamelt zelf de
+   JSON-bestanden van verschillende testsessies/toestellen en voegt
+   ze samen.
+5. Modelkeuze: niet blind regresseren op ruwe variabelen, maar
+   vertrekken van de al bestaande theoretische rondes-formule uit het
+   plaatsingsalgoritme, en empirisch bepalen (a) hoeveel tijd een
+   gemiddelde ronde kost, en (b) hoe die tijd toeneemt naarmate de
+   tuin voller raakt — dat heeft waarschijnlijk minder meetpunten
+   nodig en generaliseert beter dan een pure black-box-regressie.
+   Fase 1 en fase 2 apart meten, want die verlopen verschillend.
+6. Toegankelijkheid: dit wordt een technisch/verborgen hulpmiddel,
+   niet voor gewone bezoekers. Aanpak: een nieuwe pagina
+   /tools/snelheidsberekening.html, NIET gelinkt vanuit het menu,
+   maar wel vindbaar via de bestaande sitezoekfunctie (dus gewoon een
+   item toevoegen aan de `begrippen`-array in index.html met
+   woord: 'snelheidsberekening'). De pagina zelf krijgt
+   <meta name="robots" content="noindex, nofollow"> zodat
+   zoekmachines ze negeren.
+
+Wat ik wil dat je doet:
+Denk eerst even kort met me mee of dit ontwerp nog steek houdt (het
+dateert uit een vorige sessie), en stel gerichte vragen over wat nog
+open staat — bijvoorbeeld: welke concrete waarden voor
+oppervlakte/aantal soorten/plantgrootte-spreiding we in de testreeks
+opnemen, hoeveel herhalingen per combinatie nodig zijn voor een
+betrouwbare meting, en hoe de uiteindelijke tijdsinschatting precies
+getoond wordt aan de bezoeker (tekst? tiers zoals "enkele seconden/tot
+een minuut/enkele minuten"? een concreet geschat aantal seconden?).
+Bouw pas na mijn akkoord over die punten het testhulpmiddel zelf.
+```
