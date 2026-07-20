@@ -448,7 +448,7 @@ function tijdKleur(m) {
 // ── DOORVERWIJZING NAAR IGEAN SORTEERGIDS ──────────────────
 function igeanLink() {
   const ga = confirm('Deze sorteergids geldt voor de regio Wommelgem/Antwerpen (IGEAN). Check zelf bij je eigen gemeente of intercommunale voor de juiste sorteerregels.\n\nToch doorgaan naar de IGEAN sorteergids?');
-  if (ga) window.open('https://www.igean.be/sorteergids', '_blank');
+  if (ga) window.location.href = 'https://www.igean.be/sorteergids';
 }
 
 // ── ZOEKEN ────────────────────────────────────────────────
