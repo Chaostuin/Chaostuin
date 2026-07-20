@@ -108,27 +108,6 @@
     }
     .sectie-badge.groen { background: #eef5e8; color: var(--moss); }
     .sectie-badge.rood  { background: #fdf0ec; color: #c0522a; }
-    .sectie-igean-link {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--moss);
-      cursor: pointer;
-      text-decoration: underline;
-      text-decoration-color: transparent;
-      transition: text-decoration-color 0.2s;
-    }
-    .sectie-igean-link:hover { text-decoration-color: var(--moss); }
-
-    .check-result-igean {
-      font-size: 0.85rem;
-      color: var(--moss);
-      margin-top: 0.6rem;
-      cursor: pointer;
-      text-decoration: underline;
-      text-decoration-color: transparent;
-      transition: text-decoration-color 0.2s;
-    }
-    .check-result-igean:hover { text-decoration-color: var(--moss); }
 
     .compost-tabel {
       width: 100%;
@@ -304,7 +283,6 @@
     <div class="compost-sectie">
       <div class="sectie-header">
         <span class="sectie-badge rood">❌ Niet composteerbaar</span>
-        <span class="sectie-igean-link" onclick="igeanLink()">Waar moet het dan wel naartoe? Zie IGEAN sorteergids →</span>
       </div>
       <table class="compost-tabel">
         <thead>
@@ -443,12 +421,6 @@ function tijdKleur(m) {
   if (m <= 4)  return {bg:'#eef5e8', fg:'#3D5229'};
   if (m <= 10) return {bg:'#fdf6e8', fg:'#8a6010'};
   return {bg:'#fdf0ec', fg:'#8B4513'};
-}
-
-// ── DOORVERWIJZING NAAR IGEAN SORTEERGIDS ──────────────────
-function igeanLink() {
-  const ga = confirm('Deze sorteergids geldt voor de regio Wommelgem/Antwerpen (IGEAN). Check zelf bij je eigen gemeente of intercommunale voor de juiste sorteerregels.\n\nToch doorgaan naar de IGEAN sorteergids?');
-  if (ga) window.open('https://www.igean.be/sorteergids', '_blank');
 }
 
 // ── ZOEKEN ────────────────────────────────────────────────
@@ -599,8 +571,7 @@ function toonResultaat() {
     el.classList.add('nee');
     el.innerHTML = `<div class="check-result-titel">❌ Nee, dit hoort niet op de composthoop</div>
       <div style="font-weight:300;font-size:0.9rem;">${res.naam} behoort tot <em>${res.categorie}</em>.</div>
-      <div class="check-result-reden">🔎 ${res.reden}</div>
-      <div class="check-result-igean" onclick="igeanLink()">♻️ Waar moet het dan wel naartoe? Zie IGEAN sorteergids →</div>`;
+      <div class="check-result-reden">🔎 ${res.reden}</div>`;
   }
 }
 
