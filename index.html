@@ -1726,7 +1726,8 @@ function zoek(query) {
   return begrippen.filter(b =>
     b.woord.toLowerCase().includes(q) ||
     b.omschrijving.toLowerCase().includes(q) ||
-    b.tag.toLowerCase().includes(q)
+    b.tag.toLowerCase().includes(q) ||
+    (b.synoniem && b.synoniem.toLowerCase().includes(q))
   ).slice(0, 6);
 }
 

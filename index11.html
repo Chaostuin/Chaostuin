@@ -573,14 +573,10 @@ nav.scrolled {
   color: rgba(245,240,232,0.85);
 }
 
-/* ── CALCULATOR SECTION ──────────────────────────────── */
+/* ── TOOLS SECTION ───────────────────────────────────── */
 .calc-section {
   background: var(--moss);
   padding: 7rem 6rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: start;
 }
 
 .calc-intro .section-label { color: var(--straw); }
@@ -589,95 +585,72 @@ nav.scrolled {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   color: var(--cream);
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 .calc-intro p {
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.8;
   color: rgba(245,240,232,0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.calculator-widget {
-  background: var(--cream);
-  border-radius: 4px;
-  padding: 2.5rem;
+.tool-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.calc-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  color: var(--moss);
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--fog);
-}
-
-.calc-row {
+.tool-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.calc-row label {
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: #5a5040;
-  min-width: 170px;
-}
-
-.calc-row input[type=range] {
-  flex: 1;
-  accent-color: var(--leaf);
-}
-
-.calc-row .val {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--moss);
-  min-width: 52px;
-  text-align: right;
-}
-
-.calc-result {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: var(--moss);
-  border-radius: 2px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.calc-result-item { text-align: center; }
-.calc-result-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(245,240,232,0.6);
-  display: block;
-  margin-bottom: 4px;
-}
-.calc-result-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: var(--straw);
-}
-
-.calc-link {
-  display: inline-block;
-  margin-top: 1.25rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--sage);
+  gap: 1.75rem;
+  background: rgba(245,240,232,0.07);
+  border: 1px solid rgba(245,240,232,0.12);
+  border-radius: 4px;
+  padding: 1.75rem 2rem;
   text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
-.calc-link:hover { color: var(--straw); }
+.tool-card:hover {
+  background: rgba(245,240,232,0.13);
+  border-color: rgba(200,169,110,0.4);
+  transform: translateX(4px);
+}
+
+.tool-card-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.tool-card-body {
+  flex: 1;
+}
+.tool-card-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--straw);
+  margin-bottom: 0.5rem;
+}
+.tool-card-body p {
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.7);
+  margin: 0;
+}
+
+.tool-card-arrow {
+  font-size: 1.3rem;
+  color: var(--straw);
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.tool-card:hover .tool-card-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
 
 /* ── 10 GEBODEN ──────────────────────────────────────── */
 .geboden {
@@ -1361,6 +1334,14 @@ footer p {
           </div>
         </li>
         <li>
+          <span class="aanpak-link-icon">🌿</span>
+          <div>
+            <strong>Verzorgen</strong>
+            <p>Sommige planten hebben een duwtje in de rug nodig. Steunen, uitdunnen, opbinden of dieven: kleine ingrepen voor een gezondere oogst..</p>
+            <a href="/aanpak/verzorgen.html" class="pillar-link">Je planten verzorgen →</a>
+          </div>
+        </li>
+        <li>
           <span class="aanpak-link-icon">🧺</span>
           <div>
             <strong>Oogsten</strong>
@@ -1497,42 +1478,25 @@ footer p {
   <div class="calc-intro">
     <p class="section-label">Interactieve tools</p>
     <h2>Hulpmiddelen voor de ecologische tuinier</h2>
-    <p>Van mulch berekenen tot je volledige tuin plannen en groenten willekeurig verdelen — alles lokaal, zonder account of cloud.</p>
-    <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem">
-      <a href="tools/mulchcalculator.html" class="btn-primary">🌱 Mulch &amp; Humus calculator</a>
-      <a href="tools/padplanner.html" class="btn-primary" style="background:var(--moss);color:var(--cream)">🗺 Tuinplanner — paden &amp; stapstenen</a>
-      <a href="tools/groentenplanner.html" class="btn-primary" style="background:var(--leaf);color:var(--cream)">🥕 Groententool — verdeling &amp; combinaties</a>
-    </div>
+    <p>Eenvoudige tools om je tuin beter te plannen — alles werkt lokaal in je browser, zonder account of registratie.</p>
   </div>
-
-  <div class="calculator-widget">
-    <div class="calc-title">Snelle berekening</div>
-    <div class="calc-row">
-      <label>Mulch per jaar (kg/m²)</label>
-      <input type="range" min="1" max="10" value="3" step="0.5" id="cA" oninput="calcUpdate()">
-      <span class="val" id="oA">3 kg</span>
-    </div>
-    <div class="calc-row">
-      <label>Humificatiefactor</label>
-      <input type="range" min="5" max="25" value="12" step="1" id="cH" oninput="calcUpdate()">
-      <span class="val" id="oH">12%</span>
-    </div>
-    <div class="calc-row">
-      <label>Afbraak humus (k)</label>
-      <input type="range" min="1" max="5" value="2.5" step="0.5" id="cK" oninput="calcUpdate()">
-      <span class="val" id="oK">2.5%</span>
-    </div>
-    <div class="calc-result">
-      <div class="calc-result-item">
-        <span class="calc-result-label">Evenwicht</span>
-        <span class="calc-result-val" id="rEq">14.4 kg/m²</span>
+  <div class="tool-cards">
+    <a href="tools/mulchcalculator.html" class="tool-card">
+      <span class="tool-card-icon">🌱</span>
+      <div class="tool-card-body">
+        <h3>Mulch calculator</h3>
+        <p>Hoeveel mulch heb je nodig voor jouw tuin? Geef aan hoe je bodem er nu voor staat, wat je aan mulchmateriaal ter beschikking hebt en welk doel je voor ogen hebt — de calculator toont hoeveel mulch je daarvoor jaarlijks nodig hebt, en of dat haalbaar is met wat je nu hebt.
       </div>
-      <div class="calc-result-item">
-        <span class="calc-result-label">Organische stof</span>
-        <span class="calc-result-val" id="rPct">4.4%</span>
+      <span class="tool-card-arrow">→</span>
+    </a>
+    <a href="tools/tuinplanner.html" class="tool-card">
+      <span class="tool-card-icon">🗺</span>
+      <div class="tool-card-body">
+        <h3>Tuinplanner — paden, stapstenen &amp; groenten</h3>
+        <p>Teken eerst de indeling van je tuin: waar komen de vaste paden, waar de bedden — de basis van elke ecologische tuin, zo kom je nooit op je bodem te staan. Verdeel daarna je groenten over de bedden: het tool houdt rekening met bereikbaarheid en helpt je combinaties kiezen die elkaar versterken.</p>
       </div>
-    </div>
-    <a href="tools/mulchcalculator.html" class="calc-link">Uitgebreide versie met grafiek →</a>
+      <span class="tool-card-arrow">→</span>
+    </a>
   </div>
 </section>
 
@@ -1564,6 +1528,7 @@ footer p {
     <p>Al vele jaren tuinier, de laatste jaren zo volledig ecologisch mogelijk. Collega's en samentuin-vrienden vonden de aanpak interessant genoeg om de ideeën te verspreiden.</p>
     <p>Dit platform is geen bijbel. Neem mee wat voor jou past, experimenteer, en ontdek wat werkt in jouw specifieke tuin. De natuur is de beste leraar.</p>
     <a href="#" class="btn-primary" style="margin-top:1.5rem;">e-mail: info@chaostuin.be</a>
+    <a href="https://www.instagram.com/chaostuin/" class="btn-primary" style="margin-top:1.5rem;">instagram: chaostuin</a>
   </div>
   <div class="over-stats">
     <div class="stat">
@@ -1697,122 +1662,10 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 reveals.forEach(r => observer.observe(r));
 
-/* Mini calculator */
-function calcUpdate() {
-  const a = parseFloat(document.getElementById('cA').value);
-  const h = parseInt(document.getElementById('cH').value) / 100;
-  const k = parseFloat(document.getElementById('cK').value) / 100;
-  document.getElementById('oA').textContent = a + ' kg';
-  document.getElementById('oH').textContent = (h*100).toFixed(0) + '%';
-  document.getElementById('oK').textContent = (k*100).toFixed(1) + '%';
-  const eq = (a * h) / k;
-  const pct = eq / 325 * 100;
-  document.getElementById('rEq').textContent = eq.toFixed(1) + ' kg/m²';
-  document.getElementById('rPct').textContent = pct.toFixed(1) + '%';
-}
-calcUpdate();
-
 /* ── ZOEKFUNCTIE ─────────────────────────────────────── */
-const begrippen = [
-  { woord: 'mulchen',        tag: 'techniek',   url: '#tools',      omschrijving: 'Organisch materiaal op de bodem aanbrengen' },
-  { woord: 'mulch',          tag: 'techniek',   url: '#tools',      omschrijving: 'Organisch dek voor de bodem' },
-  { woord: 'bodem',          tag: 'basis',      url: '#themas',     omschrijving: 'De basis van alles in de tuin' },
-  { woord: 'humus',          tag: 'bodem',      url: '#themas',     omschrijving: 'Stabiel organisch materiaal in de bodem' },
-  { woord: 'compost',        tag: 'techniek',   url: '#themas',     omschrijving: 'Verteerd organisch materiaal' },
-  { woord: 'composthoop',    tag: 'techniek',   url: '#themas',     omschrijving: 'Plek waar organisch materiaal verteert' },
-  { woord: 'kringloop',      tag: 'filosofie',  url: '#filosofie',  omschrijving: 'Gesloten cyclus van stoffen in de tuin' },
-  { woord: 'kringlopen',     tag: 'filosofie',  url: '#filosofie',  omschrijving: 'Water, stikstof, organisch materiaal' },
-  { woord: 'diversiteit',    tag: 'filosofie',  url: '#themas',     omschrijving: 'Variatie als kracht van het ecosysteem' },
-  { woord: 'chaos',          tag: 'filosofie',  url: '#filosofie',  omschrijving: 'Georganiseerde wanorde als tuinierstrategie' },
-  { woord: 'ecologisch',     tag: 'filosofie',  url: '#filosofie',  omschrijving: 'Kennis van het huis — oikos + logos' },
-  { woord: 'slakken',        tag: 'plagen',     url: '#themas',     omschrijving: 'Bestrijding zonder chemie' },
-  { woord: 'plagen',         tag: 'plagen',     url: '#themas',     omschrijving: 'Omgaan met ongewenste gasten' },
-  { woord: 'onkruid',        tag: 'praktijk',   url: '#themas',     omschrijving: 'Gewenst of ongewenst — dat is de vraag' },
-  { woord: 'spitten',        tag: 'praktijk',   url: '#themas',     omschrijving: 'Waarom we dit niet meer doen' },
-  { woord: 'harken',         tag: 'praktijk',   url: '#themas',     omschrijving: 'Waarom we dit niet meer doen' },
-  { woord: 'paden',          tag: 'praktijk',   url: '#themas',     omschrijving: 'Vaste paden beschermen de bodem' },
-  { woord: 'bedden',         tag: 'praktijk',   url: '#themas',     omschrijving: 'Verhoogde of vlakke teeltbedden' },
-  { woord: 'successie',      tag: 'natuur',     url: '#filosofie',  omschrijving: 'Hoe natuur evolueert naar bos' },
-  { woord: 'permacultuur',   tag: 'verwant',    url: '#filosofie',  omschrijving: 'Permanente landbouw als systeem' },
-  { woord: 'companion planting', tag: 'techniek', url: '#themas',   omschrijving: 'Planten die elkaar helpen' },
-  { woord: 'stikstof',       tag: 'bodem',      url: '#filosofie',  omschrijving: 'Essentieel element in de kringloop' },
-  { woord: 'organische stof',tag: 'bodem',      url: '#tools',      omschrijving: 'Maatstaf voor bodemgezondheid' },
-  { woord: 'humificatie',    tag: 'bodem',      url: '#tools',      omschrijving: 'Omzetting van mulch naar stabiele humus' },
-  { woord: 'bloemen',        tag: 'planten',    url: '#themas',     omschrijving: 'Afrikaantjes, goudsbloem en meer in de moestuin' },
-  { woord: 'kruiden',        tag: 'planten',    url: '#themas',     omschrijving: 'Venkel, tijm, bieslook als tuingenoten' },
-  { woord: 'vaste planten',  tag: 'planten',    url: '#themas',     omschrijving: 'Rabarber, daslook, asperge' },
-  { woord: 'insecten',       tag: 'natuur',     url: '#themas',     omschrijving: 'Bondgenoten in de ecologische tuin' },
-  { woord: 'zaaien',         tag: 'praktijk',   url: '#themas',     omschrijving: 'Zaaien in en met de mulch' },
-  { woord: 'calculator',     tag: 'tool',       url: '#tools',      omschrijving: 'Bereken jouw mulchbehoefte' },
-  { woord: 'kinderboek',     tag: 'kinderen',   url: '#themas',     omschrijving: 'De composthoop voor kinderen' },
-  { woord: 'pH',             tag: 'bodem',      url: '#themas',     omschrijving: 'Zuurtegraad van de bodem' },
-  { woord: 'drie zusters',   tag: 'techniek',   url: '#themas',     omschrijving: 'Maïs, bonen en pompoen samen' },
-  { woord: 'vruchtwisseling',tag: 'techniek',   url: '#themas',     omschrijving: 'Zinloos bij doorgedreven combinatie' },
-  { woord: 'moestuin',       tag: 'basis',      url: '#filosofie',  omschrijving: 'Jouw vroeg-successie ecosysteem' },
-  { woord: 'voedselbos',     tag: 'verwant',    url: '#filosofie',  omschrijving: 'Laat-successie voedselproductie' },
-  { woord: 'mulchlaag',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Laag mulch op de bodem' },
-  { woord: 'bladmulch',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Mulchen met bladeren' },
-  { woord: 'bladeren',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Waardevolle grondstof voor de tuin' },
-  { woord: 'blad',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Natuurlijk mulchmateriaal' },
-  { woord: 'grasmaaisel',       tag: 'praktijk',   url: '#themas',    omschrijving: 'Vers mulchmateriaal' },
-  { woord: 'gras',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Mulch en bodemvoeding' },
-  { woord: 'snoeisel',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Takken en plantenresten' },
-  { woord: 'takken',            tag: 'praktijk',   url: '#themas',    omschrijving: 'Houtig tuinmateriaal' },
-  { woord: 'twijgen',           tag: 'praktijk',   url: '#themas',    omschrijving: 'Fijn snoeihout' },
-  { woord: 'houtsnippers',      tag: 'praktijk',   url: '#themas',    omschrijving: 'Versnipperd hout als mulch' },
-  { woord: 'hakselen',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Takken versnipperen' },
-  { woord: 'hakselhout',        tag: 'praktijk',   url: '#themas',    omschrijving: 'Versnipperd snoeihout' },
-  { woord: 'groenafval',        tag: 'praktijk',   url: '#themas',    omschrijving: 'Organisch afval uit de tuin' },
-  { woord: 'tuinafval',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Waardevolle grondstof' },
-  { woord: 'keukenafval',       tag: 'praktijk',   url: '#themas',    omschrijving: 'Organisch afval voor compost' },
-
-  { woord: 'bodemleven',        tag: 'bodem',      url: '#themas',    omschrijving: 'Alle organismen in de bodem' },
-  { woord: 'bodemstructuur',    tag: 'bodem',      url: '#themas',    omschrijving: 'Opbouw van de bodem' },
-  { woord: 'bodemvruchtbaarheid',tag:'bodem',      url: '#themas',    omschrijving: 'Vermogen van de bodem om planten te voeden' },
-  { woord: 'bodemgezondheid',   tag: 'bodem',      url: '#themas',    omschrijving: 'Kwaliteit van het bodemleven' },
-  { woord: 'regenwormen',       tag: 'bodem',      url: '#themas',    omschrijving: 'Belangrijke bodemwerkers' },
-  { woord: 'wormen',            tag: 'bodem',      url: '#themas',    omschrijving: 'Onmisbaar voor de bodem' },
-  { woord: 'schimmels',         tag: 'bodem',      url: '#themas',    omschrijving: 'Onzichtbare helpers' },
-  { woord: 'mycelium',          tag: 'bodem',      url: '#themas',    omschrijving: 'Netwerk van schimmeldraden' },
-  { woord: 'bacteriën',         tag: 'bodem',      url: '#themas',    omschrijving: 'Microscopische afbrekers' },
-  { woord: 'microleven',        tag: 'bodem',      url: '#themas',    omschrijving: 'Leven dat de bodem vruchtbaar maakt' },
-  { woord: 'koolstof',          tag: 'bodem',      url: '#filosofie', omschrijving: 'Belangrijk element in de bodemkringloop' },
-  { woord: 'fosfor',            tag: 'bodem',      url: '#filosofie', omschrijving: 'Voedingsstof voor planten' },
-  { woord: 'kalium',            tag: 'bodem',      url: '#filosofie', omschrijving: 'Essentiële plantenvoeding' },
-
-  { woord: 'bijen',             tag: 'natuur',     url: '#themas',    omschrijving: 'Belangrijke bestuivers' },
-  { woord: 'hommels',           tag: 'natuur',     url: '#themas',    omschrijving: 'Sterke bestuivers' },
-  { woord: 'vlinders',          tag: 'natuur',     url: '#themas',    omschrijving: 'Nuttige insecten' },
-  { woord: 'zweefvliegen',      tag: 'natuur',     url: '#themas',    omschrijving: 'Natuurlijke bladluisbestrijders' },
-  { woord: 'gaasvliegen',       tag: 'natuur',     url: '#themas',    omschrijving: 'Natuurlijke vijanden van bladluizen' },
-  { woord: 'lieveheersbeestjes',tag: 'natuur',     url: '#themas',    omschrijving: 'Eten bladluizen' },
-  { woord: 'oorwormen',         tag: 'natuur',     url: '#themas',    omschrijving: 'Nuttige roofinsecten' },
-  { woord: 'pissebedden',       tag: 'natuur',     url: '#themas',    omschrijving: 'Afbrekers van organisch materiaal' },
-  { woord: 'springstaarten',    tag: 'natuur',     url: '#themas',    omschrijving: 'Belangrijk bodemleven' },
-  { woord: 'duizendpoten',      tag: 'natuur',     url: '#themas',    omschrijving: 'Roofdieren in de bodem' },
-
-  { woord: 'mest',              tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding voor de bodem' },
-  { woord: 'kunstmest',         tag: 'praktijk',   url: '#themas',    omschrijving: 'Minerale meststoffen' },
-  { woord: 'plantenvoeding',    tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding voor planten' },
-  { woord: 'bemesten',          tag: 'praktijk',   url: '#themas',    omschrijving: 'Voeding toevoegen aan de bodem' },
-
-  { woord: 'tomaten',           tag: 'planten',    url: '#themas',    omschrijving: 'Populaire moestuinplant' },
-  { woord: 'aardappelen',       tag: 'planten',    url: '#themas',    omschrijving: 'Klassieke moestuinteelt' },
-  { woord: 'courgette',         tag: 'planten',    url: '#themas',    omschrijving: 'Productieve zomerplant' },
-  { woord: 'pompoen',           tag: 'planten',    url: '#themas',    omschrijving: 'Ideale bodembedekker' },
-  { woord: 'bonen',             tag: 'planten',    url: '#themas',    omschrijving: 'Stikstofbinders' },
-  { woord: 'erwten',            tag: 'planten',    url: '#themas',    omschrijving: 'Peulgewassen' },
-  { woord: 'kolen',             tag: 'planten',    url: '#themas',    omschrijving: 'Voedzame wintergroenten' },
-  { woord: 'sla',               tag: 'planten',    url: '#themas',    omschrijving: 'Makkelijke bladgroente' },
-
-  { woord: 'chaostuin',         tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin gebaseerd op natuurlijke processen' },
-  { woord: 'chaostuinieren',    tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuinieren met de natuur mee' },
-  { woord: 'natuurtuin',        tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin met ruimte voor biodiversiteit' },
-  { woord: 'kringlooptuin',     tag: 'filosofie',  url: '#filosofie', omschrijving: 'Tuin zonder afval' },
-  { woord: 'duurzaam',          tag: 'filosofie',  url: '#filosofie', omschrijving: 'Werken met respect voor de natuur' },
-  { woord: 'biodiversiteit',    tag: 'filosofie',  url: '#filosofie', omschrijving: 'Rijkdom aan soorten' },
-  { woord: 'ecosysteem',        tag: 'filosofie',  url: '#filosofie', omschrijving: 'Samenhang van alle levende organismen' }
-];
+fetch('/data/begrippen.json')
+  .then(r => r.json())
+  .then(begrippen => {
 
 whenNavReady(function() {
 
@@ -1927,6 +1780,9 @@ document.addEventListener('click', function(e) {
 updateMissedBtn();
 
 }); // einde whenNavReady (zoekfunctie)
+
+  }) // einde fetch .then
+  .catch(err => console.warn('begrippen.json kon niet geladen worden:', err));
 
 </script>
 </body>
