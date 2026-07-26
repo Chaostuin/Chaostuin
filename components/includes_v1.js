@@ -115,16 +115,9 @@
     });
   }
 
-  function loadSearch() {
-    const s = document.createElement('script');
-    s.src = '/components/search.js';
-    document.head.appendChild(s);
-  }
-
   function init() {
     loadComponent('nav-placeholder', 'nav.html', initNav);
     loadComponent('footer-placeholder', 'footer.html');
-    loadSearch();
   }
 
   if (document.readyState === 'loading') {

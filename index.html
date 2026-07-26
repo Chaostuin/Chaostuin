@@ -1165,7 +1165,7 @@ footer p {
       <div class="hero-quote">
         <span class="hero-quote-mark">"</span>
         <p>Wat als we de natuur zijn werk laten doen?</p>
-        <cite><a href="/aanpak/meer.html" class="cite-link"><b>Meer uit je tuin met wat chaos</b></a></cite>
+        <cite><a href="/aanpak/meer.html" class="cite-link">Meer uit je tuin met wat chaos</a></cite>
       </div>
     </div>
   </div>
@@ -1618,46 +1618,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script src="/components/includes.js"></script>
 <script>
-/* Wacht tot includes.js de navbar (incl. zoekbalk) effectief in
-   #nav-placeholder heeft gezet, voor we elementen erin opvragen. */
-function whenNavReady(callback) {
-  if (document.getElementById('nav')) { callback(); return; }
-  const obs = new MutationObserver(() => {
-    if (document.getElementById('nav')) { obs.disconnect(); callback(); }
-  });
-  obs.observe(document.body, { childList: true, subtree: true });
-}
-
-whenNavReady(function() {
-
-/* NAV scroll */
-const nav = document.getElementById('nav');
-if (nav) {
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  });
-}
-
-/* Dropdown fix */
-document.querySelectorAll('.nav-dropdown-item').forEach(item => {
-  const dropdown = item.querySelector('.nav-dropdown');
-  if (!dropdown) return;
-  let closeTimer = null;
-  function isOver(e) {
-    const ib = item.getBoundingClientRect(), db = dropdown.getBoundingClientRect();
-    return (e.clientX >= ib.left && e.clientX <= ib.right && e.clientY >= ib.top && e.clientY <= ib.bottom) ||
-           (e.clientX >= db.left && e.clientX <= db.right && e.clientY >= db.top && e.clientY <= db.bottom);
-  }
-  item.addEventListener('mouseenter', () => { clearTimeout(closeTimer); dropdown.classList.add('open'); });
-  document.addEventListener('mousemove', e => {
-    if (!dropdown.classList.contains('open')) return;
-    clearTimeout(closeTimer);
-    if (!isOver(e)) closeTimer = setTimeout(() => dropdown.classList.remove('open'), 100);
-  });
-});
-
-}); // einde whenNavReady (nav scroll + dropdown)
-
 /* Reveal on scroll */
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
@@ -1670,128 +1630,7 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 reveals.forEach(r => observer.observe(r));
 
-/* ── ZOEKFUNCTIE ─────────────────────────────────────── */
-fetch('/data/begrippen.json')
-  .then(r => r.json())
-  .then(begrippen => {
 
-whenNavReady(function() {
-
-const input = document.getElementById('searchInput');
-const dropdown = document.getElementById('searchDropdown');
-const missedBtn = document.getElementById('missedBtn');
-if (!input || !dropdown || !missedBtn) return;
-
-const STORAGE_KEY = 'chaostuin_missed_words';
-
-function getMissed() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e) { return []; }
-}
-
-function saveMissed(word) {
-  const missed = getMissed();
-  const clean = word.trim().toLowerCase();
-  if (clean.length < 2) return;
-  if (!missed.find(m => m.woord === clean)) {
-    missed.push({ woord: clean, datum: new Date().toISOString().slice(0,10), count: 1 });
-  } else {
-    missed.find(m => m.woord === clean).count++;
-  }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(missed));
-  updateMissedBtn();
-}
-
-function updateMissedBtn() {
-  const missed = getMissed();
-  if (missed.length > 0) {
-    missedBtn.classList.add('has-items');
-    missedBtn.title = missed.length + ' niet-gevonden zoekterm(en) — klik om te exporteren';
-  } else {
-    missedBtn.classList.remove('has-items');
-  }
-}
-
-function exportMissed() {
-  const missed = getMissed();
-  if (!missed.length) return;
-  const lines = ['Niet-gevonden zoektermen op chaostuin.be', '=' .repeat(40), ''];
-  missed.sort((a,b) => b.count - a.count)
-        .forEach(m => lines.push(m.count + 'x  ' + m.woord + '  (' + m.datum + ')'));
-  lines.push('', 'Geëxporteerd op: ' + new Date().toLocaleString('nl-BE'));
-  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'chaostuin_ontbrekende_woorden_' + new Date().toISOString().slice(0,10) + '.txt';
-  a.click();
-}
-
-missedBtn.addEventListener('click', exportMissed);
-
-function zoek(query) {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
-  return begrippen.filter(b =>
-    b.woord.toLowerCase().includes(q) ||
-    b.omschrijving.toLowerCase().includes(q) ||
-    b.tag.toLowerCase().includes(q) ||
-    (b.synoniem && b.synoniem.toLowerCase().includes(q))
-  ).slice(0, 6);
-}
-
-let missedTimer = null;
-
-input.addEventListener('input', function() {
-  const q = this.value.trim();
-  clearTimeout(missedTimer);
-
-  if (!q) { dropdown.classList.remove('open'); return; }
-
-  const results = zoek(q);
-  dropdown.innerHTML = '';
-
-  if (results.length > 0) {
-    results.forEach(r => {
-      const a = document.createElement('a');
-      a.className = 'search-result-item';
-      a.href = r.url;
-      a.innerHTML = '<span style="flex:1">' + r.woord + ' <span style="font-size:0.8em;color:rgba(245,240,232,0.4);">— ' + r.omschrijving + '</span></span><span class="search-result-tag">' + r.tag + '</span>';
-      a.addEventListener('click', () => { dropdown.classList.remove('open'); input.value = ''; });
-      dropdown.appendChild(a);
-    });
-  } else {
-    dropdown.innerHTML = '<div class="search-not-found">Geen resultaat voor <strong>"' + q + '"</strong><br><span style="font-size:0.8em;opacity:0.7;">We onthouden dit — Hij voegt het toe.</span></div>';
-    missedTimer = setTimeout(() => saveMissed(q), 1500);
-  }
-
-  dropdown.classList.add('open');
-});
-
-input.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { dropdown.classList.remove('open'); input.value = ''; }
-  if (e.key === 'Enter') {
-    const q = this.value.trim();
-    const results = zoek(q);
-    if (results.length > 0) {
-      window.location.href = results[0].url;
-      dropdown.classList.remove('open');
-      input.value = '';
-    } else {
-      saveMissed(q);
-    }
-  }
-});
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.nav-search')) dropdown.classList.remove('open');
-});
-
-updateMissedBtn();
-
-}); // einde whenNavReady (zoekfunctie)
-
-  }) // einde fetch .then
-  .catch(err => console.warn('begrippen.json kon niet geladen worden:', err));
 
 </script>
 </body>
