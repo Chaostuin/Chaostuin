@@ -1,31 +1,11 @@
 /* ── CHAOSTUIN ZOEKFUNCTIE ───────────────────────────────
-   Laadt begrippen.json (of begrippen-en.json op /en/) en koppelt
-   de zoekbalk in de nav.
+   Laadt begrippen.json en koppelt de zoekbalk in de nav.
    Wordt automatisch geladen door includes.js na navLoaded.
 ──────────────────────────────────────────────────────── */
 
 (function() {
 
-  const isEnglish = window.location.pathname.startsWith('/en/');
-  const STORAGE_KEY = isEnglish ? 'chaostuin_missed_words_en' : 'chaostuin_missed_words';
-  const DATA_FILE = isEnglish ? '/data/begrippen-en.json' : '/data/begrippen.json';
-  const LOCALE = isEnglish ? 'en-US' : 'nl-BE';
-
-  const t = isEnglish ? {
-    missedTitle: (n) => n + ' missed search term(s) — click to export',
-    exportHeader: 'Missed search terms on chaostuin.be',
-    exportedOn: 'Exported on: ',
-    exportFilename: 'chaostuin_missed_words_',
-    noResult: (q) => 'No result for <strong>"' + q + '"</strong>',
-    noResultNote: 'We remember this — it will be added.'
-  } : {
-    missedTitle: (n) => n + ' niet-gevonden zoekterm(en) — klik om te exporteren',
-    exportHeader: 'Niet-gevonden zoektermen op chaostuin.be',
-    exportedOn: 'Geëxporteerd op: ',
-    exportFilename: 'chaostuin_ontbrekende_woorden_',
-    noResult: (q) => 'Geen resultaat voor <strong>"' + q + '"</strong>',
-    noResultNote: 'We onthouden dit — Hij voegt het toe.'
-  };
+  const STORAGE_KEY = 'chaostuin_missed_words';
 
   function getMissed() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
@@ -52,7 +32,7 @@
     const missed = getMissed();
     if (missed.length > 0) {
       missedBtn.classList.add('has-items');
-      missedBtn.title = t.missedTitle(missed.length);
+      missedBtn.title = missed.length + ' niet-gevonden zoekterm(en) — klik om te exporteren';
     } else {
       missedBtn.classList.remove('has-items');
     }
@@ -61,14 +41,14 @@
   function exportMissed() {
     const missed = getMissed();
     if (!missed.length) return;
-    const lines = [t.exportHeader, '='.repeat(40), ''];
+    const lines = ['Niet-gevonden zoektermen op chaostuin.be', '='.repeat(40), ''];
     missed.sort((a,b) => b.count - a.count)
           .forEach(m => lines.push(m.count + 'x  ' + m.woord + '  (' + m.datum + ')'));
-    lines.push('', t.exportedOn + new Date().toLocaleString(LOCALE));
+    lines.push('', 'Geëxporteerd op: ' + new Date().toLocaleString('nl-BE'));
     const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = t.exportFilename + new Date().toISOString().slice(0,10) + '.txt';
+    a.download = 'chaostuin_ontbrekende_woorden_' + new Date().toISOString().slice(0,10) + '.txt';
     a.click();
   }
 
@@ -120,8 +100,8 @@
         });
       } else {
         dropdown.innerHTML =
-          '<div class="search-not-found">' + t.noResult(q) +
-          '<br><span style="font-size:0.8em;opacity:0.7;">' + t.noResultNote + '</span></div>';
+          '<div class="search-not-found">Geen resultaat voor <strong>"' + q + '"</strong>' +
+          '<br><span style="font-size:0.8em;opacity:0.7;">We onthouden dit — Hij voegt het toe.</span></div>';
         missedTimer = setTimeout(() => saveMissed(q), 1500);
       }
 
@@ -150,10 +130,10 @@
 
   // Start zodra de nav geladen is
   document.addEventListener('navLoaded', function() {
-    fetch(DATA_FILE)
+    fetch('/data/begrippen.json')
       .then(r => r.json())
       .then(begrippen => initSearch(begrippen))
-      .catch(err => console.warn(DATA_FILE + ' kon niet geladen worden:', err));
+      .catch(err => console.warn('begrippen.json kon niet geladen worden:', err));
   });
 
 })();

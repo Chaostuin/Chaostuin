@@ -1,6 +1,5 @@
 /* ── CHAOSTUIN INCLUDES ──────────────────────────────────
-   Laadt nav.html en footer.html in elke pagina (of de EN-varianten
-   als de pagina onder /en/ staat).
+   Laadt nav.html en footer.html in elke pagina.
    Gebruik:
      <div id="nav-placeholder"></div>   ← bovenaan <body>
      <div id="footer-placeholder"></div> ← onderaan <body>, voor </body>
@@ -10,9 +9,6 @@
 (function() {
 
   const root = document.documentElement.dataset.root || '/';
-  const isEnglish = window.location.pathname.startsWith('/en/');
-  const navFile = isEnglish ? 'nav-en.html' : 'nav.html';
-  const footerFile = isEnglish ? 'footer-en.html' : 'footer.html';
 
   function loadComponent(id, file, callback) {
     const el = document.getElementById(id);
@@ -26,7 +22,7 @@
         el.outerHTML = html;
         requestAnimationFrame(() => {
           if (callback) callback();
-          if (file === navFile) {
+          if (file === 'nav.html') {
             document.dispatchEvent(new Event('navLoaded'));
           }
         });
@@ -126,8 +122,8 @@
   }
 
   function init() {
-    loadComponent('nav-placeholder', navFile, initNav);
-    loadComponent('footer-placeholder', footerFile);
+    loadComponent('nav-placeholder', 'nav.html', initNav);
+    loadComponent('footer-placeholder', 'footer.html');
     loadSearch();
   }
 
