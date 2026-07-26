@@ -3,31 +3,36 @@
     "woord": "aanvoer",
     "tag": "praktijk",
     "url": "/aanpak/kringlopen.html",
-    "omschrijving": "Materiaal van buiten de tuin binnenbrengen om de kringloop aan te vullen"
+    "omschrijving": "Materiaal van buiten de tuin binnenbrengen om de kringloop aan te vullen",
+    "synoniem": "import"
   },
   {
     "woord": "aardappelen",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Klassieke moestuinteelt"
+    "omschrijving": "Klassieke moestuinteelt",
+    "synoniem": "piepers"
   },
   {
     "woord": "afsnijden",
     "tag": "techniek",
     "url": "/aanpak/oogsten.html",
-    "omschrijving": "Gewassen net boven de grond afknippen zodat wortels in de bodem blijven"
+    "omschrijving": "Gewassen net boven de grond afknippen zodat wortels in de bodem blijven",
+    "synoniem": "afknippen"
   },
   {
     "woord": "agroforestry",
     "tag": "verwant",
     "url": "/bedenkingen/agroforestry.html",
-    "omschrijving": "Landbouwsysteem dat bomen en gewassen combineert in rijen — chaos op professionele schaal"
+    "omschrijving": "Landbouwsysteem dat bomen en gewassen combineert in rijen — chaos op professionele schaal",
+    "synoniem": "boslandbouw"
   },
   {
     "woord": "allelopathie",
     "tag": "natuur",
     "url": "/bedenkingen/combinaties.html",
-    "omschrijving": "Wanneer een plant stoffen afscheidt die de groei van een buurplant remmen"
+    "omschrijving": "Wanneer een plant stoffen afscheidt die de groei van een buurplant remmen",
+    "synoniem": "chemische plantenonderdrukking"
   },
   {
     "woord": "armlengte",
@@ -39,169 +44,225 @@
     "woord": "bacteriën",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Microscopische afbrekers"
+    "omschrijving": "Microscopische afbrekers",
+    "synoniem": "micro-organismen"
   },
   {
     "woord": "bedden",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Verhoogde of vlakke teeltbedden"
+    "omschrijving": "Verhoogde of vlakke teeltbedden",
+    "synoniem": "teeltbedden"
   },
   {
     "woord": "bemesten",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Voeding toevoegen aan de bodem"
+    "omschrijving": "Voeding toevoegen aan de bodem",
+    "synoniem": "voeden"
+  },
+  {
+    "woord": "benutting",
+    "tag": "praktijk",
+    "url": "/tools/tuinplanner.html",
+    "omschrijving": "Hoe groot het aandeel productieve teeltoppervlakte is ten opzichte van de totale tuingrootte",
+    "synoniem": "efficiëntie"
+  },
+  {
+    "woord": "bereikbare teelt",
+    "tag": "praktijk",
+    "url": "/tools/tuinplanner.html",
+    "omschrijving": "Oppervlakte die je zonder op de bodem te stappen kunt bereiken vanuit de paden",
+    "synoniem": "bereikbare oppervlakte"
   },
   {
     "woord": "beschutting",
     "tag": "praktijk",
     "url": "/aanpak/vaste_planten.html",
-    "omschrijving": "Planten die wind en zon temperen en zo een stabieler microklimaat creëren"
+    "omschrijving": "Planten die wind en zon temperen en zo een stabieler microklimaat creëren",
+    "synoniem": "windluwe plek"
   },
   {
     "woord": "bessenstruiken",
     "tag": "planten",
     "url": "/aanpak/vaste_planten.html",
-    "omschrijving": "Struiken met eetbare bessen zoals rode bes, blauwe bes of kruisbes"
+    "omschrijving": "Struiken met eetbare bessen zoals rode bes, blauwe bes of kruisbes",
+    "synoniem": "kleinfruit"
   },
   {
     "woord": "bestrijdingsmiddelen",
     "tag": "filosofie",
     "url": "/aanpak/plagen.html",
-    "omschrijving": "Chemische middelen die een chaostuin probeert te vermijden"
+    "omschrijving": "Chemische middelen die een chaostuin probeert te vermijden",
+    "synoniem": "pesticiden"
   },
   {
     "woord": "bestuivers",
     "tag": "natuur",
     "url": "/aanpak/bloemen_kruiden.html",
-    "omschrijving": "Insecten die bloemen bestuiven, zoals bijen en hommels"
+    "omschrijving": "Insecten die bloemen bestuiven, zoals bijen en hommels",
+    "synoniem": "insecten"
   },
   {
     "woord": "bestuiving",
     "tag": "natuur",
     "url": "/bedenkingen/bloemen.html",
-    "omschrijving": "Het overbrengen van stuifmeel door insecten — noodzakelijk voor de vruchtzetting"
+    "omschrijving": "Het overbrengen van stuifmeel door insecten — noodzakelijk voor de vruchtzetting",
+    "synoniem": "bestuiven"
   },
   {
     "woord": "bijen",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Belangrijke bestuivers"
+    "omschrijving": "Belangrijke bestuivers",
+    "synoniem": "honingbijen"
   },
   {
     "woord": "bijsturen",
     "tag": "praktijk",
     "url": "/aanpak/bijsturen.html",
-    "omschrijving": "Je plan aanpassen als iets mislukt of beter kan"
+    "omschrijving": "Je plan aanpassen als iets mislukt of beter kan",
+    "synoniem": "aanpassen"
   },
   {
     "woord": "biodiversiteit",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Rijkdom aan soorten"
+    "omschrijving": "Rijkdom aan soorten",
+    "synoniem": "soortenrijkdom"
   },
   {
     "woord": "biomimicry",
     "tag": "filosofie",
     "url": "/bedenkingen/AI_en_chaostuin.html",
-    "omschrijving": "Het nabootsen van de natuur als ontwerprincipe voor de tuin"
+    "omschrijving": "Het nabootsen van de natuur als ontwerprincipe voor de tuin",
+    "synoniem": "natuurnabootsing"
   },
   {
     "woord": "blad",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Natuurlijk mulchmateriaal"
+    "omschrijving": "Natuurlijk mulchmateriaal",
+    "synoniem": "blaadje"
   },
   {
     "woord": "bladeren",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Waardevolle grondstof voor de tuin"
+    "omschrijving": "Waardevolle grondstof voor de tuin",
+    "synoniem": "loof"
   },
   {
     "woord": "bladmulch",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Mulchen met bladeren"
+    "omschrijving": "Mulchen met bladeren",
+    "synoniem": "bladerdek"
   },
   {
     "woord": "bloemen",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Afrikaantjes, goudsbloem en meer in de moestuin"
+    "omschrijving": "Afrikaantjes, goudsbloem en meer in de moestuin",
+    "synoniem": "sierplanten"
   },
   {
     "woord": "bodem",
     "tag": "basis",
     "url": "#themas",
-    "omschrijving": "De basis van alles in de tuin"
+    "omschrijving": "De basis van alles in de tuin",
+    "synoniem": "grond"
   },
   {
     "woord": "bodembedekker",
     "tag": "techniek",
     "url": "/bedenkingen/diversiteit.html",
-    "omschrijving": "Lage plant die de bodem dicht houdt en vocht vasthoudt voor buurplanten"
+    "omschrijving": "Lage plant die de bodem dicht houdt en vocht vasthoudt voor buurplanten",
+    "synoniem": "grondbedekker"
   },
   {
     "woord": "bodemgezondheid",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Kwaliteit van het bodemleven"
-  },
-  {
-    "woord": "bodemleven",
-    "tag": "bodem",
-    "url": "#themas",
-    "omschrijving": "Alle levende organismen die de organische stof omzetten in voedsel voor de planten"
+    "omschrijving": "Kwaliteit van het bodemleven",
+    "synoniem": "bodemkwaliteit"
   },
   {
     "woord": "bodemisolatie",
     "tag": "bodem",
     "url": "/aanpak/mulchvoordelen.html",
-    "omschrijving": "Mulch beschermt de bodem tegen extreme temperaturen"
+    "omschrijving": "Mulch beschermt de bodem tegen extreme temperaturen",
+    "synoniem": "bodeminsulatie"
   },
   {
     "woord": "bodemleven",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Alle organismen in de bodem"
+    "omschrijving": "Alle organismen in de bodem",
+    "synoniem": "bodemorganismen"
+  },
+  {
+    "woord": "bodemnetwerk",
+    "tag": "bodem",
+    "url": "/bedenkingen/waarom_niet_spitten.html",
+    "omschrijving": "Het netwerk van schimmels, bacteriën en wormen dat spitten vernietigt",
+    "synoniem": "schimmelnetwerk"
   },
   {
     "woord": "bodemopbouw",
     "tag": "bodem",
     "url": "/aanpak/bodem.html",
-    "omschrijving": "De bodem jaar na jaar verbeteren door organisch materiaal toe te voegen"
+    "omschrijving": "De bodem jaar na jaar verbeteren door organisch materiaal toe te voegen",
+    "synoniem": "bodemverbetering"
+  },
+  {
+    "woord": "bodemsignaal",
+    "tag": "bodem",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Wat onkruid verraadt over de toestand van je bodem",
+    "synoniem": "bodemindicator"
   },
   {
     "woord": "bodemstructuur",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Opbouw van de bodem"
+    "omschrijving": "Opbouw van de bodem",
+    "synoniem": "bodemtextuur"
+  },
+  {
+    "woord": "bodemverstoring",
+    "tag": "bodem",
+    "url": "/bedenkingen/waarom_niet_spitten.html",
+    "omschrijving": "Wat spitten en ploegen aanrichten in het leven onder de grond",
+    "synoniem": "bodemomkering"
   },
   {
     "woord": "bodemvoeding",
     "tag": "bodem",
     "url": "/aanpak/compost.html",
-    "omschrijving": "Voedingsstoffen die je bodem voedt via organisch materiaal"
+    "omschrijving": "Voedingsstoffen die je bodem voedt via organisch materiaal",
+    "synoniem": "bodemvoeding"
   },
   {
     "woord": "bodemvruchtbaarheid",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Vermogen van de bodem om planten te voeden"
+    "omschrijving": "Vermogen van de bodem om planten te voeden",
+    "synoniem": "bodemkwaliteit"
   },
   {
     "woord": "bonen",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Stikstofbinders"
+    "omschrijving": "Stikstofbinders",
+    "synoniem": "peulvruchten"
   },
   {
     "woord": "bruin materiaal",
     "tag": "techniek",
     "url": "/aanpak/composteren.html",
-    "omschrijving": "Droog, koolstofrijk materiaal voor de composthoop (takken, stro, karton)"
+    "omschrijving": "Droog, koolstofrijk materiaal voor de composthoop (takken, stro, karton)",
+    "synoniem": "koolstofrijk materiaal"
   },
   {
     "woord": "calculator",
@@ -213,121 +274,168 @@
     "woord": "chaos",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Georganiseerde wanorde als tuinierstrategie"
+    "omschrijving": "Georganiseerde wanorde als tuinierstrategie",
+    "synoniem": "wanorde"
   },
   {
     "woord": "chaostuin",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Tuin gebaseerd op natuurlijke processen"
+    "omschrijving": "Tuin gebaseerd op natuurlijke processen",
+    "synoniem": "ecologische moestuin"
   },
   {
     "woord": "chaostuinieren",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Tuinieren met de natuur mee"
+    "omschrijving": "Tuinieren met de natuur mee",
+    "synoniem": "ecologisch tuinieren"
   },
   {
     "woord": "chop-and-drop",
     "tag": "techniek",
     "url": "/bedenkingen/composteren.html",
-    "omschrijving": "Plantmateriaal ter plaatse knippen en laten liggen als directe mulch"
+    "omschrijving": "Plantmateriaal ter plaatse knippen en laten liggen als directe mulch",
+    "synoniem": "ter plaatse laten"
   },
   {
     "woord": "CO2 opslag",
     "tag": "filosofie",
     "url": "/aanpak/meer.html",
-    "omschrijving": "Meer organische stof in de bodem betekent minder CO2 in de lucht"
+    "omschrijving": "Meer organische stof in de bodem betekent minder CO2 in de lucht",
+    "synoniem": "koolstofopslag"
   },
   {
     "woord": "combinatieteelt",
     "tag": "techniek",
     "url": "/bedenkingen/combinaties.html",
-    "omschrijving": "Planten bewust naast elkaar zetten omdat ze elkaar aanvullen of beschermen"
+    "omschrijving": "Planten bewust naast elkaar zetten omdat ze elkaar aanvullen of beschermen",
+    "synoniem": "mengteelt"
   },
   {
     "woord": "companion planting",
     "tag": "techniek",
     "url": "#themas",
-    "omschrijving": "Planten die elkaar helpen"
+    "omschrijving": "Planten die elkaar helpen",
+    "synoniem": "combinatieteelt"
   },
   {
     "woord": "compost",
     "tag": "techniek",
     "url": "#themas",
-    "omschrijving": "Verteerd organisch materiaal"
+    "omschrijving": "Verteerd organisch materiaal",
+    "synoniem": "tuincompost"
+  },
+  {
+    "woord": "compostcheck",
+    "tag": "tool",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Interactief hulpmiddel om te controleren wat wel en niet op de composthoop mag",
+    "synoniem": "compostwijzer"
   },
   {
     "woord": "composteren",
     "tag": "techniek",
     "url": "/aanpak/composteren.html",
-    "omschrijving": "Organisch afval omzetten tot rijpe compost"
+    "omschrijving": "Organisch afval omzetten tot rijpe compost",
+    "synoniem": "vergisten"
   },
   {
     "woord": "composthoop",
     "tag": "techniek",
     "url": "#themas",
-    "omschrijving": "Plek waar organisch materiaal verteert"
+    "omschrijving": "Plek waar organisch materiaal verteert",
+    "synoniem": "compostbak"
   },
   {
     "woord": "courgette",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Productieve zomerplant"
+    "omschrijving": "Productieve zomerplant",
+    "synoniem": "zucchini"
+  },
+  {
+    "woord": "dennennaalden",
+    "tag": "techniek",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Composteerbaar maar traag en verzurend — gebruik spaarzaam"
   },
   {
     "woord": "dieven",
     "tag": "techniek",
     "url": "/aanpak/verzorgen.html",
-    "omschrijving": "Zijscheuten bij tomaten die energie weghalen — worden verwijderd"
+    "omschrijving": "Zijscheuten bij tomaten die energie weghalen — worden verwijderd",
+    "synoniem": "zijscheuten"
   },
   {
     "woord": "diversiteit",
     "tag": "filosofie",
     "url": "#themas",
-    "omschrijving": "Variatie als kracht van het ecosysteem"
+    "omschrijving": "Variatie als kracht van het ecosysteem",
+    "synoniem": "variatie"
   },
   {
     "woord": "drie zusters",
     "tag": "techniek",
     "url": "#themas",
-    "omschrijving": "Maïs, bonen en pompoen samen"
+    "omschrijving": "Maïs, bonen en pompoen samen",
+    "synoniem": "squash, maïs en bonen"
   },
   {
     "woord": "droogte",
     "tag": "praktijk",
     "url": "/aanpak/weer.html",
-    "omschrijving": "Periodes zonder regen waar een gemulchte bodem veel beter tegen bestand is"
+    "omschrijving": "Periodes zonder regen waar een gemulchte bodem veel beter tegen bestand is",
+    "synoniem": "droogteperiode"
   },
   {
     "woord": "duizendpoten",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Roofdieren in de bodem"
+    "omschrijving": "Roofdieren in de bodem",
+    "synoniem": "miljoenpoten"
   },
   {
     "woord": "duurzaam",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Werken met respect voor de natuur"
+    "omschrijving": "Werken met respect voor de natuur",
+    "synoniem": "ecologisch"
   },
   {
     "woord": "ecologisch",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Kennis van het huis — oikos + logos"
+    "omschrijving": "Kennis van het huis — oikos + logos",
+    "synoniem": "biologisch"
   },
   {
     "woord": "ecosysteem",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Samenhang van alle levende organismen"
+    "omschrijving": "Samenhang van alle levende organismen",
+    "synoniem": "leefgemeenschap"
+  },
+  {
+    "woord": "eenjarigen",
+    "tag": "planten",
+    "url": "/bedenkingen/voedselbos.html",
+    "omschrijving": "Gewassen die je elk jaar opnieuw zaait — de kern van een moestuin",
+    "synoniem": "eenjarige gewassen"
   },
   {
     "woord": "eetbare bloemen",
     "tag": "planten",
     "url": "/aanpak/bloemen_kruiden.html",
-    "omschrijving": "Bloemen die je kunt eten, zoals nasturtium of viooltjes"
+    "omschrijving": "Bloemen die je kunt eten, zoals nasturtium of viooltjes",
+    "synoniem": "eetbare sierplanten"
+  },
+  {
+    "woord": "eierschalen",
+    "tag": "techniek",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Composteerbaar maar traag — verkruimeld gaan ze sneller",
+    "synoniem": "kalkschalen"
   },
   {
     "woord": "erwten",
@@ -339,133 +447,169 @@
     "woord": "evenwicht",
     "tag": "filosofie",
     "url": "/aanpak/plagen.html",
-    "omschrijving": "Als de tuin divers genoeg is, herstelt het evenwicht zich vaak vanzelf"
+    "omschrijving": "Als de tuin divers genoeg is, herstelt het evenwicht zich vaak vanzelf",
+    "synoniem": "balans"
   },
   {
     "woord": "fosfor",
     "tag": "bodem",
     "url": "#filosofie",
-    "omschrijving": "Voedingsstof voor planten"
+    "omschrijving": "Voedingsstof voor planten",
+    "synoniem": "fosfaat"
   },
   {
     "woord": "gaasvliegen",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Natuurlijke vijanden van bladluizen"
+    "omschrijving": "Natuurlijke vijanden van bladluizen",
+    "synoniem": "lacewings"
   },
   {
     "woord": "gelaagdheid",
     "tag": "techniek",
     "url": "/bedenkingen/diversiteit.html",
-    "omschrijving": "Planten op verschillende hoogtes combineren zodat elk de beschikbare ruimte benut"
+    "omschrijving": "Planten op verschillende hoogtes combineren zodat elk de beschikbare ruimte benut",
+    "synoniem": "lagenstructuur"
   },
   {
     "woord": "gras",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Mulch en bodemvoeding"
+    "omschrijving": "Mulch en bodemvoeding",
+    "synoniem": "gazon"
   },
   {
     "woord": "grasmaaisel",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Vers mulchmateriaal"
+    "omschrijving": "Vers mulchmateriaal",
+    "synoniem": "gras"
   },
   {
     "woord": "groen materiaal",
     "tag": "techniek",
     "url": "/aanpak/composteren.html",
-    "omschrijving": "Stikstofrijk, vers materiaal voor de composthoop (grasmaaisel, keukenafval)"
+    "omschrijving": "Stikstofrijk, vers materiaal voor de composthoop (grasmaaisel, keukenafval)",
+    "synoniem": "stikstofrijk materiaal"
   },
   {
     "woord": "groenafval",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Organisch afval uit de tuin"
+    "omschrijving": "Organisch afval uit de tuin",
+    "synoniem": "plantaardig afval"
   },
   {
     "woord": "groenbemester",
     "tag": "techniek",
     "url": "/bedenkingen/ecosysteem.html",
-    "omschrijving": "Plant die je inzaait om de bodem te verrijken en daarna als mulch of compost gebruikt"
+    "omschrijving": "Plant die je inzaait om de bodem te verrijken en daarna als mulch of compost gebruikt",
+    "synoniem": "dekgewas"
+  },
+  {
+    "woord": "haagsnoeisel",
+    "tag": "techniek",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Takken en twijgen van hagen, versnipperd bruikbaar als mulch of compost",
+    "synoniem": "snoeihout"
   },
   {
     "woord": "hakselen",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Takken versnipperen"
+    "omschrijving": "Takken versnipperen",
+    "synoniem": "versnipperen"
   },
   {
     "woord": "hakselhout",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Versnipperd snoeihout"
+    "omschrijving": "Versnipperd snoeihout",
+    "synoniem": "houtsnippers"
   },
   {
     "woord": "harken",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Waarom we dit niet meer doen"
+    "omschrijving": "Waarom we dit niet meer doen",
+    "synoniem": "harken"
   },
   {
     "woord": "hommels",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Sterke bestuivers"
+    "omschrijving": "Sterke bestuivers",
+    "synoniem": "bumblebees"
   },
   {
     "woord": "hoofdpaden",
     "tag": "praktijk",
     "url": "/aanpak/paden.html",
-    "omschrijving": "Vaste paden van 60 cm breed voor kruiwagen en gereedschap"
+    "omschrijving": "Vaste paden van 60 cm breed voor kruiwagen en gereedschap",
+    "synoniem": "rijpaden"
   },
   {
     "woord": "houtsnippers",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Versnipperd hout als mulch"
+    "omschrijving": "Versnipperd hout als mulch",
+    "synoniem": "hakhout"
   },
   {
     "woord": "humificatie",
     "tag": "bodem",
     "url": "#tools",
-    "omschrijving": "Omzetting van mulch naar stabiele humus"
+    "omschrijving": "Omzetting van mulch naar stabiele humus",
+    "synoniem": "humusvorming"
+  },
+  {
+    "woord": "humificatiefactor",
+    "tag": "bodem",
+    "url": "/tools/mulchcalculator.html",
+    "omschrijving": "Het deel van mulch dat uiteindelijk omgezet wordt in stabiele humus",
+    "synoniem": "omzettingsfactor"
   },
   {
     "woord": "humus",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Stabiel organisch materiaal in de bodem"
+    "omschrijving": "Stabiel organisch materiaal in de bodem",
+    "synoniem": "teelaarde"
   },
   {
     "woord": "indeling",
     "tag": "praktijk",
     "url": "/aanpak/indeling.html",
-    "omschrijving": "Hoe je planten, ruimte en timing slim combineert in je tuin"
+    "omschrijving": "Hoe je planten, ruimte en timing slim combineert in je tuin",
+    "synoniem": "tuinindeling"
   },
   {
     "woord": "insecten",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Bondgenoten in de ecologische tuin"
+    "omschrijving": "Bondgenoten in de ecologische tuin",
+    "synoniem": "geleedpotigen"
   },
   {
     "woord": "kalium",
     "tag": "bodem",
     "url": "#filosofie",
-    "omschrijving": "Essentiële plantenvoeding"
+    "omschrijving": "Essentiële plantenvoeding",
+    "synoniem": "kali"
   },
   {
     "woord": "keukenafval",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Organisch afval voor compost"
+    "omschrijving": "Organisch afval voor compost",
+    "synoniem": "keukenresten"
   },
   {
     "woord": "kiemen",
     "tag": "natuur",
     "url": "/aanpak/zaaien.html",
-    "omschrijving": "Het eerste stadium van een zaad dat begint te groeien"
+    "omschrijving": "Het eerste stadium van een zaad dat begint te groeien",
+    "synoniem": "ontkiemen"
   },
   {
     "woord": "kinderboek",
@@ -477,241 +621,329 @@
     "woord": "klein fruit",
     "tag": "planten",
     "url": "/aanpak/vaste_planten.html",
-    "omschrijving": "Laaggroeiende fruitsoorten zoals aardbeien, frambozen en bessen"
+    "omschrijving": "Laaggroeiende fruitsoorten zoals aardbeien, frambozen en bessen",
+    "synoniem": "kleinfruit"
+  },
+  {
+    "woord": "klimplanten",
+    "tag": "planten",
+    "url": "/bedenkingen/voedselbos.html",
+    "omschrijving": "Planten die omhoog groeien langs bomen of constructies — een laag in het voedselbos",
+    "synoniem": "rankers"
+  },
+  {
+    "woord": "koffiedik",
+    "tag": "techniek",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Uitstekend compostmateriaal: snel afbreekbaar en stikstofrijk",
+    "synoniem": "koffieprut"
   },
   {
     "woord": "kolen",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Voedzame wintergroenten"
+    "omschrijving": "Voedzame wintergroenten",
+    "synoniem": "koolgewassen"
   },
   {
     "woord": "koolstof",
     "tag": "bodem",
     "url": "#filosofie",
-    "omschrijving": "Belangrijk element in de bodemkringloop"
+    "omschrijving": "Belangrijk element in de bodemkringloop",
+    "synoniem": "C"
   },
   {
     "woord": "kringloop",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Gesloten cyclus van stoffen in de tuin"
+    "omschrijving": "Gesloten cyclus van stoffen in de tuin",
+    "synoniem": "cyclus"
   },
   {
     "woord": "kringloop sluiten",
     "tag": "filosofie",
     "url": "/aanpak/compost.html",
-    "omschrijving": "Wat je oogst teruggeven aan de bodem via compost"
+    "omschrijving": "Wat je oogst teruggeven aan de bodem via compost",
+    "synoniem": "kringloop completeren"
   },
   {
     "woord": "kringlooptuin",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Tuin zonder afval"
+    "omschrijving": "Tuin zonder afval",
+    "synoniem": "permacultuurTuin"
   },
   {
     "woord": "kringlopen",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Water, stikstof, organisch materiaal"
+    "omschrijving": "Water, stikstof, organisch materiaal",
+    "synoniem": "nutriëntencycli"
   },
   {
     "woord": "kruiden",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Venkel, tijm, bieslook als tuingenoten"
+    "omschrijving": "Venkel, tijm, bieslook als tuingenoten",
+    "synoniem": "keukenkruiden"
   },
   {
     "woord": "kunstmest",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Minerale meststoffen"
+    "omschrijving": "Minerale meststoffen",
+    "synoniem": "chemische meststof"
+  },
+  {
+    "woord": "kweekgras",
+    "tag": "natuur",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Diepwortelend gras dat verstoorde bodem bijeen houdt — moeilijk te verwijderen",
+    "synoniem": "grassen"
+  },
+  {
+    "woord": "landbouwsysteem",
+    "tag": "filosofie",
+    "url": "/bedenkingen/natuur_of_tuin.html",
+    "omschrijving": "Een moestuin is altijd een beheerd systeem, hoe ecologisch ook",
+    "synoniem": "teeltsysteem"
   },
   {
     "woord": "lieveheersbeestjes",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Eten bladluizen"
+    "omschrijving": "Eten bladluizen",
+    "synoniem": "lieveheersbeest"
   },
   {
     "woord": "loslaten",
     "tag": "filosofie",
     "url": "/bedenkingen/chaos.html",
-    "omschrijving": "Niet alles willen controleren — de kern van het chaostuinieren-principe"
+    "omschrijving": "Niet alles willen controleren — de kern van het chaostuinieren-principe",
+    "synoniem": "niet ingrijpen"
   },
   {
     "woord": "meerjarige kruiden",
     "tag": "planten",
     "url": "/aanpak/vaste_planten.html",
-    "omschrijving": "Kruiden die meerdere jaren op dezelfde plek blijven staan"
+    "omschrijving": "Kruiden die meerdere jaren op dezelfde plek blijven staan",
+    "synoniem": "vaste kruiden"
+  },
+  {
+    "woord": "meerjarige teelt",
+    "tag": "techniek",
+    "url": "/bedenkingen/voedselbos.html",
+    "omschrijving": "Gewassen die meerdere jaren op dezelfde plek blijven en elk jaar opnieuw produceren",
+    "synoniem": "vaste teelt"
   },
   {
     "woord": "mengteelt",
     "tag": "techniek",
     "url": "/aanpak/bloemen_kruiden.html",
-    "omschrijving": "Groenten, bloemen en kruiden door elkaar planten"
+    "omschrijving": "Groenten, bloemen en kruiden door elkaar planten",
+    "synoniem": "polyculture"
   },
   {
     "woord": "merels",
     "tag": "natuur",
     "url": "/aanpak/mulchvoordelen.html",
-    "omschrijving": "Vogels die mulch doorzoeken op wormen — nuttig maar rommelig"
+    "omschrijving": "Vogels die mulch doorzoeken op wormen — nuttig maar rommelig",
+    "synoniem": "vogels"
   },
   {
     "woord": "mest",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Voeding voor de bodem"
+    "omschrijving": "Voeding voor de bodem",
+    "synoniem": "drijfmest"
   },
   {
     "woord": "microhabitat",
     "tag": "natuur",
     "url": "/bedenkingen/AI_en_chaostuin.html",
-    "omschrijving": "Kleine leefruimte voor specifieke insecten of organismen, gecreëerd door diversiteit"
+    "omschrijving": "Kleine leefruimte voor specifieke insecten of organismen, gecreëerd door diversiteit",
+    "synoniem": "leefruimte"
   },
   {
     "woord": "microklimaat",
     "tag": "natuur",
     "url": "/aanpak/weer.html",
-    "omschrijving": "Lokaal klimaat in je tuin dat je kunt beïnvloeden met beplanting en mulch"
+    "omschrijving": "Lokaal klimaat in je tuin dat je kunt beïnvloeden met beplanting en mulch",
+    "synoniem": "lokaal klimaat"
   },
   {
     "woord": "microleven",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Leven dat de bodem vruchtbaar maakt"
+    "omschrijving": "Leven dat de bodem vruchtbaar maakt",
+    "synoniem": "bodemleven"
   },
   {
     "woord": "moestuin",
     "tag": "basis",
     "url": "#filosofie",
-    "omschrijving": "Jouw vroeg-successie ecosysteem"
+    "omschrijving": "Jouw vroeg-successie ecosysteem",
+    "synoniem": "groentetuin"
   },
   {
     "woord": "monocultuur",
     "tag": "filosofie",
     "url": "/aanpak/bijsturen.html",
-    "omschrijving": "Eén gewas op grote oppervlakte — kwetsbaar voor plagen"
+    "omschrijving": "Eén gewas op grote oppervlakte — kwetsbaar voor plagen",
+    "synoniem": "enkelvoudige teelt"
   },
   {
     "woord": "mulch",
     "tag": "techniek",
     "url": "#tools",
-    "omschrijving": "Organisch dek voor de bodem"
+    "omschrijving": "Organisch dek voor de bodem",
+    "synoniem": "bodembedekkingsmateriaal"
   },
   {
     "woord": "mulch-wachthoop",
     "tag": "techniek",
     "url": "/bedenkingen/composteren.html",
-    "omschrijving": "Voorraad grof tuinmateriaal dat je bewaart om later als mulch te gebruiken"
+    "omschrijving": "Voorraad grof tuinmateriaal dat je bewaart om later als mulch te gebruiken",
+    "synoniem": "mulchreserve"
+  },
+  {
+    "woord": "mulchdichtheid",
+    "tag": "techniek",
+    "url": "/tools/mulchcalculator.html",
+    "omschrijving": "Gewicht per volume van mulchmateriaal — gebruikt om laagdikte om te rekenen naar kg"
   },
   {
     "woord": "mulchen",
     "tag": "techniek",
     "url": "#tools",
-    "omschrijving": "Organisch materiaal op de bodem aanbrengen"
+    "omschrijving": "Organisch materiaal op de bodem aanbrengen",
+    "synoniem": "afdekken"
   },
   {
     "woord": "mulchlaag",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Laag mulch op de bodem"
+    "omschrijving": "Laag mulch op de bodem",
+    "synoniem": "deklaag"
   },
   {
     "woord": "mycelium",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Netwerk van schimmeldraden"
+    "omschrijving": "Netwerk van schimmeldraden",
+    "synoniem": "schimmeldraden"
   },
   {
     "woord": "natuurlijke vijanden",
     "tag": "natuur",
     "url": "/aanpak/plagen.html",
-    "omschrijving": "Insecten en dieren die schadelijke plagen in toom houden"
+    "omschrijving": "Insecten en dieren die schadelijke plagen in toom houden",
+    "synoniem": "predatoren"
   },
   {
     "woord": "natuurtuin",
     "tag": "filosofie",
     "url": "#filosofie",
-    "omschrijving": "Tuin met ruimte voor biodiversiteit"
+    "omschrijving": "Tuin met ruimte voor biodiversiteit",
+    "synoniem": "wilde tuin"
   },
   {
     "woord": "no-dig",
     "tag": "techniek",
     "url": "/aanpak/bodem.html",
-    "omschrijving": "Tuinieren zonder spitten, om het bodemleven te beschermen"
+    "omschrijving": "Tuinieren zonder spitten, om het bodemleven te beschermen",
+    "synoniem": "niet spitten"
   },
   {
     "woord": "omzetten",
     "tag": "techniek",
     "url": "/aanpak/composteren.html",
-    "omschrijving": "De composthoop dooreen mengen om hem luchtig en actief te houden"
+    "omschrijving": "De composthoop dooreen mengen om hem luchtig en actief te houden",
+    "synoniem": "keren"
+  },
+  {
+    "woord": "ongedierte",
+    "tag": "praktijk",
+    "url": "/aanpak/composthoop_janeen.html",
+    "omschrijving": "Ratten en muizen die naar de composthoop komen door verkeerde materialen",
+    "synoniem": "plaagdieren"
   },
   {
     "woord": "onkruid",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Gewenst of ongewenst — dat is de vraag"
+    "omschrijving": "Gewenst of ongewenst — dat is de vraag",
+    "synoniem": "wilde planten"
   },
   {
     "woord": "onkruidremming",
     "tag": "praktijk",
     "url": "/aanpak/mulch.html",
-    "omschrijving": "Een dikke mulchlaag onderdrukt onkruid door licht te blokkeren"
+    "omschrijving": "Een dikke mulchlaag onderdrukt onkruid door licht te blokkeren",
+    "synoniem": "onkruidonderdrukking"
   },
   {
     "woord": "onttrekken",
     "tag": "filosofie",
     "url": "/bedenkingen/ecosysteem.html",
-    "omschrijving": "Wat oogsten doet: voedingsstoffen meenemen die je moet compenseren"
+    "omschrijving": "Wat oogsten doet: voedingsstoffen meenemen die je moet compenseren",
+    "synoniem": "wegnemen"
   },
   {
     "woord": "oogsten",
     "tag": "praktijk",
     "url": "/aanpak/oogsten.html",
-    "omschrijving": "Groenten oogsten met zo min mogelijk verstoring van de bodem"
+    "omschrijving": "Groenten oogsten met zo min mogelijk verstoring van de bodem",
+    "synoniem": "plukken"
   },
   {
     "woord": "oorwormen",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Nuttige roofinsecten"
+    "omschrijving": "Nuttige roofinsecten",
+    "synoniem": "oorkruipers"
   },
   {
     "woord": "opbinden",
     "tag": "techniek",
     "url": "/aanpak/verzorgen.html",
-    "omschrijving": "Hoge of zware planten vastzetten aan een stok of draad"
+    "omschrijving": "Hoge of zware planten vastzetten aan een stok of draad",
+    "synoniem": "vastbinden"
   },
   {
     "woord": "opbrengst",
     "tag": "praktijk",
     "url": "/aanpak/meer.html",
-    "omschrijving": "Hoeveel voedsel je tuin produceert per oppervlakte"
+    "omschrijving": "Hoeveel voedsel je tuin produceert per oppervlakte",
+    "synoniem": "oogst"
   },
   {
     "woord": "organische stof",
     "tag": "bodem",
     "url": "#tools",
-    "omschrijving": "Maatstaf voor bodemgezondheid"
+    "omschrijving": "Maatstaf voor bodemgezondheid",
+    "synoniem": "humusgehalte"
   },
   {
     "woord": "paden",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Vaste paden beschermen de bodem"
+    "omschrijving": "Vaste paden beschermen de bodem",
+    "synoniem": "looppaden"
   },
   {
     "woord": "penwortel",
     "tag": "bodem",
     "url": "/bedenkingen/combinaties.html",
-    "omschrijving": "Diepe verticale wortel die mineralen en water haalt uit diepere bodemlagen"
+    "omschrijving": "Diepe verticale wortel die mineralen en water haalt uit diepere bodemlagen",
+    "synoniem": "tapwortel"
   },
   {
     "woord": "permacultuur",
     "tag": "verwant",
     "url": "#filosofie",
-    "omschrijving": "Permanente landbouw als systeem"
+    "omschrijving": "Permanente landbouw als systeem",
+    "synoniem": "permanente cultuur"
   },
   {
     "woord": "pH",
@@ -720,52 +952,67 @@
     "omschrijving": "Zuurtegraad van de bodem"
   },
   {
+    "woord": "pioniersplanten",
+    "tag": "natuur",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Planten die kale of verstoorde grond snel bedekken — wat wij 'onkruid' noemen",
+    "synoniem": "koloniserende planten"
+  },
+  {
     "woord": "pissebedden",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Afbrekers van organisch materiaal"
+    "omschrijving": "Afbrekers van organisch materiaal",
+    "synoniem": "kelderpissebed"
   },
   {
     "woord": "plagen",
     "tag": "plagen",
     "url": "#themas",
-    "omschrijving": "Omgaan met ongewenste gasten"
+    "omschrijving": "Omgaan met ongewenste gasten",
+    "synoniem": "aantastingen"
   },
   {
     "woord": "plantcombinaties",
     "tag": "techniek",
     "url": "/aanpak/diversiteit.html",
-    "omschrijving": "Planten die elkaar versterken als ze samen groeien"
+    "omschrijving": "Planten die elkaar versterken als ze samen groeien",
+    "synoniem": "plantsynergie"
   },
   {
     "woord": "plantenresten",
     "tag": "praktijk",
     "url": "/aanpak/kringlopen.html",
-    "omschrijving": "Loof, stengels en wortels die je laat liggen of als mulch gebruikt"
+    "omschrijving": "Loof, stengels en wortels die je laat liggen of als mulch gebruikt",
+    "synoniem": "snoeihout"
   },
   {
     "woord": "plantenvoeding",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Voeding voor planten"
+    "omschrijving": "Voeding voor planten",
+    "synoniem": "meststof"
   },
   {
     "woord": "polycultuur",
     "tag": "techniek",
-    "url": "/aanpak/diversiteit.html",
-    "omschrijving": "Veel verschillende gewassen door elkaar telen — tegenstelling van monocultuur"
+    "url": "/aanpak/polycultuur.html",
+    "omschrijving": "Verschillende zaden mengen en samen uitzaaien — de bodem bepaalt wat opkomt",
+    "synoniem": "zaadmengsel"
   },
   {
     "woord": "pompoen",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Ideale bodembedekker"
+    "omschrijving": "Ideale bodembedekker",
+    "synoniem": "kalebas"
   },
   {
     "woord": "potgrond",
     "tag": "praktijk",
     "url": "/aanpak/compost.html",
-    "omschrijving": "Aarde voor zaaitrays en potten, verrijkt met compost"
+    "omschrijving": "Aarde voor zaaitrays en potten, verrijkt met compost",
+    "synoniem": "zaaimedium"
   },
   {
     "woord": "productievlak",
@@ -774,166 +1021,233 @@
     "omschrijving": "Een tuin puur als productieruimte — wat chaostuinieren net niet is"
   },
   {
+    "woord": "recht van de sterkste",
+    "tag": "filosofie",
+    "url": "/aanpak/polycultuur.html",
+    "omschrijving": "In een polycultuurbed overleven de planten die het best passen bij die bodem en dat moment"
+  },
+  {
     "woord": "regenwormen",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Belangrijke bodemwerkers"
+    "omschrijving": "Belangrijke bodemwerkers",
+    "synoniem": "aardwormen"
   },
   {
     "woord": "reststromen",
     "tag": "filosofie",
     "url": "/aanpak/kringlopen.html",
-    "omschrijving": "Plantenresten en tuinafval die je opnieuw in de tuin gebruikt"
+    "omschrijving": "Plantenresten en tuinafval die je opnieuw in de tuin gebruikt",
+    "synoniem": "tuinafval"
   },
   {
     "woord": "rijpe compost",
     "tag": "techniek",
     "url": "/aanpak/composteren.html",
-    "omschrijving": "Volledig verteerd materiaal, klaar om te gebruiken in de tuin"
+    "omschrijving": "Volledig verteerd materiaal, klaar om te gebruiken in de tuin",
+    "synoniem": "veraard compost"
   },
   {
     "woord": "roofinsecten",
     "tag": "natuur",
     "url": "/bedenkingen/bloemen.html",
-    "omschrijving": "Insecten die andere schadelijke insecten eten, zoals lieveheersbeestjes en sluipwespen"
+    "omschrijving": "Insecten die andere schadelijke insecten eten, zoals lieveheersbeestjes en sluipwespen",
+    "synoniem": "predatoren"
   },
   {
     "woord": "ruimtebenutting",
     "tag": "techniek",
     "url": "/aanpak/indeling.html",
-    "omschrijving": "Elke plek in je tuin productief houden door slim te combineren"
+    "omschrijving": "Elke plek in je tuin productief houden door slim te combineren",
+    "synoniem": "ruimte-efficiëntie"
+  },
+  {
+    "woord": "samentuin",
+    "tag": "verwant",
+    "url": "/bedenkingen/grootte.html",
+    "omschrijving": "Een chaostuin die door meerdere mensen samen beheerd wordt"
+  },
+  {
+    "woord": "schimmelnetwerk",
+    "tag": "bodem",
+    "url": "/bedenkingen/geduld.html",
+    "omschrijving": "Netwerk van schimmeldraden dat voedingsstoffen uitwisselt tussen planten",
+    "synoniem": "myceliumnetwerk"
   },
   {
     "woord": "schimmels",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Onzichtbare helpers"
+    "omschrijving": "Onzichtbare helpers",
+    "synoniem": "fungi"
   },
   {
     "woord": "sla",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Makkelijke bladgroente"
+    "omschrijving": "Makkelijke bladgroente",
+    "synoniem": "salade"
   },
   {
     "woord": "slakken",
     "tag": "plagen",
     "url": "#themas",
-    "omschrijving": "Bestrijding zonder chemie"
+    "omschrijving": "Bestrijding zonder chemie",
+    "synoniem": "naaktslakken"
   },
   {
     "woord": "sluipwespen",
     "tag": "natuur",
     "url": "/bedenkingen/bloemen.html",
-    "omschrijving": "Nuttige insecten die bladluizen en rupsen parasiteren en zo plagen beperken"
+    "omschrijving": "Nuttige insecten die bladluizen en rupsen parasiteren en zo plagen beperken",
+    "synoniem": "parasitaire wespen"
   },
   {
     "woord": "snipperen",
     "tag": "techniek",
     "url": "/aanpak/mulchen.html",
-    "omschrijving": "Tuinafval verkleinen zodat het sneller verteert en beter mulcht"
+    "omschrijving": "Tuinafval verkleinen zodat het sneller verteert en beter mulcht",
+    "synoniem": "hakken"
   },
   {
     "woord": "snoeisel",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Takken en plantenresten"
+    "omschrijving": "Takken en plantenresten",
+    "synoniem": "snoeihout"
   },
   {
     "woord": "spitten",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Waarom we dit niet meer doen"
+    "omschrijving": "Waarom we dit niet meer doen",
+    "synoniem": "omspitten"
   },
   {
     "woord": "spontane planten",
     "tag": "natuur",
     "url": "/aanpak/bijsturen.html",
-    "omschrijving": "Planten die vanzelf opkomen en je kunt benutten"
+    "omschrijving": "Planten die vanzelf opkomen en je kunt benutten",
+    "synoniem": "zaaiers"
   },
   {
     "woord": "springstaarten",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Belangrijk bodemleven"
+    "omschrijving": "Belangrijk bodemleven",
+    "synoniem": "collembolae"
+  },
+  {
+    "woord": "stalmest",
+    "tag": "techniek",
+    "url": "/tools/mulchcalculator.html",
+    "omschrijving": "Dierlijke mest gemengd met stro, bruikbaar als bodemverbeteraar en mulchmateriaal",
+    "synoniem": "dierlijke mest"
   },
   {
     "woord": "stapstenen",
     "tag": "praktijk",
     "url": "/aanpak/paden.html",
-    "omschrijving": "Stenen of tegels tussen de bedden zodat je nooit op de teeltbodem loopt"
+    "omschrijving": "Stenen of tegels tussen de bedden zodat je nooit op de teeltbodem loopt",
+    "synoniem": "tegels"
   },
   {
     "woord": "steklegrond",
     "tag": "praktijk",
     "url": "/bedenkingen/composteren.html",
-    "omschrijving": "Fijne uitgerijpte compost speciaal voor het bewortelen van stekken"
+    "omschrijving": "Fijne uitgerijpte compost speciaal voor het bewortelen van stekken",
+    "synoniem": "stekmedium"
   },
   {
     "woord": "stikstof",
     "tag": "bodem",
     "url": "#filosofie",
-    "omschrijving": "Essentieel element in de kringloop"
+    "omschrijving": "Essentieel element in de kringloop",
+    "synoniem": "N"
   },
   {
     "woord": "stikstofbinding",
     "tag": "bodem",
     "url": "/bedenkingen/combinaties.html",
-    "omschrijving": "Wat vlinderbloemigen doen: stikstof uit de lucht vastleggen in de bodem"
+    "omschrijving": "Wat vlinderbloemigen doen: stikstof uit de lucht vastleggen in de bodem",
+    "synoniem": "stikstoffixatie"
   },
   {
     "woord": "stro",
     "tag": "techniek",
     "url": "/aanpak/mulch.html",
-    "omschrijving": "Gedroogde grasstengels, bruikbaar als lichte mulch"
+    "omschrijving": "Gedroogde grasstengels, bruikbaar als lichte mulch",
+    "synoniem": "tarwestro"
   },
   {
     "woord": "struiken",
     "tag": "planten",
     "url": "/aanpak/vaste_planten.html",
-    "omschrijving": "Meerjarige houtige planten die structuur en voedsel geven aan de tuin"
+    "omschrijving": "Meerjarige houtige planten die structuur en voedsel geven aan de tuin",
+    "synoniem": "heesters"
   },
   {
     "woord": "sturing",
     "tag": "filosofie",
     "url": "/bedenkingen/controle.html",
-    "omschrijving": "De mate waarin je als tuinier ingrijpt versus het systeem zijn gang laat gaan"
+    "omschrijving": "De mate waarin je als tuinier ingrijpt versus het systeem zijn gang laat gaan",
+    "synoniem": "controle"
   },
   {
     "woord": "successie",
     "tag": "natuur",
     "url": "#filosofie",
-    "omschrijving": "Hoe natuur evolueert naar bos"
+    "omschrijving": "Hoe natuur evolueert naar bos",
+    "synoniem": "plantenopvolging"
   },
   {
     "woord": "takken",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Houtig tuinmateriaal"
+    "omschrijving": "Houtig tuinmateriaal",
+    "synoniem": "twijgen"
   },
   {
     "woord": "teeltbedden",
     "tag": "praktijk",
     "url": "/aanpak/bodem.html",
-    "omschrijving": "Vaste werkbedden waar je nooit op loopt, om verdichting te vermijden"
+    "omschrijving": "Vaste werkbedden waar je nooit op loopt, om verdichting te vermijden",
+    "synoniem": "hoogbedden"
   },
   {
     "woord": "tijdcombinaties",
     "tag": "techniek",
     "url": "/aanpak/indeling.html",
-    "omschrijving": "Vroege en late gewassen afwisselen zodat de bodem altijd bedekt is"
+    "omschrijving": "Vroege en late gewassen afwisselen zodat de bodem altijd bedekt is",
+    "synoniem": "opeenvolgende teelt"
   },
   {
     "woord": "tomaten",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Populaire moestuinplant"
+    "omschrijving": "Populaire moestuinplant",
+    "synoniem": "trostomaten"
   },
   {
     "woord": "tuinafval",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Waardevolle grondstof"
+    "omschrijving": "Waardevolle grondstof",
+    "synoniem": "plantenmateriaal"
+  },
+  {
+    "woord": "tuinplan",
+    "tag": "praktijk",
+    "url": "/tools/tuinplanner.html",
+    "omschrijving": "De indeling van je tuin met paden, bedden en toegangen — te downloaden als PDF of JSON",
+    "synoniem": "tuinschets"
+  },
+  {
+    "woord": "tuinplanner",
+    "tag": "tool",
+    "url": "/tools/tuinplanner.html",
+    "omschrijving": "Interactieve tool om paden, stapstenen en groenten in te delen in je tuin",
+    "synoniem": "tuinontwerper"
   },
   {
     "woord": "twijgen",
@@ -945,132 +1259,189 @@
     "woord": "uitdunnen",
     "tag": "techniek",
     "url": "/aanpak/verzorgen.html",
-    "omschrijving": "Jonge plantjes die te dicht op elkaar staan verwijderen zodat de rest beter groeit"
+    "omschrijving": "Jonge plantjes die te dicht op elkaar staan verwijderen zodat de rest beter groeit",
+    "synoniem": "dunnen"
   },
   {
     "woord": "uitplanten",
     "tag": "techniek",
     "url": "/aanpak/zaaien.html",
-    "omschrijving": "Voorgezaaide plantjes vanuit de binnentuin naar buiten verplanten"
+    "omschrijving": "Voorgezaaide plantjes vanuit de binnentuin naar buiten verplanten",
+    "synoniem": "verspenen"
   },
   {
     "woord": "vaste planten",
     "tag": "planten",
     "url": "#themas",
-    "omschrijving": "Rabarber, daslook, asperge"
+    "omschrijving": "Rabarber, daslook, asperge",
+    "synoniem": "meerjarigen"
   },
   {
     "woord": "veerkracht",
     "tag": "filosofie",
     "url": "/aanpak/diversiteit.html",
-    "omschrijving": "Het vermogen van een tuin om zich te herstellen na verstoringen"
+    "omschrijving": "Het vermogen van een tuin om zich te herstellen na verstoringen",
+    "synoniem": "weerbaarheid"
   },
   {
     "woord": "verdichting",
     "tag": "bodem",
     "url": "/aanpak/bodem.html",
-    "omschrijving": "Bodem die samengeperst is en slecht doorwortelbaar wordt"
+    "omschrijving": "Bodem die samengeperst is en slecht doorwortelbaar wordt",
+    "synoniem": "bodemverdichting"
   },
   {
     "woord": "verzorgen",
     "tag": "praktijk",
     "url": "/aanpak/verzorgen.html",
-    "omschrijving": "Je planten helpen waar nodig: opbinden, uitdunnen, scheuten verwijderen"
+    "omschrijving": "Je planten helpen waar nodig: opbinden, uitdunnen, scheuten verwijderen",
+    "synoniem": "onderhouden"
   },
   {
     "woord": "vlinders",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Nuttige insecten"
+    "omschrijving": "Nuttige insecten",
+    "synoniem": "dagvlinders"
   },
   {
     "woord": "vochtbehoud",
     "tag": "bodem",
     "url": "/aanpak/mulch.html",
-    "omschrijving": "Mulch houdt water langer in de bodem zodat je minder hoeft te gieten"
+    "omschrijving": "Mulch houdt water langer in de bodem zodat je minder hoeft te gieten",
+    "synoniem": "vochtretentie"
   },
   {
     "woord": "voedselbos",
     "tag": "verwant",
     "url": "#filosofie",
-    "omschrijving": "Laat-successie voedselproductie"
+    "omschrijving": "Laat-successie voedselproductie",
+    "synoniem": "eetbaar bos"
   },
   {
     "woord": "voorzaaien",
     "tag": "techniek",
     "url": "/aanpak/zaaien.html",
-    "omschrijving": "Zaden eerst in potjes of zaaitrays laten kiemen voor je ze buiten uitplant"
+    "omschrijving": "Zaden eerst in potjes of zaaitrays laten kiemen voor je ze buiten uitplant",
+    "synoniem": "binnenzaaien"
   },
   {
     "woord": "vruchtwisseling",
     "tag": "techniek",
     "url": "#themas",
-    "omschrijving": "Zinloos bij doorgedreven combinatie"
+    "omschrijving": "Zinloos bij doorgedreven combinatie",
+    "synoniem": "rotatie"
   },
   {
     "woord": "vruchtzetting",
     "tag": "natuur",
     "url": "/bedenkingen/bloemen.html",
-    "omschrijving": "Het moment waarop een bloem na bestuiving uitgroeit tot een vrucht"
+    "omschrijving": "Het moment waarop een bloem na bestuiving uitgroeit tot een vrucht",
+    "synoniem": "bevruchting"
+  },
+  {
+    "woord": "waterbuffering",
+    "tag": "bodem",
+    "url": "/tools/mulchcalculator.html",
+    "omschrijving": "Hoe goed een bodem water vasthoudt — verbetert sterk met meer organische stof",
+    "synoniem": "waterretentie"
   },
   {
     "woord": "weerbaarheid",
     "tag": "filosofie",
     "url": "/aanpak/weer.html",
-    "omschrijving": "Hoe goed een tuin omgaat met extreme weersomstandigheden"
+    "omschrijving": "Hoe goed een tuin omgaat met extreme weersomstandigheden",
+    "synoniem": "resistentie"
+  },
+  {
+    "woord": "wieden",
+    "tag": "praktijk",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Ongewenste planten verwijderen — in een chaostuin een keuze, geen strijd",
+    "synoniem": "schoffelen"
   },
   {
     "woord": "windsingel",
     "tag": "natuur",
     "url": "/bedenkingen/agroforestry.html",
-    "omschrijving": "Rij bomen of struiken die wind afbreekt en een microklimaat creëert"
+    "omschrijving": "Rij bomen of struiken die wind afbreekt en een microklimaat creëert",
+    "synoniem": "houtkant"
   },
   {
     "woord": "wormen",
     "tag": "bodem",
     "url": "#themas",
-    "omschrijving": "Onmisbaar voor de bodem"
+    "omschrijving": "Onmisbaar voor de bodem",
+    "synoniem": "regenwormen"
   },
   {
     "woord": "wortelgewassen",
     "tag": "planten",
     "url": "/aanpak/oogsten.html",
-    "omschrijving": "Gewassen zoals wortel en pastinaak die je volledig uit de grond haalt"
+    "omschrijving": "Gewassen zoals wortel en pastinaak die je volledig uit de grond haalt",
+    "synoniem": "knolgewassen"
+  },
+  {
+    "woord": "zaadmengsel",
+    "tag": "techniek",
+    "url": "/aanpak/polycultuur.html",
+    "omschrijving": "Combinatie van verschillende zaden die je tegelijk uitzaait op één bed",
+    "synoniem": "polycultuur"
   },
   {
     "woord": "zaaien",
     "tag": "praktijk",
     "url": "#themas",
-    "omschrijving": "Zaaien in en met de mulch"
+    "omschrijving": "Zaaien in en met de mulch",
+    "synoniem": "inzaaien"
   },
   {
     "woord": "zaaigrond",
     "tag": "bodem",
     "url": "/aanpak/zaaien.html",
-    "omschrijving": "Fijne, voedingsarme grond speciaal voor het zaaien van zaden"
+    "omschrijving": "Fijne, voedingsarme grond speciaal voor het zaaien van zaden",
+    "synoniem": "zaaimedium"
   },
   {
     "woord": "zaaitrays",
     "tag": "praktijk",
     "url": "/aanpak/zaaien.html",
-    "omschrijving": "Bakjes met vakjes om zaden gecontroleerd te laten kiemen"
+    "omschrijving": "Bakjes met vakjes om zaden gecontroleerd te laten kiemen",
+    "synoniem": "zaaibakjes"
   },
   {
     "woord": "zelforganisatie",
     "tag": "filosofie",
     "url": "/bedenkingen/chaos.html",
-    "omschrijving": "Orde die spontaan ontstaat uit samenwerking van planten, bodem en dieren"
+    "omschrijving": "Orde die spontaan ontstaat uit samenwerking van planten, bodem en dieren",
+    "synoniem": "spontane orde"
   },
   {
     "woord": "zelfregulerend",
     "tag": "filosofie",
     "url": "/bedenkingen/AI_en_chaostuin.html",
-    "omschrijving": "Een systeem dat zichzelf in balans houdt zonder voortdurend ingrijpen"
+    "omschrijving": "Een systeem dat zichzelf in balans houdt zonder voortdurend ingrijpen",
+    "synoniem": "zelfherstellend"
+  },
+  {
+    "woord": "zevenblad",
+    "tag": "natuur",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Hardnekkige bodembedekker die stikstofrijke, vochtige grond aangeeft",
+    "synoniem": "giersch"
+  },
+  {
+    "woord": "zuring",
+    "tag": "natuur",
+    "url": "/bedenkingen/onkruid.html",
+    "omschrijving": "Onkruid dat op verzuurde bodem wijst — een signaal, geen vijand",
+    "synoniem": "veldzuring"
   },
   {
     "woord": "zweefvliegen",
     "tag": "natuur",
     "url": "#themas",
-    "omschrijving": "Natuurlijke bladluisbestrijders"
+    "omschrijving": "Natuurlijke bladluisbestrijders",
+    "synoniem": "hoverflies"
   }
 ]
