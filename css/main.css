@@ -178,6 +178,22 @@ nav#nav.scrolled {
   white-space: nowrap;
 }
 .nav-dropdown li a:hover { color: var(--straw); background: rgba(245,240,232,0.06); }
+.lang-switch {
+  margin-left: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--moss);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--moss);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-switch:hover {
+  background: var(--moss);
+  color: #fff;
+}
 
 /* ── ZOEKBALK ─────────────────────────────────────────── */
 .nav-search {
