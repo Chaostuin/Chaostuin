@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowers and Herbs — Ecological Gardening · Chaostuinieren</title>
+  <meta name="description" content="Discover why flowers and herbs are full residents of your vegetable garden, not just an extra.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/main.css">
+  <style>
+    .detail-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; max-width:1100px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .detail-figure { position:sticky; top:calc(var(--nav-height) + 1rem); }
+    .detail-figure img { width:100%; border-radius:4px; box-shadow:0 8px 40px rgba(44,36,22,0.15); display:block; }
+    .detail-figure figcaption { font-size:0.78rem; color:var(--sage); margin-top:0.75rem; line-height:1.5; text-align:center; font-style:italic; }
+    .detail-text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.3rem,2vw,1.7rem); color:var(--moss); margin:2rem 0 0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--fog); }
+    .detail-text h2:first-child { margin-top:0; }
+    .detail-text p { font-size:1rem; font-weight:300; line-height:1.85; color:#4a3f2f; margin-bottom:0.75rem; }
+    .detail-text ul { list-style:none; padding:0; margin:0.5rem 0 1rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .detail-text ul li { font-size:1rem; font-weight:300; line-height:1.7; color:#4a3f2f; display:flex; gap:0.75rem; align-items:flex-start; }
+    .detail-text ul li::before { content:'→'; color:var(--straw); font-weight:500; flex-shrink:0; margin-top:0.05rem; }
+    .nuance-box { background:var(--fog); border-left:3px solid var(--straw); border-radius:2px; padding:1.25rem 1.5rem; margin-top:2rem; }
+    .nuance-box .nuance-label { font-size:0.8rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--moss); margin-bottom:0.5rem; }
+    .nuance-box p { margin:0; font-style:italic; color:#5a5040; }
+    @media (max-width:600px) { .detail-layout { grid-template-columns:1fr; padding:3rem 2rem 4rem; gap:2rem; } .detail-figure { position:static; } }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div style="height:var(--nav-height);"></div>
+<header class="page-header" style="padding-top:calc(var(--nav-height) + 1.5rem);padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">What about flowers and herbs?</h1>
+    <p class="page-lead">Flowers and herbs aren't an extra — they're full residents of your vegetable garden.</p>
+  </div>
+</header>
+
+<main>
+  <div class="detail-layout">
+    <figure class="detail-figure">
+      <img src="../../pictures/bloemen_en_kruiden.png" alt="flowers and herbs in the vegetable garden">
+      <figcaption>flowers and herbs increase diversity and create extra combination possibilities.</figcaption>
+    </figure>
+    <div class="detail-text">
+      <h2>What is it?</h2>
+      <p>A chaos garden makes little distinction between vegetables, flowers and herbs. Everything is allowed to grow together.</p>
+      <h2>Why does it work?</h2>
+      <ul>
+        <li>Flowers attract pollinators.</li>
+        <li>Flowering herbs attract lots of insects.</li>
+        <li>They increase diversity and create more combination possibilities.</li>
+        <li>The garden simply becomes more beautiful.</li>
+      </ul>
+      <h2>How do you apply it?</h2>
+      <ul>
+        <li>Plant flowers among your vegetables.</li>
+        <li>Use herbs and let them flower.</li>
+        <li>Let some vegetables go to flower.</li>
+        <li>Experiment with edible flowers.</li>
+      </ul>
+      <div class="nuance-box">
+        <p class="nuance-label">Nuance</p>
+        <p>Just a few flowers or herbs already make a big difference.</p>
+      </div>
+    </div>
+  </div>
+  <nav class="page-nav" style="max-width:1100px;margin:0 auto;padding:0 4rem 4rem;">
+    <a href="indeling.html" class="page-nav-prev">← how to lay out your garden</a>
+    <a href="../index.html#themas" class="page-nav-up">↑ Choose your approach</a>
+    <a href="vaste_planten.html" class="page-nav-next">what about perennials →</a>
+  </nav>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>

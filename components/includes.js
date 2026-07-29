@@ -83,6 +83,27 @@
     });
   }
 
+  /* ── TAALSCHAKELAAR ──────────────────────────────────────
+     Berekent het pad van de equivalente pagina in de andere taal,
+     zodat een bezoeker op dezelfde inhoud blijft in plaats van
+     terug te vallen op de homepage. Als de vertaalde pagina nog
+     niet bestaat, vangt /404.html of /en/404.html dat netjes op. */
+  function getLangSwitchPath() {
+    const path = window.location.pathname;
+    if (isEnglish) {
+      const stripped = path.replace(/^\/en/, '');
+      return stripped === '' ? '/' : stripped;
+    } else {
+      return path === '/' ? '/en/' : '/en' + path;
+    }
+  }
+
+  function initLangSwitch() {
+    const btn = document.getElementById('langSwitch');
+    if (!btn) return;
+    btn.setAttribute('href', getLangSwitchPath());
+  }
+
   function initNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
@@ -93,6 +114,7 @@
     markActiveLink();
     initDropdowns();
     initHamburger();
+    initLangSwitch();
   }
 
   function initDropdowns() {
