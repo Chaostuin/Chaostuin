@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGE TITLE — Ecological Gardening · Chaos Gardening</title>
+  <meta name="description" content="Learn how to plant seedlings easily in living, mulched soil.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .detail-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; max-width:1100px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .detail-figure { position:sticky; top:calc(var(--nav-height) + 1rem); }
+    .detail-figure img { width:100%; border-radius:4px; box-shadow:0 8px 40px rgba(44,36,22,0.15); display:block; }
+    .detail-figure figcaption { font-size:0.78rem; color:var(--sage); margin-top:0.75rem; line-height:1.5; text-align:center; font-style:italic; }
+    .detail-text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.3rem,2vw,1.7rem); color:var(--moss); margin:2rem 0 0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--fog); }
+    .detail-text h2:first-child { margin-top:0; }
+    .detail-text p { font-size:1rem; font-weight:300; line-height:1.85; color:#4a3f2f; margin-bottom:0.75rem; }
+    .detail-text ul { list-style:none; padding:0; margin:0.5rem 0 1rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .detail-text ul li { font-size:1rem; font-weight:300; line-height:1.7; color:#4a3f2f; display:flex; gap:0.75rem; align-items:flex-start; }
+    .detail-text ul li::before { content:'→'; color:var(--straw); font-weight:500; flex-shrink:0; margin-top:0.05rem; }
+    .nuance-box { background:var(--fog); border-left:3px solid var(--straw); border-radius:2px; padding:1.25rem 1.5rem; margin-top:2rem; }
+    .nuance-box .nuance-label { font-size:0.8rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--moss); margin-bottom:0.5rem; }
+    .nuance-box p { margin:0; font-style:italic; color:#5a5040; }
+    @media (max-width:600px) { .detail-layout { grid-template-columns:1fr; padding:3rem 2rem 4rem; gap:2rem; } .detail-figure { position:static; } }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div style="height:var(--nav-height);"></div>
+<header class="page-header" style="padding-top:calc(var(--nav-height) + 1.5rem);padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">Get More from Your Garden with a Little Chaos</h1>
+    <p class="page-lead">A chaos garden gives you more than just a bigger harvest—it brings more life, more peace, and more surprises.</p>
+  </div>
+</header>
+
+<main>
+  <div class="detail-layout">
+    <figure class="detail-figure">
+      <img src="../pictures/meer.png" alt="Get more from your garden">
+      <figcaption>A chaos garden gives back in many more ways than just food.</figcaption>
+    </figure>
+
+    <div class="detail-text">
+      <h2>➡️ What does "more" mean?</h2>
+
+      <h2>🌿 More harvest</h2>
+      <p>Plants grow closer together and are combined more effectively.
+      <br>Your garden produces more food in the same amount of space.</p>
+
+      <h2>🥕 More diversity</h2>
+      <p>Instead of one crop per bed, many different species grow together.
+      <br>This makes your garden richer and more resilient.</p>
+
+      <h2>🧘 More peace (less work)</h2>
+      <p>Less digging, less raking, less constant intervention.
+      <br>Your garden does more by itself, while you work less—but more wisely.</p>
+
+      <h2>🌸 More life</h2>
+      <p>More flowers, more insects, more birds.
+      <br>Your garden becomes a small ecosystem instead of just a production area.</p>
+
+      <h2>🌿 More beauty</h2>
+      <p>Not a perfectly tidy field, but a living landscape.
+      <br>A garden that looks and feels like a piece of nature.</p>
+
+      <h2>🔍 More discovery</h2>
+      <p>You learn what works and what doesn't.
+      <br>Every season becomes an experiment.</p>
+
+      <h2>🎲 More surprises</h2>
+      <p>Plant combinations create unexpected results.
+      <br>That makes gardening more exciting and dynamic.</p>
+
+      <h2>🌍 More carbon stored in the soil</h2>
+      <p>More mulch → more organic matter → more carbon stored in the soil and less in the atmosphere.
+      <br>In this way, your garden also contributes to tackling climate change.</p>
+
+      <div class="nuance-box">
+        <p class="nuance-label">"Getting more from your garden" starts with:</p>
+        <ul>
+          <li>🌱 Building healthy soil</li>
+          <li>🌿 Increasing biodiversity</li>
+          <li>🚶 Respecting pathways</li>
+          <li>🧩 Designing your garden wisely</li>
+          <li>⚖️ Learning to guide and adjust nature</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <nav class="page-nav" style="max-width:1100px;margin:0 auto;padding:0 4rem 4rem;">
+    <a href="../index.html" class="page-nav-up">↑ Chaos Garden</a>
+  </nav>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>
