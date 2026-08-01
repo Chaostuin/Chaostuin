@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaostuin — Mulch Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/main.css">
+<style>
+:root{--earth:#2C2416;--moss:#3D5229;--sage:#7A8C5E;--straw:#C8A96E;--cream:#F5F0E8;--fog:#EAE4D8;--leaf:#5C7A3A;--rust:#8B4513}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--earth);
+  color:var(--cream);
+  min-height:100vh;
+  padding:6rem 1.5rem 4rem;
+}
+
+.mc-page{ max-width:720px; margin:0 auto; }
+
+.mc-header{ margin-bottom:2rem; }
+.mc-header h1{
+  font-family:'Playfair Display',serif;
+  font-weight:400;
+  font-size:clamp(1.8rem, 4vw, 2.4rem);
+  margin-bottom:.4rem;
+}
+.mc-header h1 span{ font-style:italic; color:var(--straw); }
+.mc-header .subtitle{
+  font-size:.92rem;
+  font-weight:300;
+  line-height:1.6;
+  color:rgba(245,240,232,.6);
+  max-width:52ch;
+}
+
+/* ── SLIDER WIDGET (cream card, zoals calculator-widget) ── */
+.calculator-widget{ margin-bottom:1.5rem; }
+
+.mc-group{ margin-bottom:4px; }
+.mc-group + .mc-group{ margin-top:2rem; padding-top:1.75rem; border-top:1px dashed var(--fog); }
+
+.mc-label-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:.6rem; gap:10px;
+}
+.mc-label-wrap{ display:flex; align-items:center; gap:7px; }
+.mc-info-btn{
+  width:19px; height:19px; border-radius:50%; flex-shrink:0;
+  border:1.5px solid var(--moss); background:transparent; color:var(--moss);
+  font-size:11px; font-weight:700; line-height:1;
+  display:inline-flex; align-items:center; justify-content:center;
+  cursor:pointer; padding:0;
+  transition:background .15s, color .15s;
+}
+.mc-info-btn:hover{ background:var(--moss); color:var(--cream); }
+
+.mc-popup-overlay{
+  display:none; position:fixed; inset:0; z-index:999;
+  background:rgba(20,16,10,0.55);
+  align-items:center; justify-content:center;
+  padding:1.5rem;
+}
+.mc-popup-overlay.open{ display:flex; }
+.mc-popup{
+  background:var(--cream); color:#4a3f2f;
+  border-radius:6px; max-width:440px; width:100%;
+  max-height:80vh; overflow-y:auto;
+  padding:1.75rem 1.75rem 1.5rem;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
+}
+.mc-popup-close{
+  position:absolute; top:12px; right:14px;
+  background:none; border:none; font-size:16px; color:#8a7f68;
+  cursor:pointer; line-height:1; padding:4px;
+}
+.mc-popup-close:hover{ color:var(--rust); }
+.mc-popup h3{
+  font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700;
+  color:var(--moss); margin-bottom:.9rem; padding-right:1.5rem;
+}
+.mc-popup p{ font-size:.9rem; font-weight:300; line-height:1.65; margin-bottom:.85rem; }
+.mc-popup p:last-child{ margin-bottom:0; }
+.mc-popup ul{ padding-left:1.2rem; margin-bottom:.85rem; }
+.mc-popup li{ font-size:.9rem; font-weight:300; line-height:1.6; margin-bottom:.35rem; }
+.mc-label{ font-size:.98rem; font-weight:500; color:var(--moss); }
+.mc-popup strong{ font-weight:500; color:var(--earth); }
+.mc-value{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem; font-weight:700;
+  color:var(--moss);
+  white-space:nowrap;
+}
+
+input[type=range]{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:8px; border-radius:4px;
+  background:linear-gradient(90deg, var(--sage) 0%, var(--straw) 100%);
+  outline:none; margin:8px 0 12px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:34px; height:28px; border-radius:8px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+    var(--straw);
+  border:2px solid var(--moss);
+  cursor:grab;
+  box-shadow:0 3px 6px rgba(44,36,22,0.35);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+input[type=range]:hover::-webkit-slider-thumb{ transform:scale(1.07); box-shadow:0 4px 9px rgba(44,36,22,0.4); }
+input[type=range]:active::-webkit-slider-thumb{ cursor:grabbing; transform:scale(1.03); }
+input[type=range]::-moz-range-thumb{
+  width:30px; height:26px; border-radius:8px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 7px),
+    var(--straw);
+  border:2px solid var(--moss);
+  cursor:grab;
+  box-shadow:0 3px 6px rgba(44,36,22,0.35);
+}
+input[type=range]:hover::-moz-range-thumb{ transform:scale(1.07); }
+
+/* three-box beschrijvingen, klikbaar, gelijk verdeeld onder de balk */
+.mc-desc-row{ display:flex; gap:8px; }
+.mc-desc-box{
+  flex:1 1 0; position:relative;
+  background:var(--fog);
+  border:1px solid rgba(61,82,41,0.15);
+  border-radius:6px;
+  padding:13px 10px 9px;
+  font-size:.78rem; font-weight:300; line-height:1.4;
+  color:#5a5040; text-align:center;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.mc-desc-box::before{
+  content:""; position:absolute; top:-7px; left:50%; transform:translateX(-50%);
+  width:0; height:0;
+  border-left:6px solid transparent; border-right:6px solid transparent;
+  border-bottom:7px solid rgba(61,82,41,0.15);
+  transition:border-bottom-color .2s ease;
+}
+.mc-desc-box:hover{ border-color:var(--straw); background:#fff; }
+.mc-desc-box.active{ background:var(--moss); border-color:var(--moss); color:var(--cream); font-weight:500; }
+.mc-desc-box.active::before{ border-bottom-color:var(--moss); }
+.mc-desc-box.active:hover{ background:#46602f; }
+
+/* ── RESULTAAT (donker paneel, straw-accenten, zoals calc-result) ── */
+.mc-result{
+  background:var(--moss);
+  border-radius:4px;
+  padding:1.75rem 2rem 2rem;
+}
+.mc-result-title{
+  font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--straw); margin-bottom:1.25rem;
+}
+.mc-detail-link{
+  text-transform:none; letter-spacing:normal; font-weight:400;
+  color:rgba(245,240,232,.55);
+  text-decoration:underline;
+  font-size:.75rem;
+  margin-left:4px;
+}
+.mc-detail-link:hover{ color:var(--straw); }
+.mc-stat-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+  margin-bottom:1.5rem;
+}
+@media (max-width:480px){ .mc-stat-grid{ grid-template-columns:1fr; } }
+.mc-stat{
+  background:rgba(245,240,232,0.08);
+  border:1px solid rgba(245,240,232,0.12);
+  border-radius:4px;
+  padding:1rem 1.1rem;
+}
+.mc-stat-label{
+  font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+  color:rgba(245,240,232,.65); margin-bottom:.4rem;
+}
+.mc-stat-val{
+  font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700;
+  color:var(--straw);
+}
+.mc-stat-sub{ font-size:.85rem; color:rgba(245,240,232,.7); margin-top:.3rem; }
+
+/* mulchbed-balk: horizontaal, links → rechts */
+.mc-bed{
+  position:relative; height:56px;
+  border-radius:6px; overflow:hidden;
+  background:linear-gradient(90deg, #241c14 0%, var(--earth) 100%);
+  margin-bottom:6px;
+  border:1px solid rgba(245,240,232,0.1);
+}
+.mc-bed-fill{
+  position:absolute; top:0; bottom:0; left:0;
+  transition:width .35s ease, background .35s ease;
+  border-right:3px solid rgba(0,0,0,0.25);
+}
+.mc-bed-avail-line{
+  position:absolute; top:0; bottom:0;
+  border-left:2px solid var(--cream);
+  transition:left .35s ease;
+}
+.mc-bed-avail-tag{
+  position:absolute; top:6px; transform:translateX(-50%);
+  font-size:10px; font-weight:700;
+  background:var(--cream); color:var(--earth);
+  padding:2px 6px; border-radius:3px;
+  white-space:nowrap;
+  transition:left .35s ease;
+}
+.mc-bed-scale{
+  display:flex; justify-content:space-between;
+  font-size:10px; color:rgba(245,240,232,.45);
+  margin-bottom:1.25rem;
+}
+
+.mc-status{
+  display:flex; align-items:flex-start; gap:10px;
+  padding:14px 16px; border-radius:6px;
+  font-size:.92rem; font-weight:500; line-height:1.5;
+}
+.mc-status.green{ background:rgba(92,122,58,0.28); border:1px solid rgba(92,122,58,0.55); }
+.mc-status.yellow{ background:rgba(200,169,110,0.22); border:1px solid rgba(200,169,110,0.5); }
+.mc-status.red{ background:rgba(139,69,19,0.28); border:1px solid rgba(139,69,19,0.55); }
+.mc-status .dot{ font-size:18px; line-height:1; }
+
+.mc-footnote{
+  margin-top:1.5rem; font-size:.78rem; color:rgba(245,240,232,.4); text-align:center;
+}
+
+@media (max-width:600px){
+  .mc-desc-row{ flex-direction:column; }
+  .mc-desc-box::before{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="mc-page">
+
+  <div class="mc-header">
+    <h1>chaos<span>tuin</span> mulch calculator</h1>
+    <p class="subtitle">Four sliders, one simple answer: how much mulch you need to gradually build up your soil's humus — and whether what you have on hand right now is enough.</p>
+  </div>
+
+  <div class="calculator-widget">
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label-wrap">
+          <span class="mc-label">How much organic matter is in my soil right now?</span>
+          <button class="mc-info-btn" data-info="current" aria-label="More info">?</button>
+        </span>
+        <span class="mc-value" id="val-current">2.8% organic matter</span>
+      </div>
+      <input type="range" id="slider-current" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="current" data-third="low">Years of adding little or no organic matter.</div>
+        <div class="mc-desc-box" data-slider="current" data-third="mid">Occasionally or yearly a bit of compost, manure or mulch added.</div>
+        <div class="mc-desc-box" data-slider="current" data-third="high">Year after year, plenty of compost, manure or mulch added.</div>
+      </div>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label-wrap">
+          <span class="mc-label">What do I have available to mulch with?</span>
+          <button class="mc-info-btn" data-info="available" aria-label="More info">?</button>
+        </span>
+        <span class="mc-value" id="val-available">9 kg/m²/year</span>
+      </div>
+      <input type="range" id="slider-available" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="available" data-third="low">Only plant residue from the vegetable garden.</div>
+        <div class="mc-desc-box" data-slider="available" data-third="mid">Also grass clippings, leaves and prunings from a small garden.</div>
+        <div class="mc-desc-box" data-slider="available" data-third="high">Lots of grass clippings, leaves, hedge and shrub prunings from a large ornamental garden, or material brought in from elsewhere.</div>
+      </div>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label-wrap">
+          <span class="mc-label">How much organic matter do I want to reach?</span>
+          <button class="mc-info-btn" data-info="goal" aria-label="More info">?</button>
+        </span>
+        <span class="mc-value" id="val-goal">6.6% organic matter</span>
+      </div>
+      <input type="range" id="slider-goal" min="0" max="9" step="1" value="4">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="goal" data-third="low">3% — enough for a healthy vegetable garden soil.</div>
+        <div class="mc-desc-box" data-slider="goal" data-third="mid">Around 7% — very fertile soil with good water retention.</div>
+        <div class="mc-desc-box" data-slider="goal" data-third="high">10% — exceptionally humus-rich soil.</div>
+      </div>
+    </div>
+
+    <div class="mc-group">
+      <div class="mc-label-row">
+        <span class="mc-label-wrap">
+          <span class="mc-label">How many years do I want that to take?</span>
+          <button class="mc-info-btn" data-info="years" aria-label="More info">?</button>
+        </span>
+        <span class="mc-value" id="val-years">5 years</span>
+      </div>
+      <input type="range" id="slider-years" min="0" max="4" step="1" value="2">
+      <div class="mc-desc-row">
+        <div class="mc-desc-box" data-slider="years" data-third="low">Build up as quickly as possible.</div>
+        <div class="mc-desc-box" data-slider="years" data-third="mid">Average pace.</div>
+        <div class="mc-desc-box" data-slider="years" data-third="high">Take it slow, over the long term.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mc-result">
+    <p class="mc-result-title">Result <a href="mulchcalculator_detail.html" id="detailLink" class="mc-detail-link">(calculation details)</a></p>
+
+    <div class="mc-stat-grid">
+      <div class="mc-stat">
+        <div class="mc-stat-label" id="stat-needed-label">Needed</div>
+        <div class="mc-stat-val" id="stat-needed">— kg/m²/year</div>
+        <div class="mc-stat-sub" id="stat-needed-cm">≈ — cm mulch layer per year</div>
+      </div>
+      <div class="mc-stat">
+        <div class="mc-stat-label">Available</div>
+        <div class="mc-stat-val" id="stat-avail">— kg/m²/year</div>
+        <div class="mc-stat-sub" id="stat-avail-cm">≈ — cm mulch layer per year</div>
+      </div>
+    </div>
+
+    <div class="mc-bed" id="bed">
+      <div class="mc-bed-fill" id="bed-fill"></div>
+      <div class="mc-bed-avail-line" id="bed-avail-line"></div>
+      <div class="mc-bed-avail-tag" id="bed-avail-tag">available</div>
+    </div>
+    <div class="mc-bed-scale"><span>0 cm</span><span>30 cm mulch layer/year</span></div>
+
+    <div class="mc-status" id="status">
+      <span class="dot" id="status-dot">🟢</span>
+      <span id="status-text">Enough mulch available.</span>
+    </div>
+  </div>
+
+  <p class="mc-footnote">Calculation model: humification factor 10% · humus breakdown 2.5%/year · 10 kg humus/m² ≈ 3% organic matter · mulch density ≈ 200 kg/m³</p>
+
+</div>
+
+<div class="mc-popup-overlay" id="popupOverlay">
+  <div class="mc-popup">
+    <button class="mc-popup-close" id="popupClose" aria-label="Close">✕</button>
+    <div id="popupBody"></div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+// ---- constants (validated) ----
+const H_FACTOR = 0.10;   // 10 kg mulch -> 1 kg humus
+const K = 0.025;         // humus breakdown per year
+const CONV = 10/3;       // kg humus/m2 per 1% organic matter
+const DENSITY_DIVISOR = 2; // kg/m2 -> cm layer thickness (200 kg/m3 => /2)
+const MAX_REALISTIC = 50; // kg/m2/year, ~25 cm layer, practical ceiling
+
+// ---- slider scales ----
+const currentSteps = [1.0,1.4,1.9,2.3,2.8,3.2,3.6,4.1,4.6,5.0]; // %OM
+const goalSteps    = [3.0,3.8,4.6,5.4,6.2,7.0,7.8,8.6,9.3,10.0]; // %OM
+const availSteps   = [1,2,4,6,9,13,18,25,35,50]; // kg/m2/year
+const yearSteps    = [3,4,5,6,7];
+
+function thirdForIndex(idx, totalSteps){
+  if (totalSteps === 5){
+    if (idx <= 0) return 'low';
+    if (idx >= 4) return 'high';
+    return 'mid';
+  }
+  if (idx <= 2) return 'low';
+  if (idx <= 5) return 'mid';
+  return 'high';
+}
+
+function setActiveDesc(sliderName, third){
+  document.querySelectorAll('.mc-desc-box[data-slider="'+sliderName+'"]').forEach(box=>{
+    box.classList.toggle('active', box.dataset.third === third);
+  });
+}
+
+const jumpIndex = {
+  current:   { low:1, mid:4, high:8 },
+  available: { low:1, mid:4, high:8 },
+  goal:      { low:1, mid:4, high:8 },
+  years:     { low:0, mid:2, high:4 }
+};
+const sliderEls = { current:null, available:null, goal:null, years:null };
+
+// ---- DOM refs ----
+const sCurrent = document.getElementById('slider-current');
+const sAvail   = document.getElementById('slider-available');
+const sGoal    = document.getElementById('slider-goal');
+const sYears   = document.getElementById('slider-years');
+
+sliderEls.current = sCurrent;
+sliderEls.available = sAvail;
+sliderEls.goal = sGoal;
+sliderEls.years = sYears;
+
+document.querySelectorAll('.mc-desc-box').forEach(box=>{
+  box.addEventListener('click', ()=>{
+    const name = box.dataset.slider;
+    const third = box.dataset.third;
+    const idx = jumpIndex[name][third];
+    sliderEls[name].value = idx;
+    update();
+  });
+});
+
+function fmt(n, d=1){ return n.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+function calcNeeded(currentPct, goalPct, years){
+  const H0 = currentPct * CONV;
+  const Hgoal = goalPct * CONV;
+
+  if (goalPct <= currentPct){
+    return (K/H_FACTOR) * H0;
+  }
+
+  const e = Math.exp(-K*years);
+  let m = (K/H_FACTOR) * (Hgoal - H0*e) / (1 - e);
+  if (m < 0) m = (K/H_FACTOR) * H0;
+  return m;
+}
+
+function update(){
+  const currentPct = currentSteps[sCurrent.value];
+  const goalPct    = goalSteps[sGoal.value];
+  const years      = yearSteps[sYears.value];
+  const availKg    = availSteps[sAvail.value];
+
+  document.getElementById('val-current').textContent = fmt(currentPct)+"% organic matter";
+  setActiveDesc('current', thirdForIndex(+sCurrent.value, 10));
+
+  document.getElementById('val-goal').textContent = fmt(goalPct)+"% organic matter";
+  setActiveDesc('goal', thirdForIndex(+sGoal.value, 10));
+
+  document.getElementById('val-years').textContent = years+" years";
+  setActiveDesc('years', thirdForIndex(+sYears.value, 5));
+
+  document.getElementById('val-available').textContent = availKg+" kg/m²/year";
+  setActiveDesc('available', thirdForIndex(+sAvail.value, 10));
+
+  const needed = calcNeeded(currentPct, goalPct, years);
+  const neededCm = needed/DENSITY_DIVISOR;
+  const availCm = availKg/DENSITY_DIVISOR;
+
+  document.getElementById('stat-needed-label').textContent = (goalPct <= currentPct) ? 'Maintenance dose needed' : 'Needed';
+  document.getElementById('stat-needed').textContent = fmt(needed,1)+" kg/m²/year";
+  document.getElementById('stat-needed-cm').textContent = "≈ "+fmt(neededCm,1)+" cm mulch layer per year";
+  document.getElementById('stat-avail').textContent = fmt(availKg,1)+" kg/m²/year";
+  document.getElementById('stat-avail-cm').textContent = "≈ "+fmt(availCm,1)+" cm mulch layer per year";
+
+  let statusClass, dot, text;
+  if (goalPct <= currentPct){
+    statusClass='green'; dot='🟢';
+    text='Your soil is already at or above your goal. Maintaining about '+fmt(needed,1)+' kg/m²/year (≈ '+fmt(neededCm,1)+' cm of mulch) is enough to keep this level — otherwise the humus will simply break down again.';
+  } else if (needed > MAX_REALISTIC){
+    statusClass='red'; dot='🔴'; text='This goal requires an unrealistically thick mulch layer (more than ~25 cm/year). Take more time or adjust the goal.';
+  } else {
+    const ratio = availKg/needed;
+    if (ratio >= 1){
+      statusClass='green'; dot='🟢'; text='Enough mulch available.';
+    } else if (ratio >= 0.6){
+      statusClass='yellow'; dot='🟡'; text='Achievable if you also collect mulch from outside the vegetable garden.';
+    } else {
+      statusClass='red'; dot='🔴'; text='For this goal you need more mulch, or you\'ll need to take more time.';
+    }
+  }
+  const statusEl = document.getElementById('status');
+  statusEl.className = 'mc-status '+statusClass;
+  document.getElementById('status-dot').textContent = dot;
+  document.getElementById('status-text').textContent = text;
+
+  const SCALE_MAX = 30;
+  const neededPct = Math.min(100, (neededCm/SCALE_MAX)*100);
+  const availPct  = Math.min(100, (availCm/SCALE_MAX)*100);
+  const fillColor = statusClass==='green' ? 'var(--leaf)' : statusClass==='yellow' ? 'var(--straw)' : 'var(--rust)';
+
+  const bedFill = document.getElementById('bed-fill');
+  bedFill.style.width = neededPct+'%';
+  bedFill.style.background = fillColor;
+
+  const availLine = document.getElementById('bed-avail-line');
+  availLine.style.left = availPct+'%';
+  const availTag = document.getElementById('bed-avail-tag');
+  availTag.style.left = availPct+'%';
+
+  const detailLink = document.getElementById('detailLink');
+  if (detailLink){
+    detailLink.href = 'mulchcalculator_detail.html?current='+sCurrent.value+'&available='+sAvail.value+'&goal='+sGoal.value+'&years='+sYears.value;
+  }
+}
+
+[sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
+update();
+
+// ---- info-popups ----
+const infoContent = {
+  current: `
+    <h3>How much organic matter is in my soil right now?</h3>
+    <p><strong>Low (~1%):</strong> years of little or nothing added. Typical for a lawn that's only mowed, a neglected border, or soil that was recently excavated or built up during a renovation/new build.</p>
+    <p><strong>Average (~3%):</strong> occasionally or yearly a bit of compost, manure or mulch added. This is where most ordinary hobby gardens sit.</p>
+    <p><strong>High (~5%):</strong> year after year, plenty of organic material added, as with long-term no-dig management or a chaos garden.</p>
+    <p>Not sure? Choose average — a real soil test gives the exact percentage, but for this calculator an estimate is more than enough.</p>
+  `,
+  available: `
+    <h3>What can I use to mulch with?</h3>
+    <p>Material from the vegetable garden itself (plant residue, harvest waste) is usually limited in volume. Grass clippings, autumn leaves and prunings from hedges or shrubs elsewhere in the garden usually give you much more. If you need even more, you can supplement with material brought in: compost from the recycling centre, bark mulch or manure.</p>
+    <p><strong>Rough indication:</strong> an ordinary garden with a lawn, a few trees and a hedge often quickly yields several hundred kg of organic material per year — often enough to mulch a vegetable garden of around 20 to 30 m² at the middle level (roughly 9 kg/m²/year). The bigger your ornamental garden is relative to your vegetable garden, the less you'll need to bring in from outside.</p>
+    <p>This is a rule of thumb, not an exact measurement — every garden differs greatly in vegetation and upkeep.</p>
+  `,
+  goal: `
+    <h3>How much organic matter do I want to reach?</h3>
+    <p>This isn't precision work. More important than the exact percentage is getting above the 3% floor and being able to maintain that level.</p>
+    <p>As soon as you mulch enough and regularly, the organic matter percentage rises along with it on its own — you don't need to aim for an exact number. So think of the slider mainly as a direction ("I want a more fertile soil" versus "I want an exceptionally humus-rich soil"), not as a target you need to hit down to the decimal.</p>
+  `,
+  years: `
+    <h3>Build-up phase versus maintenance phase</h3>
+    <p>As long as you're busy enriching your soil (the <strong>build-up phase</strong>), you need relatively a lot of mulch: you not only have to compensate for the yearly breakdown of humus (~2.5%), but also build net on top of it.</p>
+    <p>Once you've reached your goal, you enter the <strong>maintenance phase</strong>. Then you only need to compensate for the yearly breakdown — normally a lot less than during build-up. So don't let the build-up phase number discourage you: it's a temporary peak, not a permanent effort.</p>
+    <p>This slider determines how fast you move through the build-up phase: building up faster requires more mulch per year, taking it slower spreads the effort over more years.</p>
+  `
+};
+
+const popupOverlay = document.getElementById('popupOverlay');
+const popupBody = document.getElementById('popupBody');
+
+document.querySelectorAll('.mc-info-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    popupBody.innerHTML = infoContent[btn.dataset.info];
+    popupOverlay.classList.add('open');
+  });
+});
+
+function closePopup(){ popupOverlay.classList.remove('open'); }
+document.getElementById('popupClose').addEventListener('click', closePopup);
+popupOverlay.addEventListener('click', e=>{ if (e.target === popupOverlay) closePopup(); });
+document.addEventListener('keydown', e=>{ if (e.key === 'Escape') closePopup(); });
+</script>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>
