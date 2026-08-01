@@ -186,12 +186,12 @@ nav#nav.scrolled {
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--moss);
+  color: var(--straw);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
 }
 .lang-switch:hover {
-  background: var(--moss);
+  background: var(--straw);
   color: #fff;
 }
 
