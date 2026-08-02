@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaostuin — Mulch Calculation Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/main.css">
+<style>
+:root{--earth:#2C2416;--moss:#3D5229;--sage:#7A8C5E;--straw:#C8A96E;--cream:#F5F0E8;--fog:#EAE4D8;--leaf:#5C7A3A;--rust:#8B4513}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--earth);
+  color:var(--cream);
+  min-height:100vh;
+  padding:6rem 1.5rem 4rem;
+}
+.mc-page{ max-width:720px; margin:0 auto; }
+
+.mc-back{
+  display:inline-block; font-size:.8rem; color:var(--straw);
+  text-decoration:none; margin-bottom:1.5rem;
+}
+.mc-back:hover{ text-decoration:underline; }
+
+.mc-header{ margin-bottom:2rem; }
+.mc-header h1{
+  font-family:'Playfair Display',serif; font-weight:400;
+  font-size:clamp(1.6rem, 4vw, 2.1rem);
+  margin-bottom:.4rem;
+}
+.mc-header h1 span{ font-style:italic; color:var(--straw); }
+.mc-header .subtitle{
+  font-size:.92rem; font-weight:300; line-height:1.6;
+  color:rgba(245,240,232,.6); max-width:56ch;
+}
+
+/* compacte controlepaneel met de 4 schuivers */
+.mc-controls{
+  background:var(--cream); color:#4a3f2f;
+  border-radius:4px; padding:1.75rem 2rem; margin-bottom:2rem;
+}
+.mc-ctrl-row{ margin-bottom:1.1rem; }
+.mc-ctrl-row:last-child{ margin-bottom:0; }
+.mc-ctrl-label-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:.85rem; margin-bottom:.4rem;
+}
+.mc-ctrl-label{ font-weight:500; color:var(--moss); }
+.mc-ctrl-val{ font-family:'Playfair Display',serif; font-weight:700; color:var(--moss); }
+input[type=range]{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:6px; border-radius:3px;
+  background:linear-gradient(90deg, var(--sage) 0%, var(--straw) 100%);
+  outline:none; margin:4px 0;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:20px; height:20px; border-radius:50%;
+  background:var(--straw); border:2px solid var(--moss);
+  cursor:grab; box-shadow:0 2px 5px rgba(44,36,22,0.35);
+}
+input[type=range]::-moz-range-thumb{
+  width:18px; height:18px; border-radius:50%;
+  background:var(--straw); border:2px solid var(--moss); cursor:grab;
+}
+
+/* stap-kaarten */
+.mc-step{
+  background:var(--cream); color:#4a3f2f;
+  border-radius:4px; padding:1.6rem 1.9rem; margin-bottom:1.1rem;
+}
+.mc-step-num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px; border-radius:50%;
+  background:var(--moss); color:var(--cream);
+  font-size:.78rem; font-weight:700; margin-right:10px;
+}
+.mc-step h2{
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+  color:var(--moss); display:flex; align-items:center; margin-bottom:.85rem;
+}
+.mc-step p{ font-size:.88rem; font-weight:300; line-height:1.65; margin-bottom:.75rem; }
+.mc-step p:last-of-type{ margin-bottom:0; }
+.mc-formula{
+  background:var(--fog); border-radius:4px;
+  padding:.9rem 1.1rem; margin:.85rem 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.82rem; line-height:1.9; color:#4a3f2f;
+  overflow-x:auto;
+}
+.mc-formula .hl{ color:var(--moss); font-weight:700; }
+.mc-formula .hl2{ color:var(--rust); font-weight:700; }
+
+.mc-result-line{
+  margin-top:.9rem; padding:.9rem 1.1rem;
+  background:var(--moss); color:var(--cream);
+  border-radius:4px; font-size:.92rem; font-weight:500;
+}
+.mc-result-line .big{
+  font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--straw);
+}
+
+.mc-footnote{ margin-top:1.5rem; font-size:.78rem; color:rgba(245,240,232,.4); text-align:center; }
+</style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="mc-page">
+
+  <a href="mulchcalculator.html" class="mc-back">← Back to the mulch calculator</a>
+
+  <div class="mc-header">
+    <h1>chaos<span>tuin</span> — calculation details</h1>
+    <p class="subtitle">Below, step by step and using your own chosen values, is how the mulch calculator arrives at its result. Feel free to adjust the sliders below to see how each intermediate result changes.</p>
+  </div>
+
+  <div class="mc-controls">
+    <div class="mc-ctrl-row">
+      <div class="mc-ctrl-label-row"><span class="mc-ctrl-label">Current soil</span><span class="mc-ctrl-val" id="v-current">—</span></div>
+      <input type="range" id="s-current" min="0" max="9" step="1" value="4">
+    </div>
+    <div class="mc-ctrl-row">
+      <div class="mc-ctrl-label-row"><span class="mc-ctrl-label">Available material</span><span class="mc-ctrl-val" id="v-available">—</span></div>
+      <input type="range" id="s-available" min="0" max="9" step="1" value="4">
+    </div>
+    <div class="mc-ctrl-row">
+      <div class="mc-ctrl-label-row"><span class="mc-ctrl-label">Goal</span><span class="mc-ctrl-val" id="v-goal">—</span></div>
+      <input type="range" id="s-goal" min="0" max="9" step="1" value="4">
+    </div>
+    <div class="mc-ctrl-row">
+      <div class="mc-ctrl-label-row"><span class="mc-ctrl-label">Number of years</span><span class="mc-ctrl-val" id="v-years">—</span></div>
+      <input type="range" id="s-years" min="0" max="4" step="1" value="2">
+    </div>
+  </div>
+
+  <div class="mc-step">
+    <h2><span class="mc-step-num">1</span>From % organic matter to kg humus per m²</h2>
+    <p>The sliders work in percent organic matter (%OM), but the calculation core works in kg humus per m². The conversion is based on the rule of thumb: 10 kg humus/m² corresponds to roughly 3% organic matter (at a soil depth of 25 cm) — that's a conversion factor of 10/3 ≈ 3.33 kg/m² per percent.</p>
+    <div class="mc-formula">
+      H<sub>0</sub> (current) = <span class="hl" id="f1-current-pct">—</span>% × 3.33 = <span class="hl" id="f1-h0">—</span> kg/m²<br>
+      H<sub>goal</sub> = <span class="hl" id="f1-goal-pct">—</span>% × 3.33 = <span class="hl" id="f1-hgoal">—</span> kg/m²
+    </div>
+  </div>
+
+  <div class="mc-step">
+    <h2><span class="mc-step-num">2</span>Build-up phase or maintenance phase?</h2>
+    <p>First it's checked whether your goal is above your current level. If so: you're in the <strong>build-up phase</strong>, and the calculator works out how much mulch you need each year to reach your goal within the chosen number of years. If not (you've already reached your goal): you're in the <strong>maintenance phase</strong>, and the calculator only works out what's needed to hold your current level.</p>
+    <div class="mc-formula" id="f2-branch">—</div>
+  </div>
+
+  <div class="mc-step" id="step3-buildup">
+    <h2><span class="mc-step-num">3</span>Mulch needed during the build-up phase</h2>
+    <p>The amount of humus in the soil changes each year according to: addition via mulch (humification factor h = 10%: 10 kg mulch yields 1 kg humus) minus breakdown (k = 2.5% of the humus present, per year). For a chosen period of N years, this gives the required yearly mulch dose m:</p>
+    <div class="mc-formula">
+      m = (k / h) × (H<sub>goal</sub> − H<sub>0</sub> × e<sup>−k×N</sup>) / (1 − e<sup>−k×N</sup>)
+    </div>
+    <p>Filled in with your values (N = <span class="hl" id="f3-years">—</span> years):</p>
+    <div class="mc-formula">
+      e<sup>−0.025 × <span id="f3-years-2">—</span></sup> = <span class="hl" id="f3-e">—</span><br>
+      m = 0.25 × (<span id="f3-hgoal">—</span> − <span id="f3-h0">—</span> × <span id="f3-e2">—</span>) / (1 − <span id="f3-e3">—</span>)<br>
+      m = 0.25 × <span id="f3-num">—</span> / <span id="f3-denom">—</span><br>
+      m = <span class="hl" id="f3-m">—</span> kg/m²/year
+    </div>
+  </div>
+
+  <div class="mc-step" id="step3-maintain">
+    <h2><span class="mc-step-num">3</span>Mulch needed during the maintenance phase</h2>
+    <p>You've already reached your goal (or your current level is already at or above your goal). So no more net build-up is needed — only the yearly breakdown of 2.5% needs to be compensated to keep the level stable (equilibrium formula):</p>
+    <div class="mc-formula">
+      m = (k / h) × H<sub>0</sub> = 0.25 × <span class="hl" id="f3m-h0">—</span> = <span class="hl" id="f3m-m">—</span> kg/m²/year
+    </div>
+  </div>
+
+  <div class="mc-step">
+    <h2><span class="mc-step-num">4</span>Converting to a mulch layer in cm</h2>
+    <p>Loose garden mulch weighs roughly 200 kg per m³. An amount in kg/m²/year is therefore converted to layer thickness in centimeters by dividing by 2 (200 kg/m³ ÷ 100 cm/m = 2 kg per cm of layer thickness per m²).</p>
+    <div class="mc-formula">
+      <span class="hl" id="f4-m">—</span> kg/m²/year ÷ 2 = <span class="hl" id="f4-cm">—</span> cm mulch layer per year
+    </div>
+  </div>
+
+  <div class="mc-step">
+    <h2><span class="mc-step-num">5</span>Comparison with what you have available</h2>
+    <p>Finally, the required amount is compared with what you indicated on the "What do I have available to mulch with?" slider.</p>
+    <div class="mc-formula">
+      available = <span class="hl" id="f5-avail">—</span> kg/m²/year (≈ <span id="f5-avail-cm">—</span> cm/year)<br>
+      ratio = available / needed = <span id="f5-avail2">—</span> / <span id="f5-needed">—</span> = <span class="hl" id="f5-ratio">—</span>
+    </div>
+    <p>At a ratio ≥ 100% there's enough (🟢); between 60% and 100% it's achievable with extra collection from outside the vegetable garden (🟡); below that there's too little (🔴). If the required amount is above 50 kg/m²/year (≈ 25 cm/year, the practical maximum for an applied mulch layer), 🔴 is shown regardless — that goal simply isn't physically realistic within the chosen timeframe.</p>
+    <div class="mc-result-line">
+      Result: <span class="big" id="f5-status-emoji">—</span> <span id="f5-status-text">—</span>
+    </div>
+  </div>
+
+  <p class="mc-footnote">Constants: humification factor h = 10% · humus breakdown k = 2.5%/year · conversion 10/3 kg humus/m² per %OM · mulch density ≈ 200 kg/m³ · practical ceiling 50 kg/m²/year (≈25 cm)</p>
+
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+const H_FACTOR = 0.10;
+const K = 0.025;
+const CONV = 10/3;
+const DENSITY_DIVISOR = 2;
+const MAX_REALISTIC = 50;
+
+const currentSteps = [1.0,1.4,1.9,2.3,2.8,3.2,3.6,4.1,4.6,5.0];
+const goalSteps    = [3.0,3.8,4.6,5.4,6.2,7.0,7.8,8.6,9.3,10.0];
+const availSteps   = [1,2,4,6,9,13,18,25,35,50];
+const yearSteps    = [3,4,5,6,7];
+
+function fmt(n, d=2){ return n.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+// ---- read values from the URL (passed from the main page) ----
+const params = new URLSearchParams(window.location.search);
+function paramOr(name, fallback, max){
+  const v = parseInt(params.get(name));
+  if (isNaN(v) || v < 0 || v > max) return fallback;
+  return v;
+}
+
+const sCurrent = document.getElementById('s-current');
+const sAvail   = document.getElementById('s-available');
+const sGoal    = document.getElementById('s-goal');
+const sYears   = document.getElementById('s-years');
+
+sCurrent.value = paramOr('current', 4, 9);
+sAvail.value   = paramOr('available', 4, 9);
+sGoal.value    = paramOr('goal', 4, 9);
+sYears.value   = paramOr('years', 2, 4);
+
+function update(){
+  const currentPct = currentSteps[sCurrent.value];
+  const goalPct    = goalSteps[sGoal.value];
+  const years      = yearSteps[sYears.value];
+  const availKg    = availSteps[sAvail.value];
+
+  document.getElementById('v-current').textContent = fmt(currentPct,1)+"%";
+  document.getElementById('v-available').textContent = availKg+" kg/m²/year";
+  document.getElementById('v-goal').textContent = fmt(goalPct,1)+"%";
+  document.getElementById('v-years').textContent = years+" years";
+
+  // step 1
+  const H0 = currentPct * CONV;
+  const Hgoal = goalPct * CONV;
+  document.getElementById('f1-current-pct').textContent = fmt(currentPct,1);
+  document.getElementById('f1-h0').textContent = fmt(H0);
+  document.getElementById('f1-goal-pct').textContent = fmt(goalPct,1);
+  document.getElementById('f1-hgoal').textContent = fmt(Hgoal);
+
+  const buildup = goalPct > currentPct;
+  document.getElementById('step3-buildup').style.display = buildup ? '' : 'none';
+  document.getElementById('step3-maintain').style.display = buildup ? 'none' : '';
+
+  document.getElementById('f2-branch').innerHTML = buildup
+    ? 'H<sub>goal</sub> (' + fmt(Hgoal) + ') &gt; H<sub>0</sub> (' + fmt(H0) + ') → <span class="hl">build-up phase</span>, go to step 3.'
+    : 'H<sub>goal</sub> (' + fmt(Hgoal) + ') ≤ H<sub>0</sub> (' + fmt(H0) + ') → <span class="hl2">maintenance phase</span>, go to step 3.';
+
+  let needed;
+  if (buildup){
+    const e = Math.exp(-K*years);
+    const num = Hgoal - H0*e;
+    const denom = 1 - e;
+    needed = (K/H_FACTOR) * num / denom;
+
+    document.getElementById('f3-years').textContent = years;
+    document.getElementById('f3-years-2').textContent = years;
+    document.getElementById('f3-e').textContent = fmt(e,4);
+    document.getElementById('f3-hgoal').textContent = fmt(Hgoal);
+    document.getElementById('f3-h0').textContent = fmt(H0);
+    document.getElementById('f3-e2').textContent = fmt(e,4);
+    document.getElementById('f3-e3').textContent = fmt(e,4);
+    document.getElementById('f3-num').textContent = fmt(num);
+    document.getElementById('f3-denom').textContent = fmt(denom,4);
+    document.getElementById('f3-m').textContent = fmt(needed);
+  } else {
+    needed = (K/H_FACTOR) * H0;
+    document.getElementById('f3m-h0').textContent = fmt(H0);
+    document.getElementById('f3m-m').textContent = fmt(needed);
+  }
+
+  // step 4
+  const neededCm = needed/DENSITY_DIVISOR;
+  document.getElementById('f4-m').textContent = fmt(needed);
+  document.getElementById('f4-cm').textContent = fmt(neededCm);
+
+  // step 5
+  const availCm = availKg/DENSITY_DIVISOR;
+  document.getElementById('f5-avail').textContent = fmt(availKg,1);
+  document.getElementById('f5-avail-cm').textContent = fmt(availCm,1);
+  document.getElementById('f5-avail2').textContent = fmt(availKg,1);
+  document.getElementById('f5-needed').textContent = fmt(needed);
+
+  let statusEmoji, statusText, ratioText;
+  if (!buildup){
+    ratioText = '—';
+    statusEmoji = '🟢';
+    statusText = 'a maintenance dose of ' + fmt(needed) + ' kg/m²/year is enough to hold your current level.';
+  } else if (needed > MAX_REALISTIC){
+    ratioText = fmt((availKg/needed)*100,0)+'%';
+    statusEmoji = '🔴';
+    statusText = 'this goal requires more than the practical maximum of 50 kg/m²/year — take more time or adjust the goal.';
+  } else {
+    const ratio = availKg/needed;
+    ratioText = fmt(ratio*100,0)+'%';
+    if (ratio >= 1){ statusEmoji='🟢'; statusText='enough mulch available.'; }
+    else if (ratio >= 0.6){ statusEmoji='🟡'; statusText='achievable if you also collect mulch from outside the vegetable garden.'; }
+    else { statusEmoji='🔴'; statusText='more mulch needed, or take more time.'; }
+  }
+  document.getElementById('f5-ratio').textContent = ratioText;
+  document.getElementById('f5-status-emoji').textContent = statusEmoji;
+  document.getElementById('f5-status-text').textContent = statusText;
+}
+
+[sCurrent, sAvail, sGoal, sYears].forEach(s => s.addEventListener('input', update));
+update();
+</script>
+
+<script src="/components/includes.js"></script>
+</body>
+</html>
