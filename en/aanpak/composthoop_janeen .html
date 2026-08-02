@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Can Go on the Compost Heap? — Ecological Gardening · Chaostuinieren</title>
+  <meta name="description" content="What can and can't go on the compost heap? Use the compost check to find composting times and reasons.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/main.css">
+  <style>
+    .compost-wrap { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+    /* COMPOSTCHECK */
+    .check-box {
+      background: white;
+      border: 1px solid var(--fog);
+      border-radius: 6px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 16px rgba(44,36,22,0.07);
+    }
+    .check-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 0.5rem;
+    }
+    .check-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: #3a3020;
+      margin-bottom: 0.5rem;
+    }
+    .check-examples {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: #7a6a50;
+      margin-bottom: 1.25rem;
+    }
+    .check-examples em { font-style: normal; color: var(--straw); }
+    .check-input-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .check-input {
+      flex: 1;
+      padding: 0.8rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      border: 1px solid var(--fog);
+      border-radius: 3px;
+      background: var(--cream);
+      color: #3a3020;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .check-input:focus { border-color: var(--straw); background: white; }
+    .check-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--moss);
+      color: var(--cream);
+      border: none;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .check-btn:hover { background: #4a6632; }
+
+    .check-result {
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.4rem;
+      border-radius: 4px;
+      display: none;
+      line-height: 1.6;
+    }
+    .check-result.ja  { background: #eef5e8; border-left: 4px solid var(--moss); }
+    .check-result.nee { background: #fdf0ec; border-left: 4px solid #c0522a; }
+    .check-result.onbekend { background: var(--fog); border-left: 4px solid var(--straw); }
+    .check-result-titel { font-weight: 500; font-size: 1rem; margin-bottom: 0.3rem; }
+    .check-result-tijd { font-size: 0.88rem; color: var(--moss); margin-top: 0.4rem; font-weight: 400; }
+    .check-result-reden { font-size: 0.88rem; color: #6b3010; margin-top: 0.4rem; }
+
+    /* TABELLEN */
+    .compost-sectie { margin-bottom: 3rem; }
+    .sectie-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--fog);
+    }
+    .sectie-badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+    }
+    .sectie-badge.groen { background: #eef5e8; color: var(--moss); }
+    .sectie-badge.rood  { background: #fdf0ec; color: #c0522a; }
+    .sectie-igean-link {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--moss);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: text-decoration-color 0.2s;
+    }
+    .sectie-igean-link:hover { text-decoration-color: var(--moss); }
+
+    .check-result-igean {
+      font-size: 0.85rem;
+      color: var(--moss);
+      margin-top: 0.6rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: text-decoration-color 0.2s;
+    }
+    .check-result-igean:hover { text-decoration-color: var(--moss); }
+
+    .compost-tabel {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .compost-tabel th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sage);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--fog);
+    }
+    .compost-tabel td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--fog);
+      font-weight: 300;
+      color: #3a3020;
+      vertical-align: top;
+    }
+    .compost-tabel tr:last-child td { border-bottom: none; }
+    .compost-tabel tr:hover td { background: var(--fog); }
+    .tijd-chip {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .reden-cel { font-size: 0.83rem; color: #6b5040; }
+
+    .toon-meer-btn {
+      display: block;
+      margin: 1rem auto 0;
+      padding: 0.6rem 1.5rem;
+      background: none;
+      border: 1px solid var(--fog);
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--moss);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toon-meer-btn:hover { background: var(--fog); }
+    .verborgen { display: none; }
+
+    /* VEELGEMAAKTE FOUT */
+    .fout-box {
+      background: var(--fog);
+      border-left: 4px solid var(--straw);
+      border-radius: 3px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+    .fout-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--moss);
+      margin-bottom: 0.75rem;
+    }
+    .fout-vergelijk {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .fout-kolom { font-size: 0.88rem; font-weight: 300; line-height: 1.7; }
+    .fout-kolom strong { display: block; margin-bottom: 0.25rem; font-weight: 500; }
+
+    /* CTA */
+    .cta-box {
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border: 1px solid var(--fog);
+      border-radius: 6px;
+    }
+    .cta-box p { font-weight: 300; color: #5a4a30; margin-bottom: 0.5rem; }
+
+    /* AUTOCOMPLETE */
+    .autocomplete-wrap { position: relative; flex: 1; }
+    .autocomplete-lijst {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--fog);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 8px 24px rgba(44,36,22,0.12);
+      z-index: 100;
+      max-height: 280px;
+      overflow-y: auto;
+      display: none;
+    }
+    .autocomplete-lijst.open { display: block; }
+    .autocomplete-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--fog);
+      transition: background 0.15s;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover, .autocomplete-item.actief { background: var(--fog); }
+    .autocomplete-icon { font-size: 0.9rem; flex-shrink: 0; }
+    .autocomplete-naam { font-size: 0.9rem; font-weight: 400; color: #3a3020; }
+    .autocomplete-cat { font-size: 0.78rem; font-weight: 300; color: #7a6a50; margin-left: auto; }
+
+    @media (max-width: 600px) {
+      .check-input-row { flex-direction: column; }
+      .fout-vergelijk { grid-template-columns: 1fr; }
+      .compost-tabel th:last-child, .compost-tabel td:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div style="height:var(--nav-height);"></div>
+
+<header class="page-header" style="padding-bottom:2.5rem;">
+  <div class="page-header-inner">
+    <h1 class="page-title">What can go on the compost heap?</h1>
+    <p class="page-lead">A good compost heap thrives on balance. Some materials break down quickly and feed soil life, while others disrupt the process or don't belong there at all.</p>
+  </div>
+</header>
+
+<main>
+  <div class="compost-wrap">
+
+    <!-- COMPOSTCHECK -->
+    <div class="check-box">
+      <div class="check-label">🔍 Compost check</div>
+      <div class="check-title">Can this go on the compost heap?</div>
+      <div class="check-examples">Type a material, for example: <em>cheese</em>, <em>banana peel</em>, <em>cardboard</em></div>
+      <div class="check-input-row">
+        <div class="autocomplete-wrap">
+          <input type="text" class="check-input" id="checkInput" placeholder="Type a material..." autocomplete="off">
+          <div class="autocomplete-lijst" id="autoLijst"></div>
+        </div>
+        <button class="check-btn" id="checkBtn">Check</button>
+      </div>
+      <div class="check-result" id="checkResult"></div>
+    </div>
+
+    <!-- TABEL MAG WEL -->
+    <div class="compost-sectie">
+      <div class="sectie-header">
+        <span class="sectie-badge groen">✅ Compostable</span>
+      </div>
+      <table class="compost-tabel">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Composts in about</th>
+          </tr>
+        </thead>
+        <tbody id="welTbody"></tbody>
+      </table>
+      <button class="toon-meer-btn" id="toonMeerBtn"><b>  Show full list  </b> ▾</button>
+    </div>
+
+    <!-- TABEL MAG NIET -->
+    <div class="compost-sectie">
+      <div class="sectie-header">
+        <span class="sectie-badge rood">❌ Not compostable</span>
+        <span class="sectie-igean-link" onclick="igeanLink()">Where should it go instead? See the IGEAN sorting guide →</span>
+      </div>
+      <table class="compost-tabel">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Why not?</th>
+          </tr>
+        </thead>
+        <tbody id="nietTbody"></tbody>
+      </table>
+    </div>
+
+    <!-- VEELGEMAAKTE FOUT -->
+    <div class="fout-box">
+      <h3>⚠️ Common mistake</h3>
+      <p style="font-weight:300;font-size:0.95rem;">A compost heap is not a trash bin.</p>
+      <div class="fout-vergelijk">
+        <div class="fout-kolom">
+          <strong>❌ Don't ask:</strong>
+          "Can I get rid of this here?"
+        </div>
+        <div class="fout-kolom">
+          <strong>✅ Instead ask:</strong>
+          "Can my compost heap safely turn this into food for the soil?"
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <p>Still not sure?</p>
+      <p>Use the compost check above or check the full list.</p>
+    </div>
+
+  </div>
+</main>
+
+  <nav class="page-nav" style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+    <a href="composting.html" class="page-nav-up">↑ Composting</a>
+  </nav>
+
+<div id="footer-placeholder"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const MAG_WEL = [
+  {naam:'Fresh grass clippings', maanden:1.1, categorie:'Garden and plant waste'},
+  {naam:'Leaves (fresh)', maanden:1.3, categorie:'Garden and plant waste'},
+  {naam:'Coffee grounds', maanden:1.4, categorie:'Kitchen scraps'},
+  {naam:'Flowers', maanden:1.7, categorie:'Garden and plant waste'},
+  {naam:'Fruit and vegetable peels', maanden:1.7, categorie:'Kitchen scraps'},
+  {naam:'Weeds (without seeds)', maanden:1.8, categorie:'Garden and plant waste'},
+  {naam:'Fallen leaves (shredded)', maanden:1.8, categorie:'Garden and plant waste'},
+  {naam:'Seaweed', maanden:1.8, categorie:'Garden and plant waste'},
+  {naam:'Tea bags (without plastic)', maanden:2.7, categorie:'Kitchen scraps'},
+  {naam:'Bread (without butter or toppings)', maanden:2.8, categorie:'Kitchen scraps'},
+  {naam:'Chicken manure (fresh)', maanden:3.0, categorie:'Organic'},
+  {naam:'Rabbit manure (fresh)', maanden:3.0, categorie:'Organic'},
+  {naam:'Manure from chickens or rabbits (fresh)', maanden:3.0, categorie:'Organic'},
+  {naam:'Thin cardboard (toilet paper rolls, egg cartons)', maanden:3.0, categorie:'Paper and cardboard'},
+  {naam:'Small amounts of unbleached paper', maanden:3.2, categorie:'Paper and cardboard'},
+  {naam:'Kitchen paper & napkins (without grease)', maanden:3.2, categorie:'Paper and cardboard'},
+  {naam:'Eggshells (crushed to powder)', maanden:3.3, categorie:'Kitchen scraps'},
+  {naam:'Finely torn cardboard and paper', maanden:3.7, categorie:'Paper and cardboard'},
+  {naam:'Old dried herbs', maanden:4.2, categorie:'Kitchen scraps'},
+  {naam:'Peat, coconut fiber', maanden:4.2, categorie:'Organic'},
+  {naam:'Old bird nests', maanden:4.2, categorie:'Organic'},
+  {naam:'Wood shavings & sawdust (untreated wood)', maanden:4.4, categorie:'Wood and fibers'},
+  {naam:'Dust from natural fibers (cotton, wool)', maanden:4.6, categorie:'Organic'},
+  {naam:'Small twigs & stems (shredded)', maanden:5.7, categorie:'Wood and fibers'},
+  {naam:'Dry leaves (large amounts)', maanden:7.3, categorie:'Garden and plant waste'},
+  {naam:'Hay, straw', maanden:7.3, categorie:'Garden and plant waste'},
+  {naam:'Cardboard with tape or colored print', maanden:7.9, categorie:'Paper and cardboard'},
+  {naam:'Corn stalks, sunflower stems', maanden:8.2, categorie:'Garden and plant waste'},
+  {naam:'Orange peels (pieces)', maanden:8.3, categorie:'Kitchen scraps'},
+  {naam:'Shredded prunings and hedge trimmings', maanden:9.0, categorie:'Garden and plant waste'},
+  {naam:'Corn cobs and broccoli stems', maanden:10.4, categorie:'Kitchen scraps'},
+  {naam:'Eggshells (not crushed)', maanden:11.1, categorie:'Kitchen scraps'},
+  {naam:'Pine needles', maanden:12.9, categorie:'Garden and plant waste'},
+  {naam:'Hard nutshells', maanden:16.2, categorie:'Kitchen scraps'},
+  {naam:'Hard pits (peach, avocado, olive)', maanden:16.6, categorie:'Kitchen scraps'},
+  {naam:'Acorns, chestnuts', maanden:16.6, categorie:'Garden and plant waste'},
+  {naam:'Wood shavings and bark', maanden:16.6, categorie:'Wood and fibers'},
+  {naam:'Chipped wood', maanden:18.2, categorie:'Wood and fibers'},
+  {naam:'Large pieces of wood or branches', maanden:38.8, categorie:'Wood and fibers'},
+];
+
+const MAG_NIET = [
+  {naam:'Cooked food, sauces, fats', categorie:'Kitchen waste', reden:'Attracts rats, mice and flies; disrupts the balance in the compost'},
+  {naam:'Meat, fish, bones', categorie:'Kitchen waste', reden:'Rots faster, causes odor and attracts pests'},
+  {naam:'Dairy (cheese, yogurt, milk, eggs...)', categorie:'Kitchen waste', reden:'Smells, attracts animals, hard to break down'},
+  {naam:'Colored or glossy paper', categorie:'Paper', reden:'Contains petroleum-based ink or plastic coatings'},
+  {naam:'Wood with paint or varnish', categorie:'Wood', reden:'Contains toxic substances or chemical compounds'},
+  {naam:'Cigarette butts', categorie:'Contaminants', reden:'Contain nicotine, plastic fibers and heavy metals'},
+  {naam:'Cat or dog feces', categorie:'Pathogens', reden:'Can contain pathogens (toxoplasmosis, worms, bacteria)'},
+  {naam:'Weeds with seeds', categorie:'Garden', reden:'Risk of spreading weed seeds through your compost'},
+  {naam:'Diseased plant matter', categorie:'Pathogens', reden:'Fungi or viruses can survive in cold compost'},
+  {naam:'Bioplastics (compostable bags)', categorie:'Plastic', reden:"Need industrial composting facilities – won't break down at home"},
+  {naam:'Soil, sand, stones, metal, plastic, glass', categorie:'Non-biological', reden:"Not biological and won't break down"},
+  {naam:'Dust from the vacuum cleaner bag', categorie:'Contaminants', reden:'May contain synthetic fibers and chemicals'},
+  {naam:'Human waste', categorie:'Pathogens', reden:'Can contain pathogens'},
+  {naam:'Cat litter (with waste)', categorie:'Pathogens', reden:'Can contain pathogens'},
+  {naam:'Diapers, sanitary pads', categorie:'Plastic', reden:'Contain plastic and human waste'},
+  {naam:'Disposable wipes', categorie:'Plastic', reden:"Synthetic, won't break down"},
+];
+
+// ── SYNONIEMEN laden ──────────────────────────────────────
+let SYNONIEMEN = {};
+fetch('../../data/synoniemen.json')
+  .then(r => r.ok ? r.json() : {})
+  .then(data => { SYNONIEMEN = data; })
+  .catch(() => {});
+
+// ── FUSE.JS SETUP ─────────────────────────────────────────
+// Bouw een gecombineerde zoeklijst
+const zoekLijst = [
+  ...MAG_WEL.map(i => ({...i, type:'ja'})),
+  ...MAG_NIET.map(i => ({...i, type:'nee'})),
+];
+
+const fuse = new Fuse(zoekLijst, {
+  keys: ['naam', 'categorie'],
+  threshold: 0.4,
+  includeScore: true,
+});
+
+// ── HELPERS ───────────────────────────────────────────────
+function tijdLabel(m) {
+  if (m < 1) return Math.round(m * 4.33) + ' weeks';
+  if (m < 2) return '± 1 month';
+  return '± ' + m.toFixed(1) + ' months';
+}
+
+function tijdKleur(m) {
+  if (m <= 4)  return {bg:'#eef5e8', fg:'#3D5229'};
+  if (m <= 10) return {bg:'#fdf6e8', fg:'#8a6010'};
+  return {bg:'#fdf0ec', fg:'#8B4513'};
+}
+
+// ── DOORVERWIJZING NAAR IGEAN SORTEERGIDS ──────────────────
+function igeanLink() {
+  const ga = confirm('This sorting guide applies to the Wommelgem/Antwerp region (IGEAN, Belgium). Check with your own local council or waste authority for the correct sorting rules where you live.\n\nContinue to the IGEAN sorting guide anyway?');
+  if (ga) window.location.href = 'https://www.igean.be/sorteergids';
+}
+
+// ── ZOEKEN ────────────────────────────────────────────────
+function zoek(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return null;
+
+  // 1. Exacte synoniem-match
+  const synTarget = SYNONIEMEN[q];
+  if (synTarget) {
+    const exact = zoekLijst.find(i => i.naam === synTarget);
+    if (exact) return exact;
+  }
+
+  // 2. Gedeeltelijke synoniem-match
+  for (const [syn, target] of Object.entries(SYNONIEMEN)) {
+    if (syn === q || syn.startsWith(q) || q.startsWith(syn)) {
+      const item = zoekLijst.find(i => i.naam === target);
+      if (item) return item;
+    }
+  }
+
+  // 3. Directe substring-match op de naam (vangt woorden die niet vooraan
+  //    staan, zoals "vis" in "Vlees, vis, botjes" — Fuse's fuzzy-score
+  //    hangt af van de positie in de tekst en mist dit soms)
+  const directMatch = zoekLijst.find(i => i.naam.toLowerCase().includes(q));
+  if (directMatch) return directMatch;
+
+  // 4. Fuzzy match alleen als er echt niets anders is, en streng
+  const results = fuse.search(q).filter(r => r.score < 0.2);
+  if (results.length > 0) return results[0].item;
+
+  return null;
+}
+
+// ── AUTOCOMPLETE ─────────────────────────────────────────
+// Bouw zoeklijst met alle namen + synoniemen
+function bouwSuggesties(query) {
+  const q = query.toLowerCase().trim();
+  if (q.length < 2) return [];
+
+  const gevonden = new Map(); // naam -> item
+
+  // 1. Eerst synoniemen checken — meest betrouwbaar
+  Object.entries(SYNONIEMEN).forEach(([syn, target]) => {
+    if (syn.startsWith(q) || syn === q || (q.length >= 4 && syn.includes(q))) {
+      const item = zoekLijst.find(i => i.naam === target);
+      if (item && !gevonden.has(item.naam)) gevonden.set(item.naam, item);
+    }
+  });
+
+  // 2. Directe substring-match op de naam — vangt woorden die niet
+  //    vooraan staan (zoals "vis" in "Vlees, vis, botjes")
+  if (gevonden.size === 0) {
+    zoekLijst
+      .filter(i => i.naam.toLowerCase().includes(q))
+      .forEach(item => gevonden.set(item.naam, item));
+  }
+
+  // 3. Alleen fuzzy gebruiken als synoniemen én substring niets opleverden
+  if (gevonden.size === 0) {
+    const fuseRes = fuse.search(q, {limit: 6});
+    fuseRes
+      .filter(r => r.score < 0.2) // strenger: alleen goede matches
+      .forEach(r => gevonden.set(r.item.naam, r.item));
+  }
+
+  return Array.from(gevonden.values()).slice(0, 6);
+}
+
+let actieveIndex = -1;
+
+function toonAutoComplete(query) {
+  const lijst = document.getElementById('autoLijst');
+  const suggesties = bouwSuggesties(query);
+  actieveIndex = -1;
+
+  if (!suggesties.length || !query.trim()) {
+    lijst.classList.remove('open');
+    lijst.innerHTML = '';
+    return;
+  }
+
+  lijst.innerHTML = suggesties.map((item, i) => {
+    const icon = item.type === 'ja' ? '✅' : '❌';
+    return `<div class="autocomplete-item" data-index="${i}" data-naam="${item.naam}">
+      <span class="autocomplete-icon">${icon}</span>
+      <span class="autocomplete-naam">${item.naam}</span>
+      <span class="autocomplete-cat">${item.categorie}</span>
+    </div>`;
+  }).join('');
+
+  lijst.classList.add('open');
+
+  // Klik op suggestie
+  lijst.querySelectorAll('.autocomplete-item').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault();
+      document.getElementById('checkInput').value = el.dataset.naam;
+      lijst.classList.remove('open');
+      toonResultaat();
+    });
+  });
+}
+
+document.getElementById('checkInput').addEventListener('input', function() {
+  toonAutoComplete(this.value);
+});
+
+// Keyboard navigatie
+document.getElementById('checkInput').addEventListener('keydown', function(e) {
+  const lijst = document.getElementById('autoLijst');
+  const items = lijst.querySelectorAll('.autocomplete-item');
+  if (!lijst.classList.contains('open')) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    actieveIndex = Math.min(actieveIndex + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    actieveIndex = Math.max(actieveIndex - 1, -1);
+  } else if (e.key === 'Escape') {
+    lijst.classList.remove('open');
+    return;
+  } else { return; }
+
+  items.forEach((el, i) => el.classList.toggle('actief', i === actieveIndex));
+  if (actieveIndex >= 0) this.value = items[actieveIndex].dataset.naam;
+});
+
+// Sluit dropdown bij klik buiten
+document.addEventListener('click', e => {
+  if (!e.target.closest('.autocomplete-wrap')) {
+    document.getElementById('autoLijst').classList.remove('open');
+  }
+});
+
+// ── COMPOSTCHECK ──────────────────────────────────────────
+function toonResultaat() {
+  const val = document.getElementById('checkInput').value.trim();
+  const el = document.getElementById('checkResult');
+  if (!val) { el.style.display = 'none'; return; }
+
+  const res = zoek(val);
+  el.style.display = 'block';
+  el.className = 'check-result';
+
+  if (!res) {
+    el.classList.add('onbekend');
+    el.innerHTML = `<div class="check-result-titel">⚠️ Material not found</div>
+      <div style="font-weight:300;font-size:0.9rem;">Try a simpler word or check the tables below.</div>`;
+    return;
+  }
+
+  if (res.type === 'ja') {
+    const k = tijdKleur(res.maanden);
+    el.classList.add('ja');
+    el.innerHTML = `<div class="check-result-titel">✅ Yes, this can go on the compost heap</div>
+      <div style="font-weight:300;font-size:0.9rem;">${res.naam} belongs to <em>${res.categorie}</em> and composts well.</div>
+      <div class="check-result-tijd" style="color:${k.fg};">⏱ Composts in ${tijdLabel(res.maanden)}</div>`;
+  } else {
+    el.classList.add('nee');
+    el.innerHTML = `<div class="check-result-titel">❌ No, this doesn't belong on the compost heap</div>
+      <div style="font-weight:300;font-size:0.9rem;">${res.naam} belongs to <em>${res.categorie}</em>.</div>
+      <div class="check-result-reden">🔎 ${res.reden}</div>
+      <div class="check-result-igean" onclick="igeanLink()">♻️ Where should it go instead? See the IGEAN sorting guide →</div>`;
+  }
+}
+
+document.getElementById('checkBtn').addEventListener('click', toonResultaat);
+document.getElementById('checkInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') toonResultaat();
+});
+
+// ── TABEL MAG WEL ─────────────────────────────────────────
+const TOON_INITIEEL = 10;
+let welUitgeklapt = false;
+
+function renderWel() {
+  const tbody = document.getElementById('welTbody');
+  tbody.innerHTML = MAG_WEL.map((item, i) => {
+    const k = tijdKleur(item.maanden);
+    const verborgen = (!welUitgeklapt && i >= TOON_INITIEEL) ? 'verborgen' : '';
+    return `<tr class="${verborgen}">
+      <td>${item.naam}</td>
+      <td><span class="tijd-chip" style="background:${k.bg};color:${k.fg};">${tijdLabel(item.maanden)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('toonMeerBtn').addEventListener('click', function() {
+  welUitgeklapt = !welUitgeklapt;
+  renderWel();
+  this.textContent = welUitgeklapt ? 'Show less ▲' : 'Show full list ▾';
+});
+
+// ── TABEL MAG NIET ────────────────────────────────────────
+function renderNiet() {
+  document.getElementById('nietTbody').innerHTML = MAG_NIET.map(item =>
+    `<tr>
+      <td>${item.naam}</td>
+      <td class="reden-cel">${item.reden}</td>
+    </tr>`
+  ).join('');
+}
+
+// ── INIT ──────────────────────────────────────────────────
+renderWel();
+renderNiet();
+</script>
+<script src="/components/includes.js"></script>
+</body>
+</html>
