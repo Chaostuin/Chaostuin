@@ -1,265 +1,265 @@
 [
   {
     "woord": "input",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/kringlopen.html",
     "omschrijving": "Bringing in material from outside the garden to replenish the cycle",
     "synoniem": "supply"
   },
   {
     "woord": "potatoes",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Classic vegetable garden crop",
     "synoniem": "spuds"
   },
   {
     "woord": "cutting off",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/oogsten.html",
     "omschrijving": "Cutting crops just above ground level so roots stay in the soil",
     "synoniem": "harvest cutting"
   },
   {
     "woord": "agroforestry",
-    "tag": "verwant",
+    "tag": "related",
     "url": "/bedenkingen/agroforestry.html",
     "omschrijving": "Farming system that combines trees and crops in rows — chaos on a professional scale",
     "synoniem": "forest farming"
   },
   {
     "woord": "allelopathy",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/combinaties.html",
     "omschrijving": "When a plant releases substances that inhibit the growth of a neighboring plant",
     "synoniem": "chemical plant suppression"
   },
   {
     "woord": "arm's reach",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/paden.html",
     "omschrijving": "Maximum distance to the center of a bed — everything should be reachable without stepping on it"
   },
   {
     "woord": "bacteria",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Microscopic decomposers",
     "synoniem": "microorganisms"
   },
   {
     "woord": "beds",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Raised or flat growing beds",
     "synoniem": "growing beds"
   },
   {
     "woord": "fertilizing",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Adding nutrients to the soil",
     "synoniem": "feeding"
   },
   {
     "woord": "utilization",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/tools/tuinplanner.html",
     "omschrijving": "How large the productive growing area is compared to the total garden size",
     "synoniem": "efficiency"
   },
   {
     "woord": "reachable growing area",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/tools/tuinplanner.html",
     "omschrijving": "Area you can reach from the paths without stepping on the soil",
     "synoniem": "reachable area"
   },
   {
     "woord": "shelter",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/vaste_planten.html",
     "omschrijving": "Plants that temper wind and sun, creating a more stable microclimate",
     "synoniem": "wind-sheltered spot"
   },
   {
     "woord": "berry bushes",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/vaste_planten.html",
     "omschrijving": "Shrubs with edible berries such as redcurrant, blueberry or gooseberry",
     "synoniem": "small fruit"
   },
   {
     "woord": "pesticides",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/plagen.html",
     "omschrijving": "Chemical agents that a chaos garden tries to avoid",
     "synoniem": "chemical sprays"
   },
   {
     "woord": "pollinators",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/bloemen_kruiden.html",
     "omschrijving": "Insects that pollinate flowers, such as bees and bumblebees",
     "synoniem": "insects"
   },
   {
     "woord": "pollination",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/bloemen.html",
     "omschrijving": "The transfer of pollen by insects — necessary for fruit set",
     "synoniem": "pollinating"
   },
   {
     "woord": "bees",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Important pollinators",
     "synoniem": "honeybees"
   },
   {
     "woord": "adjusting course",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/bijsturen.html",
     "omschrijving": "Adapting your plan when something fails or could work better",
     "synoniem": "adapting"
   },
   {
     "woord": "biodiversity",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Richness of species",
     "synoniem": "species richness"
   },
   {
     "woord": "biomimicry",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/AI_en_chaostuin.html",
     "omschrijving": "Imitating nature as a design principle for the garden",
     "synoniem": "nature imitation"
   },
   {
     "woord": "leaf",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Natural mulch material",
     "synoniem": "foliage"
   },
   {
     "woord": "leaves",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Valuable raw material for the garden",
     "synoniem": "foliage"
   },
   {
     "woord": "leaf mulch",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Mulching with leaves",
     "synoniem": "leaf litter"
   },
   {
     "woord": "flowers",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Marigolds, calendula and more in the vegetable garden",
     "synoniem": "ornamental plants"
   },
   {
     "woord": "soil",
-    "tag": "basis",
+    "tag": "basics",
     "url": "#themas",
     "omschrijving": "The foundation of everything in the garden",
     "synoniem": "ground"
   },
   {
     "woord": "ground cover",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/diversiteit.html",
     "omschrijving": "Low plant that keeps the soil covered and holds moisture for neighboring plants",
     "synoniem": "ground covering plant"
   },
   {
     "woord": "soil health",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Quality of soil life",
     "synoniem": "soil quality"
   },
   {
     "woord": "soil insulation",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/mulchvoordelen.html",
     "omschrijving": "Mulch protects the soil against extreme temperatures",
     "synoniem": "soil buffering"
   },
   {
     "woord": "soil life",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "All organisms in the soil",
     "synoniem": "soil organisms"
   },
   {
     "woord": "soil network",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/waarom_niet_spitten.html",
     "omschrijving": "The network of fungi, bacteria and worms that digging destroys",
     "synoniem": "fungal network"
   },
   {
     "woord": "soil building",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/bodem.html",
     "omschrijving": "Improving the soil year after year by adding organic material",
     "synoniem": "soil improvement"
   },
   {
     "woord": "soil signal",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "What weeds reveal about the condition of your soil",
     "synoniem": "soil indicator"
   },
   {
     "woord": "soil structure",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Composition of the soil",
     "synoniem": "soil texture"
   },
   {
     "woord": "soil disturbance",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/waarom_niet_spitten.html",
     "omschrijving": "What digging and plowing do to the life underground",
     "synoniem": "soil inversion"
   },
   {
     "woord": "soil nutrition",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/compost.html",
     "omschrijving": "Nutrients that feed your soil through organic material",
     "synoniem": "soil nourishment"
   },
   {
     "woord": "soil fertility",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Ability of the soil to nourish plants",
     "synoniem": "soil quality"
   },
   {
     "woord": "beans",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Nitrogen fixers",
     "synoniem": "legumes"
   },
   {
     "woord": "brown material",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composteren.html",
     "omschrijving": "Dry, carbon-rich material for the compost heap (branches, straw, cardboard)",
     "synoniem": "carbon-rich material"
@@ -272,56 +272,56 @@
   },
   {
     "woord": "chaos",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Organized disorder as a gardening strategy",
     "synoniem": "disorder"
   },
   {
     "woord": "chaos garden",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Garden based on natural processes",
     "synoniem": "ecological vegetable garden"
   },
   {
     "woord": "chaos gardening",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Gardening with nature",
     "synoniem": "ecological gardening"
   },
   {
     "woord": "chop-and-drop",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/composteren.html",
     "omschrijving": "Cutting plant material on the spot and leaving it as instant mulch",
     "synoniem": "leave in place"
   },
   {
     "woord": "CO2 storage",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/meer.html",
     "omschrijving": "More organic matter in the soil means less CO2 in the air",
     "synoniem": "carbon storage"
   },
   {
     "woord": "companion cropping",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/combinaties.html",
     "omschrijving": "Deliberately placing plants next to each other because they complement or protect one another",
     "synoniem": "mixed cropping"
   },
   {
     "woord": "companion planting",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#themas",
     "omschrijving": "Plants that help each other",
     "synoniem": "companion cropping"
   },
   {
     "woord": "compost",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#themas",
     "omschrijving": "Decomposed organic material",
     "synoniem": "garden compost"
@@ -335,909 +335,909 @@
   },
   {
     "woord": "composting",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composteren.html",
     "omschrijving": "Turning organic waste into mature compost",
     "synoniem": "decomposing"
   },
   {
     "woord": "compost heap",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#themas",
     "omschrijving": "Place where organic material breaks down",
     "synoniem": "compost bin"
   },
   {
     "woord": "zucchini",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Productive summer plant",
     "synoniem": "courgette"
   },
   {
     "woord": "pine needles",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composthoop_janeen.html",
     "omschrijving": "Compostable but slow and acidifying — use sparingly"
   },
   {
     "woord": "suckers",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/verzorgen.html",
     "omschrijving": "Side shoots on tomatoes that drain energy — removed",
     "synoniem": "side shoots"
   },
   {
     "woord": "diversity",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#themas",
     "omschrijving": "Variation as the strength of the ecosystem",
     "synoniem": "variation"
   },
   {
     "woord": "three sisters",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#themas",
     "omschrijving": "Corn, beans and squash together",
     "synoniem": "squash, corn and beans"
   },
   {
     "woord": "drought",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/weer.html",
     "omschrijving": "Periods without rain that mulched soil withstands much better",
     "synoniem": "dry spell"
   },
   {
     "woord": "centipedes",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Predators in the soil",
     "synoniem": "millipedes"
   },
   {
     "woord": "sustainable",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Working with respect for nature",
     "synoniem": "ecological"
   },
   {
     "woord": "ecological",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Knowledge of the household — oikos + logos",
     "synoniem": "organic"
   },
   {
     "woord": "ecosystem",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Interconnection of all living organisms",
     "synoniem": "living community"
   },
   {
     "woord": "annuals",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/bedenkingen/voedselbos.html",
     "omschrijving": "Crops you sow again every year — the core of a vegetable garden",
     "synoniem": "annual crops"
   },
   {
     "woord": "edible flowers",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/bloemen_kruiden.html",
     "omschrijving": "Flowers you can eat, such as nasturtium or violets",
     "synoniem": "edible ornamentals"
   },
   {
     "woord": "eggshells",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composthoop_janeen.html",
     "omschrijving": "Compostable but slow — crushed they break down faster",
     "synoniem": "lime shells"
   },
   {
     "woord": "peas",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Legume crop"
   },
   {
     "woord": "balance",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/plagen.html",
     "omschrijving": "If the garden is diverse enough, balance often restores itself",
     "synoniem": "equilibrium"
   },
   {
     "woord": "phosphorus",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#filosofie",
     "omschrijving": "Nutrient for plants",
     "synoniem": "phosphate"
   },
   {
     "woord": "lacewings",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Natural enemies of aphids",
     "synoniem": "green lacewings"
   },
   {
     "woord": "layering",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/diversiteit.html",
     "omschrijving": "Combining plants at different heights so each makes use of the available space",
     "synoniem": "layered structure"
   },
   {
     "woord": "grass",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Mulch and soil nutrition",
     "synoniem": "lawn"
   },
   {
     "woord": "grass clippings",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Fresh mulch material",
     "synoniem": "grass"
   },
   {
     "woord": "green material",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composteren.html",
     "omschrijving": "Nitrogen-rich, fresh material for the compost heap (grass clippings, kitchen scraps)",
     "synoniem": "nitrogen-rich material"
   },
   {
     "woord": "green waste",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Organic waste from the garden",
     "synoniem": "plant waste"
   },
   {
     "woord": "green manure",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/ecosysteem.html",
     "omschrijving": "Plant you sow to enrich the soil and later use as mulch or compost",
     "synoniem": "cover crop"
   },
   {
     "woord": "hedge trimmings",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composthoop_janeen.html",
     "omschrijving": "Branches and twigs from hedges, shredded and usable as mulch or compost",
     "synoniem": "prunings"
   },
   {
     "woord": "chipping",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Shredding branches",
     "synoniem": "shredding"
   },
   {
     "woord": "wood chips",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Shredded prunings",
     "synoniem": "chipped wood"
   },
   {
     "woord": "raking",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Why we no longer do this",
     "synoniem": "tidying"
   },
   {
     "woord": "bumblebees",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Strong pollinators",
     "synoniem": "bumble bees"
   },
   {
     "woord": "main paths",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/paden.html",
     "omschrijving": "Fixed 60 cm wide paths for wheelbarrow and tools",
     "synoniem": "access paths"
   },
   {
     "woord": "wood chips",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Shredded wood as mulch",
     "synoniem": "chipped wood"
   },
   {
     "woord": "humification",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#tools",
     "omschrijving": "Conversion of mulch into stable humus",
     "synoniem": "humus formation"
   },
   {
     "woord": "humification factor",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/tools/mulchcalculator.html",
     "omschrijving": "The portion of mulch that is ultimately converted into stable humus",
     "synoniem": "conversion factor"
   },
   {
     "woord": "humus",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Stable organic material in the soil",
     "synoniem": "topsoil"
   },
   {
     "woord": "layout",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/indeling.html",
     "omschrijving": "How you cleverly combine plants, space and timing in your garden",
     "synoniem": "garden layout"
   },
   {
     "woord": "insects",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Allies in the ecological garden",
     "synoniem": "arthropods"
   },
   {
     "woord": "potassium",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#filosofie",
     "omschrijving": "Essential plant nutrient",
     "synoniem": "potash"
   },
   {
     "woord": "kitchen waste",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Organic waste for compost",
     "synoniem": "kitchen scraps"
   },
   {
     "woord": "germinating",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/zaaien.html",
     "omschrijving": "The first stage of a seed starting to grow",
     "synoniem": "sprouting"
   },
   {
     "woord": "children's book",
-    "tag": "kinderen",
+    "tag": "kids",
     "url": "#themas",
     "omschrijving": "The compost heap for kids"
   },
   {
     "woord": "small fruit",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/vaste_planten.html",
     "omschrijving": "Low-growing fruit types like strawberries, raspberries and berries",
     "synoniem": "berry fruit"
   },
   {
     "woord": "climbing plants",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/bedenkingen/voedselbos.html",
     "omschrijving": "Plants that grow up along trees or structures — a layer in the food forest",
     "synoniem": "climbers"
   },
   {
     "woord": "coffee grounds",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composthoop_janeen.html",
     "omschrijving": "Excellent compost material: breaks down quickly and is nitrogen-rich",
     "synoniem": "used coffee grounds"
   },
   {
     "woord": "cabbage",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Nutritious winter vegetables",
     "synoniem": "brassicas"
   },
   {
     "woord": "carbon",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#filosofie",
     "omschrijving": "Important element in the soil cycle",
     "synoniem": "C"
   },
   {
     "woord": "cycle",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Closed cycle of materials in the garden",
     "synoniem": "loop"
   },
   {
     "woord": "closing the cycle",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/compost.html",
     "omschrijving": "Giving back what you harvest to the soil through compost",
     "synoniem": "completing the cycle"
   },
   {
     "woord": "circular garden",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Garden without waste",
     "synoniem": "permaculture garden"
   },
   {
     "woord": "cycles",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Water, nitrogen, organic material",
     "synoniem": "nutrient cycles"
   },
   {
     "woord": "herbs",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Fennel, thyme, chives as garden companions",
     "synoniem": "culinary herbs"
   },
   {
     "woord": "synthetic fertilizer",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Mineral fertilizers",
     "synoniem": "chemical fertilizer"
   },
   {
     "woord": "couch grass",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "Deep-rooted grass that holds disturbed soil together — hard to remove",
     "synoniem": "quackgrass"
   },
   {
     "woord": "farming system",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/natuur_of_tuin.html",
     "omschrijving": "A vegetable garden is always a managed system, however ecological",
     "synoniem": "cultivation system"
   },
   {
     "woord": "ladybugs",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Eat aphids",
     "synoniem": "ladybird"
   },
   {
     "woord": "letting go",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/chaos.html",
     "omschrijving": "Not wanting to control everything — the core of the chaos gardening principle",
     "synoniem": "non-intervention"
   },
   {
     "woord": "perennial herbs",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/vaste_planten.html",
     "omschrijving": "Herbs that stay in the same spot for multiple years",
     "synoniem": "permanent herbs"
   },
   {
     "woord": "perennial cropping",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/voedselbos.html",
     "omschrijving": "Crops that stay in the same spot for multiple years and produce again each year",
     "synoniem": "permanent cropping"
   },
   {
     "woord": "mixed cropping",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/bloemen_kruiden.html",
     "omschrijving": "Planting vegetables, flowers and herbs together",
     "synoniem": "polyculture"
   },
   {
     "woord": "blackbirds",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/mulchvoordelen.html",
     "omschrijving": "Birds that dig through mulch for worms — useful but messy",
     "synoniem": "birds"
   },
   {
     "woord": "manure",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Nutrition for the soil",
     "synoniem": "slurry"
   },
   {
     "woord": "microhabitat",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/AI_en_chaostuin.html",
     "omschrijving": "Small living space for specific insects or organisms, created by diversity",
     "synoniem": "living space"
   },
   {
     "woord": "microclimate",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/weer.html",
     "omschrijving": "Local climate in your garden that you can influence with planting and mulch",
     "synoniem": "local climate"
   },
   {
     "woord": "microbial life",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Life that makes the soil fertile",
     "synoniem": "soil life"
   },
   {
     "woord": "vegetable garden",
-    "tag": "basis",
+    "tag": "basics",
     "url": "#filosofie",
     "omschrijving": "Your early-succession ecosystem",
     "synoniem": "kitchen garden"
   },
   {
     "woord": "monoculture",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/bijsturen.html",
     "omschrijving": "One crop over a large area — vulnerable to pests",
     "synoniem": "single cropping"
   },
   {
     "woord": "mulch",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#tools",
     "omschrijving": "Organic cover for the soil",
     "synoniem": "ground cover material"
   },
   {
     "woord": "mulch reserve pile",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/bedenkingen/composteren.html",
     "omschrijving": "Stockpile of coarse garden material you keep to use as mulch later",
     "synoniem": "mulch stockpile"
   },
   {
     "woord": "mulch density",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/tools/mulchcalculator.html",
     "omschrijving": "Weight per volume of mulch material — used to convert layer thickness into kg"
   },
   {
     "woord": "mulching",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#tools",
     "omschrijving": "Applying organic material to the soil",
     "synoniem": "covering"
   },
   {
     "woord": "mulch layer",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Layer of mulch on the soil",
     "synoniem": "cover layer"
   },
   {
     "woord": "mycelium",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Network of fungal threads",
     "synoniem": "fungal threads"
   },
   {
     "woord": "natural enemies",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/plagen.html",
     "omschrijving": "Insects and animals that keep harmful pests in check",
     "synoniem": "predators"
   },
   {
     "woord": "wildlife garden",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "#filosofie",
     "omschrijving": "Garden with room for biodiversity",
     "synoniem": "wild garden"
   },
   {
     "woord": "no-dig",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/bodem.html",
     "omschrijving": "Gardening without digging, to protect soil life",
     "synoniem": "no-till"
   },
   {
     "woord": "turning",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composteren.html",
     "omschrijving": "Mixing the compost heap to keep it aerated and active",
     "synoniem": "turning over"
   },
   {
     "woord": "vermin",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/composthoop_janeen.html",
     "omschrijving": "Rats and mice attracted to the compost heap by the wrong materials",
     "synoniem": "pests"
   },
   {
     "woord": "weeds",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Wanted or unwanted — that's the question",
     "synoniem": "wild plants"
   },
   {
     "woord": "weed suppression",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/mulch.html",
     "omschrijving": "A thick mulch layer suppresses weeds by blocking light",
     "synoniem": "weed control"
   },
   {
     "woord": "extracting",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/ecosysteem.html",
     "omschrijving": "What harvesting does: taking nutrients that you need to compensate for",
     "synoniem": "removing"
   },
   {
     "woord": "harvesting",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/oogsten.html",
     "omschrijving": "Harvesting vegetables with as little soil disturbance as possible",
     "synoniem": "picking"
   },
   {
     "woord": "earwigs",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Useful predatory insects",
     "synoniem": "pincer bugs"
   },
   {
     "woord": "staking",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/verzorgen.html",
     "omschrijving": "Tying tall or heavy plants to a stake or wire",
     "synoniem": "tying up"
   },
   {
     "woord": "yield",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/meer.html",
     "omschrijving": "How much food your garden produces per area",
     "synoniem": "harvest"
   },
   {
     "woord": "organic matter",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#tools",
     "omschrijving": "Measure of soil health",
     "synoniem": "humus content"
   },
   {
     "woord": "paths",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Fixed paths protect the soil",
     "synoniem": "walkways"
   },
   {
     "woord": "taproot",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/combinaties.html",
     "omschrijving": "Deep vertical root that draws minerals and water from deeper soil layers",
     "synoniem": "tap root"
   },
   {
     "woord": "permaculture",
-    "tag": "verwant",
+    "tag": "related",
     "url": "#filosofie",
     "omschrijving": "Permanent agriculture as a system",
     "synoniem": "permanent culture"
   },
   {
     "woord": "pH",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Acidity of the soil"
   },
   {
     "woord": "pioneer plants",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "Plants that quickly cover bare or disturbed ground — what we call 'weeds'",
     "synoniem": "colonizing plants"
   },
   {
     "woord": "woodlice",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Decomposers of organic material",
     "synoniem": "sowbugs"
   },
   {
     "woord": "pests",
-    "tag": "plagen",
+    "tag": "pests",
     "url": "#themas",
     "omschrijving": "Dealing with unwanted guests",
     "synoniem": "infestations"
   },
   {
     "woord": "plant combinations",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/diversiteit.html",
     "omschrijving": "Plants that strengthen each other when grown together",
     "synoniem": "plant synergy"
   },
   {
     "woord": "plant residue",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/kringlopen.html",
     "omschrijving": "Foliage, stems and roots you leave lying or use as mulch",
     "synoniem": "prunings"
   },
   {
     "woord": "plant nutrition",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Nutrition for plants",
     "synoniem": "fertilizer"
   },
   {
     "woord": "polyculture",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/polycultuur.html",
     "omschrijving": "Mixing different seeds and sowing them together — the soil determines what comes up",
     "synoniem": "seed mix"
   },
   {
     "woord": "pumpkin",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Ideal ground cover",
     "synoniem": "squash"
   },
   {
     "woord": "potting soil",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/compost.html",
     "omschrijving": "Soil for seed trays and pots, enriched with compost",
     "synoniem": "sowing medium"
   },
   {
     "woord": "production area",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/meer.html",
     "omschrijving": "A garden purely as production space — which is exactly what chaos gardening isn't"
   },
   {
     "woord": "survival of the fittest",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/polycultuur.html",
     "omschrijving": "In a polyculture bed, the plants that best suit that soil and moment survive"
   },
   {
     "woord": "earthworms",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Important soil workers",
     "synoniem": "night crawlers"
   },
   {
     "woord": "residual streams",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/kringlopen.html",
     "omschrijving": "Plant residue and garden waste that you reuse in the garden",
     "synoniem": "garden waste"
   },
   {
     "woord": "mature compost",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/composteren.html",
     "omschrijving": "Fully decomposed material, ready to use in the garden",
     "synoniem": "finished compost"
   },
   {
     "woord": "predatory insects",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/bloemen.html",
     "omschrijving": "Insects that eat other harmful insects, such as ladybugs and parasitic wasps",
     "synoniem": "predators"
   },
   {
     "woord": "space utilization",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/indeling.html",
     "omschrijving": "Keeping every spot in your garden productive through smart combinations",
     "synoniem": "space efficiency"
   },
   {
     "woord": "community garden",
-    "tag": "verwant",
+    "tag": "related",
     "url": "/bedenkingen/grootte.html",
     "omschrijving": "A chaos garden managed together by several people"
   },
   {
     "woord": "fungal network",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/geduld.html",
     "omschrijving": "Network of fungal threads that exchanges nutrients between plants",
     "synoniem": "mycelium network"
   },
   {
     "woord": "fungi",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Invisible helpers",
     "synoniem": "fungus"
   },
   {
     "woord": "lettuce",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Easy leafy green",
     "synoniem": "salad greens"
   },
   {
     "woord": "slugs",
-    "tag": "plagen",
+    "tag": "pests",
     "url": "#themas",
     "omschrijving": "Control without chemicals",
     "synoniem": "slugs and snails"
   },
   {
     "woord": "parasitic wasps",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/bloemen.html",
     "omschrijving": "Beneficial insects that parasitize aphids and caterpillars, limiting pests",
     "synoniem": "parasitoid wasps"
   },
   {
     "woord": "shredding",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/mulchen.html",
     "omschrijving": "Reducing garden waste in size so it breaks down faster and mulches better",
     "synoniem": "chopping"
   },
   {
     "woord": "prunings",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Branches and plant residue",
     "synoniem": "cuttings"
   },
   {
     "woord": "digging",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Why we no longer do this",
     "synoniem": "turning the soil"
   },
   {
     "woord": "volunteer plants",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/en/aanpak/bijsturen.html",
     "omschrijving": "Plants that come up on their own and that you can make use of",
     "synoniem": "self-seeders"
   },
   {
     "woord": "springtails",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Important soil life",
     "synoniem": "collembola"
   },
   {
     "woord": "farmyard manure",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/tools/mulchcalculator.html",
     "omschrijving": "Animal manure mixed with straw, usable as a soil improver and mulch material",
     "synoniem": "animal manure"
   },
   {
     "woord": "stepping stones",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/paden.html",
     "omschrijving": "Stones or tiles between the beds so you never walk on the growing soil",
     "synoniem": "tiles"
   },
   {
     "woord": "cutting compost",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/bedenkingen/composteren.html",
     "omschrijving": "Fine, matured compost specifically for rooting cuttings",
     "synoniem": "propagation medium"
   },
   {
     "woord": "nitrogen",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#filosofie",
     "omschrijving": "Essential element in the cycle",
     "synoniem": "N"
   },
   {
     "woord": "nitrogen fixation",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/bedenkingen/combinaties.html",
     "omschrijving": "What legumes do: capturing nitrogen from the air into the soil",
     "synoniem": "nitrogen fixing"
   },
   {
     "woord": "straw",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/mulch.html",
     "omschrijving": "Dried grass stems, usable as light mulch",
     "synoniem": "wheat straw"
   },
   {
     "woord": "shrubs",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/vaste_planten.html",
     "omschrijving": "Perennial woody plants that give the garden structure and food",
     "synoniem": "bushes"
   },
   {
     "woord": "steering",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/controle.html",
     "omschrijving": "The degree to which you as a gardener intervene versus letting the system run its course",
     "synoniem": "control"
   },
   {
     "woord": "succession",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#filosofie",
     "omschrijving": "How nature evolves toward forest",
     "synoniem": "plant succession"
   },
   {
     "woord": "branches",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Woody garden material",
     "synoniem": "twigs"
   },
   {
     "woord": "growing beds",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/bodem.html",
     "omschrijving": "Fixed working beds you never walk on, to avoid compaction",
     "synoniem": "raised beds"
   },
   {
     "woord": "time combinations",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/indeling.html",
     "omschrijving": "Alternating early and late crops so the soil is always covered",
     "synoniem": "succession cropping"
   },
   {
     "woord": "tomatoes",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Popular vegetable garden plant",
     "synoniem": "cluster tomatoes"
   },
   {
     "woord": "garden waste",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Valuable raw material",
     "synoniem": "plant material"
   },
   {
     "woord": "garden plan",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/tools/tuinplanner.html",
     "omschrijving": "The layout of your garden with paths, beds and access points — downloadable as PDF or JSON",
     "synoniem": "garden sketch"
@@ -1251,195 +1251,195 @@
   },
   {
     "woord": "twigs",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Fine prunings"
   },
   {
     "woord": "thinning",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/verzorgen.html",
     "omschrijving": "Removing young plants that are too close together so the rest grow better",
     "synoniem": "culling"
   },
   {
     "woord": "transplanting",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/zaaien.html",
     "omschrijving": "Moving pre-sown seedlings from the indoor garden to outside",
     "synoniem": "planting out"
   },
   {
     "woord": "perennials",
-    "tag": "planten",
+    "tag": "plants",
     "url": "#themas",
     "omschrijving": "Rhubarb, wild garlic, asparagus",
     "synoniem": "permanent plants"
   },
   {
     "woord": "resilience",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/diversiteit.html",
     "omschrijving": "The ability of a garden to recover after disturbances",
     "synoniem": "robustness"
   },
   {
     "woord": "compaction",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/bodem.html",
     "omschrijving": "Soil that has been compressed and becomes hard to root through",
     "synoniem": "soil compaction"
   },
   {
     "woord": "caring for plants",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/verzorgen.html",
     "omschrijving": "Helping your plants where needed: staking, thinning, removing shoots",
     "synoniem": "maintaining"
   },
   {
     "woord": "butterflies",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Beneficial insects",
     "synoniem": "day butterflies"
   },
   {
     "woord": "moisture retention",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/mulch.html",
     "omschrijving": "Mulch holds water in the soil longer so you need to water less",
     "synoniem": "water retention"
   },
   {
     "woord": "food forest",
-    "tag": "verwant",
+    "tag": "related",
     "url": "#filosofie",
     "omschrijving": "Late-succession food production",
     "synoniem": "edible forest"
   },
   {
     "woord": "pre-sowing",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/zaaien.html",
     "omschrijving": "Letting seeds germinate first in pots or seed trays before planting them out",
     "synoniem": "starting indoors"
   },
   {
     "woord": "crop rotation",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "#themas",
     "omschrijving": "Pointless with intensive combination planting",
     "synoniem": "rotation"
   },
   {
     "woord": "fruit set",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/bloemen.html",
     "omschrijving": "The moment when a flower develops into a fruit after pollination",
     "synoniem": "fertilization"
   },
   {
     "woord": "water buffering",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/tools/mulchcalculator.html",
     "omschrijving": "How well soil holds water — improves strongly with more organic matter",
     "synoniem": "water retention"
   },
   {
     "woord": "resilience",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/en/aanpak/weer.html",
     "omschrijving": "How well a garden copes with extreme weather conditions",
     "synoniem": "resistance"
   },
   {
     "woord": "weeding",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "Removing unwanted plants — in a chaos garden a choice, not a battle",
     "synoniem": "hoeing"
   },
   {
     "woord": "windbreak",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/agroforestry.html",
     "omschrijving": "Row of trees or shrubs that breaks the wind and creates a microclimate",
     "synoniem": "hedgerow"
   },
   {
     "woord": "worms",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "#themas",
     "omschrijving": "Indispensable for the soil",
     "synoniem": "earthworms"
   },
   {
     "woord": "root vegetables",
-    "tag": "planten",
+    "tag": "plants",
     "url": "/en/aanpak/oogsten.html",
     "omschrijving": "Crops like carrots and parsnips that you pull whole out of the ground",
     "synoniem": "root crops"
   },
   {
     "woord": "seed mix",
-    "tag": "techniek",
+    "tag": "technique",
     "url": "/en/aanpak/polycultuur.html",
     "omschrijving": "Combination of different seeds that you sow at the same time on one bed",
     "synoniem": "polyculture"
   },
   {
     "woord": "sowing",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "#themas",
     "omschrijving": "Sowing in and with the mulch",
     "synoniem": "seeding"
   },
   {
     "woord": "seed compost",
-    "tag": "bodem",
+    "tag": "soil",
     "url": "/en/aanpak/zaaien.html",
     "omschrijving": "Fine, low-nutrient soil specifically for sowing seeds",
     "synoniem": "sowing medium"
   },
   {
     "woord": "seed trays",
-    "tag": "praktijk",
+    "tag": "practice",
     "url": "/en/aanpak/zaaien.html",
     "omschrijving": "Trays with compartments for controlled seed germination",
     "synoniem": "seedling trays"
   },
   {
     "woord": "self-organization",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/chaos.html",
     "omschrijving": "Order that arises spontaneously from the cooperation of plants, soil and animals",
     "synoniem": "spontaneous order"
   },
   {
     "woord": "self-regulating",
-    "tag": "filosofie",
+    "tag": "philosophy",
     "url": "/bedenkingen/AI_en_chaostuin.html",
     "omschrijving": "A system that keeps itself in balance without constant intervention",
     "synoniem": "self-healing"
   },
   {
     "woord": "ground elder",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "Persistent ground cover that indicates nitrogen-rich, moist soil",
     "synoniem": "goutweed"
   },
   {
     "woord": "sorrel",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "/bedenkingen/onkruid.html",
     "omschrijving": "Weed that indicates acidified soil — a signal, not an enemy",
     "synoniem": "field sorrel"
   },
   {
     "woord": "hoverflies",
-    "tag": "natuur",
+    "tag": "nature",
     "url": "#themas",
     "omschrijving": "Natural aphid predators",
     "synoniem": "flower flies"
