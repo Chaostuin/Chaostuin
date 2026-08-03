@@ -275,24 +275,6 @@ nav#nav.scrolled {
 .search-not-found strong { color: var(--straw); font-style: normal; }
 .search-divider { border: none; border-top: 1px solid rgba(245,240,232,0.08); margin: 0; }
 
-.missed-btn {
-  display: none;
-  background: transparent;
-  border: 1px solid rgba(200,169,110,0.4);
-  color: var(--straw);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 0.4rem 0.9rem;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.missed-btn:hover { background: rgba(200,169,110,0.1); }
-.missed-btn.has-items { display: inline-block; }
-
 /* ── FOOTER ──────────────────────────────────────────── */
 footer {
   background: #1a140d;
