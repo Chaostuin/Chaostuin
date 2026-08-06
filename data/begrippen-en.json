@@ -23,14 +23,14 @@
   {
     "woord": "agroforestry",
     "tag": "related",
-    "url": "/bedenkingen/agroforestry.html",
+    "url": "/en/bedenkingen/agroforestry.html",
     "omschrijving": "Farming system that combines trees and crops in rows — chaos on a professional scale",
     "synoniem": "forest farming"
   },
   {
     "woord": "allelopathy",
     "tag": "nature",
-    "url": "/bedenkingen/combinaties.html",
+    "url": "/en/bedenkingen/combinaties.html",
     "omschrijving": "When a plant releases substances that inhibit the growth of a neighboring plant",
     "synoniem": "chemical plant suppression"
   },
@@ -106,7 +106,7 @@
   {
     "woord": "pollination",
     "tag": "nature",
-    "url": "/bedenkingen/bloemen.html",
+    "url": "/en/bedenkingen/bloemen.html",
     "omschrijving": "The transfer of pollen by insects — necessary for fruit set",
     "synoniem": "pollinating"
   },
@@ -134,7 +134,7 @@
   {
     "woord": "biomimicry",
     "tag": "philosophy",
-    "url": "/bedenkingen/AI_en_chaostuin.html",
+    "url": "/en/bedenkingen/AI_en_chaostuin.html",
     "omschrijving": "Imitating nature as a design principle for the garden",
     "synoniem": "nature imitation"
   },
@@ -176,7 +176,7 @@
   {
     "woord": "ground cover",
     "tag": "technique",
-    "url": "/bedenkingen/diversiteit.html",
+    "url": "/en/bedenkingen/diversiteit.html",
     "omschrijving": "Low plant that keeps the soil covered and holds moisture for neighboring plants",
     "synoniem": "ground covering plant"
   },
@@ -204,7 +204,7 @@
   {
     "woord": "soil network",
     "tag": "soil",
-    "url": "/bedenkingen/waarom_niet_spitten.html",
+    "url": "/en/bedenkingen/waarom_niet_spitten.html",
     "omschrijving": "The network of fungi, bacteria and worms that digging destroys",
     "synoniem": "fungal network"
   },
@@ -218,7 +218,7 @@
   {
     "woord": "soil signal",
     "tag": "soil",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "What weeds reveal about the condition of your soil",
     "synoniem": "soil indicator"
   },
@@ -232,7 +232,7 @@
   {
     "woord": "soil disturbance",
     "tag": "soil",
-    "url": "/bedenkingen/waarom_niet_spitten.html",
+    "url": "/en/bedenkingen/waarom_niet_spitten.html",
     "omschrijving": "What digging and plowing do to the life underground",
     "synoniem": "soil inversion"
   },
@@ -294,7 +294,7 @@
   {
     "woord": "chop-and-drop",
     "tag": "technique",
-    "url": "/bedenkingen/composteren.html",
+    "url": "/en/bedenkingen/composteren.html",
     "omschrijving": "Cutting plant material on the spot and leaving it as instant mulch",
     "synoniem": "leave in place"
   },
@@ -308,7 +308,7 @@
   {
     "woord": "companion cropping",
     "tag": "technique",
-    "url": "/bedenkingen/combinaties.html",
+    "url": "/en/bedenkingen/combinaties.html",
     "omschrijving": "Deliberately placing plants next to each other because they complement or protect one another",
     "synoniem": "mixed cropping"
   },
@@ -419,7 +419,7 @@
   {
     "woord": "annuals",
     "tag": "plants",
-    "url": "/bedenkingen/voedselbos.html",
+    "url": "/en/bedenkingen/voedselbos.html",
     "omschrijving": "Crops you sow again every year — the core of a vegetable garden",
     "synoniem": "annual crops"
   },
@@ -467,7 +467,7 @@
   {
     "woord": "layering",
     "tag": "technique",
-    "url": "/bedenkingen/diversiteit.html",
+    "url": "/en/bedenkingen/diversiteit.html",
     "omschrijving": "Combining plants at different heights so each makes use of the available space",
     "synoniem": "layered structure"
   },
@@ -502,7 +502,7 @@
   {
     "woord": "green manure",
     "tag": "technique",
-    "url": "/bedenkingen/ecosysteem.html",
+    "url": "/en/bedenkingen/ecosysteem.html",
     "omschrijving": "Plant you sow to enrich the soil and later use as mulch or compost",
     "synoniem": "cover crop"
   },
@@ -627,7 +627,7 @@
   {
     "woord": "climbing plants",
     "tag": "plants",
-    "url": "/bedenkingen/voedselbos.html",
+    "url": "/en/bedenkingen/voedselbos.html",
     "omschrijving": "Plants that grow up along trees or structures — a layer in the food forest",
     "synoniem": "climbers"
   },
@@ -697,14 +697,14 @@
   {
     "woord": "couch grass",
     "tag": "nature",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "Deep-rooted grass that holds disturbed soil together — hard to remove",
     "synoniem": "quackgrass"
   },
   {
     "woord": "farming system",
     "tag": "philosophy",
-    "url": "/bedenkingen/natuur_of_tuin.html",
+    "url": "/en/bedenkingen/natuur_of_tuin.html",
     "omschrijving": "A vegetable garden is always a managed system, however ecological",
     "synoniem": "cultivation system"
   },
@@ -718,7 +718,7 @@
   {
     "woord": "letting go",
     "tag": "philosophy",
-    "url": "/bedenkingen/chaos.html",
+    "url": "/en/bedenkingen/chaos.html",
     "omschrijving": "Not wanting to control everything — the core of the chaos gardening principle",
     "synoniem": "non-intervention"
   },
@@ -732,7 +732,7 @@
   {
     "woord": "perennial cropping",
     "tag": "technique",
-    "url": "/bedenkingen/voedselbos.html",
+    "url": "/en/bedenkingen/voedselbos.html",
     "omschrijving": "Crops that stay in the same spot for multiple years and produce again each year",
     "synoniem": "permanent cropping"
   },
@@ -802,7 +802,7 @@
   {
     "woord": "mulch reserve pile",
     "tag": "technique",
-    "url": "/bedenkingen/composteren.html",
+    "url": "/en/bedenkingen/composteren.html",
     "omschrijving": "Stockpile of coarse garden material you keep to use as mulch later",
     "synoniem": "mulch stockpile"
   },
@@ -885,7 +885,7 @@
   {
     "woord": "extracting",
     "tag": "philosophy",
-    "url": "/bedenkingen/ecosysteem.html",
+    "url": "/en/bedenkingen/ecosysteem.html",
     "omschrijving": "What harvesting does: taking nutrients that you need to compensate for",
     "synoniem": "removing"
   },
@@ -934,7 +934,7 @@
   {
     "woord": "taproot",
     "tag": "soil",
-    "url": "/bedenkingen/combinaties.html",
+    "url": "/en/bedenkingen/combinaties.html",
     "omschrijving": "Deep vertical root that draws minerals and water from deeper soil layers",
     "synoniem": "tap root"
   },
@@ -954,7 +954,7 @@
   {
     "woord": "pioneer plants",
     "tag": "nature",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "Plants that quickly cover bare or disturbed ground — what we call 'weeds'",
     "synoniem": "colonizing plants"
   },
@@ -1050,7 +1050,7 @@
   {
     "woord": "predatory insects",
     "tag": "nature",
-    "url": "/bedenkingen/bloemen.html",
+    "url": "/en/bedenkingen/bloemen.html",
     "omschrijving": "Insects that eat other harmful insects, such as ladybugs and parasitic wasps",
     "synoniem": "predators"
   },
@@ -1064,13 +1064,13 @@
   {
     "woord": "community garden",
     "tag": "related",
-    "url": "/bedenkingen/grootte.html",
+    "url": "/en/bedenkingen/grootte.html",
     "omschrijving": "A chaos garden managed together by several people"
   },
   {
     "woord": "fungal network",
     "tag": "soil",
-    "url": "/bedenkingen/geduld.html",
+    "url": "/en/bedenkingen/geduld.html",
     "omschrijving": "Network of fungal threads that exchanges nutrients between plants",
     "synoniem": "mycelium network"
   },
@@ -1098,7 +1098,7 @@
   {
     "woord": "parasitic wasps",
     "tag": "nature",
-    "url": "/bedenkingen/bloemen.html",
+    "url": "/en/bedenkingen/bloemen.html",
     "omschrijving": "Beneficial insects that parasitize aphids and caterpillars, limiting pests",
     "synoniem": "parasitoid wasps"
   },
@@ -1154,7 +1154,7 @@
   {
     "woord": "cutting compost",
     "tag": "practice",
-    "url": "/bedenkingen/composteren.html",
+    "url": "/en/bedenkingen/composteren.html",
     "omschrijving": "Fine, matured compost specifically for rooting cuttings",
     "synoniem": "propagation medium"
   },
@@ -1168,7 +1168,7 @@
   {
     "woord": "nitrogen fixation",
     "tag": "soil",
-    "url": "/bedenkingen/combinaties.html",
+    "url": "/en/bedenkingen/combinaties.html",
     "omschrijving": "What legumes do: capturing nitrogen from the air into the soil",
     "synoniem": "nitrogen fixing"
   },
@@ -1189,7 +1189,7 @@
   {
     "woord": "steering",
     "tag": "philosophy",
-    "url": "/bedenkingen/controle.html",
+    "url": "/en/bedenkingen/controle.html",
     "omschrijving": "The degree to which you as a gardener intervene versus letting the system run its course",
     "synoniem": "control"
   },
@@ -1335,7 +1335,7 @@
   {
     "woord": "fruit set",
     "tag": "nature",
-    "url": "/bedenkingen/bloemen.html",
+    "url": "/en/bedenkingen/bloemen.html",
     "omschrijving": "The moment when a flower develops into a fruit after pollination",
     "synoniem": "fertilization"
   },
@@ -1356,14 +1356,14 @@
   {
     "woord": "weeding",
     "tag": "practice",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "Removing unwanted plants — in a chaos garden a choice, not a battle",
     "synoniem": "hoeing"
   },
   {
     "woord": "windbreak",
     "tag": "nature",
-    "url": "/bedenkingen/agroforestry.html",
+    "url": "/en/bedenkingen/agroforestry.html",
     "omschrijving": "Row of trees or shrubs that breaks the wind and creates a microclimate",
     "synoniem": "hedgerow"
   },
@@ -1412,28 +1412,28 @@
   {
     "woord": "self-organization",
     "tag": "philosophy",
-    "url": "/bedenkingen/chaos.html",
+    "url": "/en/bedenkingen/chaos.html",
     "omschrijving": "Order that arises spontaneously from the cooperation of plants, soil and animals",
     "synoniem": "spontaneous order"
   },
   {
     "woord": "self-regulating",
     "tag": "philosophy",
-    "url": "/bedenkingen/AI_en_chaostuin.html",
+    "url": "/en/bedenkingen/AI_en_chaostuin.html",
     "omschrijving": "A system that keeps itself in balance without constant intervention",
     "synoniem": "self-healing"
   },
   {
     "woord": "ground elder",
     "tag": "nature",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "Persistent ground cover that indicates nitrogen-rich, moist soil",
     "synoniem": "goutweed"
   },
   {
     "woord": "sorrel",
     "tag": "nature",
-    "url": "/bedenkingen/onkruid.html",
+    "url": "/en/bedenkingen/onkruid.html",
     "omschrijving": "Weed that indicates acidified soil — a signal, not an enemy",
     "synoniem": "field sorrel"
   },
