@@ -64,14 +64,14 @@
   {
     "woord": "utilization",
     "tag": "practice",
-    "url": "/tools/tuinplanner.html",
+    "url": "/en/tools/tuinplanner.html",
     "omschrijving": "How large the productive growing area is compared to the total garden size",
     "synoniem": "efficiency"
   },
   {
     "woord": "reachable growing area",
     "tag": "practice",
-    "url": "/tools/tuinplanner.html",
+    "url": "/en/tools/tuinplanner.html",
     "omschrijving": "Area you can reach from the paths without stepping on the soil",
     "synoniem": "reachable area"
   },
@@ -1238,14 +1238,14 @@
   {
     "woord": "garden plan",
     "tag": "practice",
-    "url": "/tools/tuinplanner.html",
+    "url": "/en/tools/tuinplanner.html",
     "omschrijving": "The layout of your garden with paths, beds and access points — downloadable as PDF or JSON",
     "synoniem": "garden sketch"
   },
   {
     "woord": "garden planner",
     "tag": "tool",
-    "url": "/tools/tuinplanner.html",
+    "url": "/en/tools/tuinplanner.html",
     "omschrijving": "Interactive tool to lay out paths, stepping stones and vegetables in your garden",
     "synoniem": "garden designer"
   },
