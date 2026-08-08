@@ -15,16 +15,10 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.chaostuin.be/tools/padplanner.html</loc>
+    <loc>https://www.chaostuin.be/tools/tuinplanner.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://www.chaostuin.be/tools/groentenplanner.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Kies je aanpak — Basis van je tuin -->
   <url>
     <loc>https://www.chaostuin.be/aanpak/bodem.html</loc>
@@ -63,6 +57,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/bloemen_kruiden.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/vaste_planten.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 
   <!-- Kies je aanpak — Werken in je tuin -->
   <url>
@@ -81,6 +85,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.chaostuin.be/aanpak/planten.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/verzorgen.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+<url>
     <loc>https://www.chaostuin.be/aanpak/oogsten.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -89,6 +103,16 @@
   <!-- Kies je aanpak — Evenwicht en problemen -->
   <url>
     <loc>https://www.chaostuin.be/aanpak/plagen.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/weer.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/bijsturen.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -101,6 +125,11 @@
   </url>
   <url>
     <loc>https://www.chaostuin.be/aanpak/tiengeboden.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.chaostuin.be/aanpak/bedenkingen.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
