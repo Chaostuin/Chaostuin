@@ -75,7 +75,7 @@ async function telDownload() {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
-    await fetch('https://api.counterapi.dev/v2/chaostuin/grommelpaniek/up',
+    await fetch('https://api.counterapi.dev/v2/Grommelpaniek/Grommelpaniekdownloads/up',
       { signal: controller.signal });
     clearTimeout(timeout);
   } catch(e) {

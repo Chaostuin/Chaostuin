@@ -1,2 +1,2 @@
 
-https://api.counterapi.dev/v1/chaostuin/grommelpaniek
+https://api.counterapi.dev/v2/Grommelpaniek/Grommelpaniekdownloads/up

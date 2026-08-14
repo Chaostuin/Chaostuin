@@ -141,6 +141,12 @@
     });
   }
 
+  function trackPageView() {
+    const slug = window.location.pathname
+      .replace(/^\/|\/$/g, '')
+      .replace(/\//g, '-') || 'home';
+    fetch(`https://api.counterapi.dev/v2/chaostuin/page-${slug}/up`).catch(() => {});
+  }
   function loadSearch() {
     const s = document.createElement('script');
     s.src = '/components/search.js';
@@ -151,6 +157,7 @@
     loadComponent('nav-placeholder', navFile, initNav);
     loadComponent('footer-placeholder', footerFile);
     loadSearch();
+    trackPageView();
   }
 
   if (document.readyState === 'loading') {
