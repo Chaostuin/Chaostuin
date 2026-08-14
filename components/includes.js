@@ -145,7 +145,7 @@
     const slug = window.location.pathname
       .replace(/^\/|\/$/g, '')
       .replace(/\//g, '-') || 'home';
-    fetch(`https://api.counterapi.dev/v2/chaostuin/page-${slug}/up`).catch(() => {});
+      fetch(`https://api.counterapi.dev/v2/Grommelpaniek/page-${slug}/up`).catch(() => {});
   }
   function loadSearch() {
     const s = document.createElement('script');
