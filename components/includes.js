@@ -144,8 +144,8 @@
   function trackPageView() {
     const slug = window.location.pathname
       .replace(/^\/|\/$/g, '')
-      .replace(/\//g, '-') || 'home';
-      .replace(/\.html$/, '')
+      .replace(/\//g, '-') || 'home'
+      .replace(/\.html$/, '');
       fetch(`https://api.counterapi.dev/v2/Grommelpaniek/page-${slug}/up`).catch(() => {});
   }
   function loadSearch() {
