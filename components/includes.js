@@ -145,6 +145,7 @@
     const slug = window.location.pathname
       .replace(/^\/|\/$/g, '')
       .replace(/\//g, '-') || 'home'
+      .replace(/\/index$/, '')   // "en/index" → "en", "aanpak/index" → "aanpak"
       .replace(/\.html$/, '');
       fetch(`https://api.counterapi.dev/v2/Grommelpaniek/page-${slug}/up`).catch(() => {});
   }
