@@ -27,7 +27,9 @@
 
 User-agent: *
 Content-Signal: search=yes,ai-train=no
+
 Allow: /
+Sitemap: https://chaostuin.be/sitemap.xml
 
 User-agent: Amazonbot
 Disallow: /

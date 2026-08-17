@@ -1,0 +1,4 @@
+sitemap aanpassen:
+
+in cmd het root pad van chaostuin na cd " kopiëren.
+daarna het commando "node generate-sitemap.js" uitvoeren
