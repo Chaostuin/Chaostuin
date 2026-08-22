@@ -32,6 +32,14 @@ const EXCLUDE_FILENAMES = new Set(["404.html"]);
 const MARKER_START = "<!-- seo:start (canonical + hreflang, auto-generated) -->";
 const MARKER_END = "<!-- seo:end -->";
 
+// Oudere merker-naam uit een vorige versie van dit script (vóór de
+// canonical-tag werd toegevoegd) — wordt opgeruimd zodat er geen twee
+// blokken naast elkaar blijven staan op pagina's waar het script al
+// eerder draaide.
+const LEGACY_MARKERS = [
+  { start: "<!-- hreflang:start -->", end: "<!-- hreflang:end -->" },
+];
+
 // ---- Helpers (zelfde logica als generate-sitemap.js) --------------------
 
 function walk(dir, files = []) {
@@ -94,14 +102,27 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function stripLegacyBlocks(html) {
+  let result = html;
+  for (const { start, end } of LEGACY_MARKERS) {
+    const legacyRegex = new RegExp(
+      `[ \\t]*${escapeRegex(start)}[\\s\\S]*?${escapeRegex(end)}\\n?`,
+      "i"
+    );
+    result = result.replace(legacyRegex, "");
+  }
+  return result;
+}
+
 function upsertBlock(html, block) {
+  html = stripLegacyBlocks(html);
   const markerRegex = new RegExp(
-    `[ \\t]*${escapeRegex(MARKER_START)}[\\s\\S]*?${escapeRegex(MARKER_END)}\\n?`,
+    `([ \\t]*)${escapeRegex(MARKER_START)}[\\s\\S]*?${escapeRegex(MARKER_END)}\\n?`,
     "i"
   );
   if (markerRegex.test(html)) {
-    // Bestaand blok vervangen
-    return html.replace(markerRegex, block + "\n");
+    // Bestaand blok vervangen, met behoud van de bestaande inspringing
+    return html.replace(markerRegex, (_match, indent) => `${indent}${block}\n`);
   }
   // Nog geen blok: invoegen net na de openende <head ...> tag
   const headOpenRegex = /<head[^>]*>/i;
