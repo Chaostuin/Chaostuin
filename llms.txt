@@ -1,0 +1,25 @@
+# chaostuin.be
+
+> Chaostuin.be is a Dutch-language (with an English translation under /en/) website about "chaostuin" ecological/permaculture-style gardening: high-density, row-free mixed planting that lets a garden self-regulate rather than following traditional straight-row vegetable-bed layouts. The site is run by a single hobbyist gardener who writes and develops it personally, and it combines practical how-to content, a glossary, reflective essays, interactive planning tools, and a children's book.
+
+Content on this site (articles, essays, and tool output) may be used for search, summarization, and citation with attribution back to the source page on chaostuin.be. Please do not reproduce full essay or article text verbatim; link back instead.
+
+## Approach / how-to guides
+- [Aanpak overview](https://chaostuin.be/aanpak/): Practical guides covering the core chaostuin method — soil, sowing, planting, mulching, pests, diversity, and more.
+- [English translations](https://chaostuin.be/en/aanpak/): English versions of the same how-to guides.
+
+## Reflections (bedenkingen)
+- [Bedenkingen overview](https://chaostuin.be/bedenkingen/bedenkingen.html): Fifteen essays reflecting on the philosophy behind chaostuin gardening — chaos vs. control, ecosystems, diversity, patience, agroforestry, and more.
+- [English translations](https://chaostuin.be/en/bedenkingen/): English versions of the same essays.
+
+## Tools
+- [Tuinplanner](https://chaostuin.be/tools/tuinplanner.html): Interactive garden path, stepping-stone, and vegetable-bed planning tool with PDF export.
+- [Mulch calculator](https://chaostuin.be/tools/mulchcalculator.html): Calculates how much mulch material is needed for a given area and layer depth.
+- English versions available under [/en/tools/](https://chaostuin.be/en/tools/).
+
+## Reference
+- [Begrippenlijst / glossary](https://chaostuin.be/data/begrippen.json): Structured glossary of gardening terms used throughout the site, with descriptions and synonyms (Dutch; English version at /data/begrippen-en.json).
+
+## Other
+- [Grommelpaniek](https://chaostuin.be/pdf/Grommelpaniek.pdf): A children's picture book set in a chaostuin, free to download (English translation "Grumble Panic" at /en/pdf/Grommelpaniek_en.pdf).
+- [Sitemap](https://chaostuin.be/sitemap.xml): Full list of pages on the site.
