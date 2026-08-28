@@ -61,27 +61,23 @@
       line-height: 1.7;
     }
 
-    /* Placeholder voor de figuur - te vervangen door de echte infographic */
     .essay-figuur {
       margin: 2.5rem 0;
-      padding: 3rem 1.5rem;
-      background: var(--fog);
-      border: 1px dashed var(--straw);
-      border-radius: 4px;
       text-align: center;
-      font-size: 0.85rem;
-      font-weight: 300;
-      color: #7a6a50;
-      letter-spacing: 0.02em;
     }
 
-    .essay-figuur span {
-      display: block;
-      font-family: 'Playfair Display', serif;
+    .essay-figuur img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .essay-figuur figcaption {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 300;
       font-style: italic;
-      font-size: 0.95rem;
-      color: var(--moss);
-      margin-bottom: 0.4rem;
+      color: #7a6a50;
     }
   </style>
 </head>
@@ -107,10 +103,10 @@
 
       <p>Daar zit het onderscheid dat de meeste verwarring wegneemt: compost voedt vooral de plant, humus voedt vooral de bodem. Compost levert de mineralen die je gewassen nu nodig hebben. Humus levert nauwelijks nog directe voeding, maar is essentieel voor de structuur van je bodem — het houdt water vast, bindt mineralen, en geeft de grond die kruimelige, "levende" textuur die je onder je vingers voelt in een gezonde tuin.</p>
 
-      <div class="essay-figuur">
-        <span>Figuur</span>
-        [Hier komt het schema: plantenresten → compost → humus, met de aftakking naar voedingsstoffen en bodemstructuur]
-      </div>
+      <figure class="essay-figuur">
+        <img src="../pictures/compost_humus.png" alt="Schema: plantenresten worden mulch of compost, en verder in de bodem afgebroken tot voedingsstoffen voor de plant en humus voor de bodemstructuur." loading="lazy">
+        <figcaption>Van plantenrest tot voeding én bodemstructuur</figcaption>
+      </figure>
 
       <p>Compost wordt daarom ook niet zomaar humus — dat is een te grove kortsluiting. Wat er in de bodem gebeurt met compost, is een voortdurend vertakkingsproces: een deel wordt opnieuw voedsel voor het bodemleven, een deel mineraliseert tot voedingsstoffen voor je planten, en slechts een deel stabiliseert uiteindelijk tot iets wat op humus lijkt. En intussen verdwijnt er onderweg ook gewoon materiaal als CO₂ de lucht in — dat hoort erbij, dat is bodemleven aan het werk, geen verlies om je zorgen over te maken.</p>
 
