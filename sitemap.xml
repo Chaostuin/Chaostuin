@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://chaostuin.be/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/" />
@@ -52,6 +52,7 @@
     <lastmod>2026-08-23</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/aanpak/chaostuin.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/aanpak/chaostuin.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/aanpak/compost.html</loc>
@@ -222,10 +223,17 @@
   </url>
   <url>
     <loc>https://chaostuin.be/bedenkingen/bedenkingen.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/bedenkingen.html" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/bedenkingen.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/bedenkingen/bedenkingen1.html</loc>
+    <lastmod>2026-08-27</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/bedenkingen1.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/bedenkingen1.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/bedenkingen/bloemen.html</loc>
@@ -247,6 +255,13 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/combinaties.html" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/combinaties.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/bedenkingen/compost_of_humus.html</loc>
+    <lastmod>2026-08-28</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/compost_of_humus.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/compost_of_humus.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/bedenkingen/composteren.html</loc>
@@ -319,8 +334,15 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/waarom_niet_spitten.html" />
   </url>
   <url>
+    <loc>https://chaostuin.be/downloads.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/downloads.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/downloads.html" />
+  </url>
+  <url>
     <loc>https://chaostuin.be/en/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/" />
@@ -352,6 +374,13 @@
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/aanpak/bodem.html" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/aanpak/bodem.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/en/aanpak/chaostuin.html</loc>
+    <lastmod>2026-08-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/aanpak/chaostuin.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/aanpak/chaostuin.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/en/aanpak/compost.html</loc>
@@ -516,10 +545,17 @@
   </url>
   <url>
     <loc>https://chaostuin.be/en/bedenkingen/bedenkingen.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/bedenkingen.html" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/bedenkingen.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/en/bedenkingen/bedenkingen1.html</loc>
+    <lastmod>2026-08-27</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/bedenkingen1.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/bedenkingen1.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/en/bedenkingen/bloemen.html</loc>
@@ -541,6 +577,13 @@
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/combinaties.html" />
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/combinaties.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/en/bedenkingen/compost_of_humus.html</loc>
+    <lastmod>2026-08-28</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/bedenkingen/compost_of_humus.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/compost_of_humus.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/en/bedenkingen/composteren.html</loc>
@@ -613,6 +656,26 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/bedenkingen/waarom_niet_spitten.html" />
   </url>
   <url>
+    <loc>https://chaostuin.be/en/downloads.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/downloads.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/downloads.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/en/index1.html</loc>
+    <lastmod>2026-08-23</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/index1.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/en/index2.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/index2.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/index2.html" />
+  </url>
+  <url>
     <loc>https://chaostuin.be/en/tools/mulchcalculator_detail.html</loc>
     <lastmod>2026-08-22</lastmod>
     <priority>0.4</priority>
@@ -634,10 +697,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/tools/tuinplanner.html" />
   </url>
   <url>
-    <loc>https://chaostuin.be/index1.html</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://chaostuin.be/index - nl.html</loc>
+    <lastmod>2026-08-28</lastmod>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/index1.html" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/index - nl.html" />
+  </url>
+  <url>
+    <loc>https://chaostuin.be/index2.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://chaostuin.be/index2.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chaostuin.be/en/index2.html" />
   </url>
   <url>
     <loc>https://chaostuin.be/telDownload-final.html</loc>
