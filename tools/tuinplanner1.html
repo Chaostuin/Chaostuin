@@ -39,12 +39,6 @@ canvas{border-radius:2px;display:block}
 .zoom-btn{background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.15);border-radius:3px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:13px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .zoom-btn:hover{background:rgba(245,240,232,.18);border-color:var(--straw)}
 .zoom-label{font-size:11px;color:rgba(245,240,232,.45);min-width:38px;text-align:center}
-.help-btn{background:none;border:1px solid rgba(245,240,232,.2);border-radius:3px;color:rgba(245,240,232,.55);font-family:'DM Sans',sans-serif;font-size:10px;padding:.3rem .55rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s}
-.help-btn:hover{background:rgba(245,240,232,.1);border-color:var(--straw);color:var(--straw)}
-.help-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:220;display:flex;align-items:center;justify-content:center}
-.help-box{background:#2a2218;border:1px solid rgba(245,240,232,.15);border-radius:8px;width:min(880px,94vw);height:min(85vh,900px);display:flex;flex-direction:column;overflow:hidden}
-.help-body{flex:1;min-height:0}
-.help-body iframe{width:100%;height:100%;border:none;background:var(--earth)}
 .legend{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
 .li{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(245,240,232,.55);cursor:pointer;padding:3px 6px;border-radius:3px;border:1px solid transparent;transition:all .15s;user-select:none}
 .li:hover{border-color:rgba(245,240,232,.2);color:var(--cream)}
@@ -225,7 +219,7 @@ h1 span{font-style:italic;color:var(--straw)}
 .bcalc{width:100%;background:var(--moss);border:1px solid var(--sage);border-radius:3px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;padding:.65rem;cursor:pointer;margin-top:1rem;transition:background .2s}
 .bcalc:hover{background:var(--leaf)}
 .ca{background:rgba(245,240,232,.04);border:1px solid rgba(245,240,232,.1);border-radius:6px;padding:1.25rem;display:flex;flex-direction:column}
-.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;row-gap:.4rem}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
 .ct{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.35)}
 
 .cw{flex:1;display:flex;align-items:center;justify-content:center}
@@ -498,11 +492,8 @@ canvas{border-radius:2px;display:block}
   </div>
   <div class="ca">
     <div class="ch">
-      <div style="display:flex;align-items:center;gap:.6rem;min-width:0">
-        <span class="ct" id="ctPaden">Tuinindeling & bereikbaarheid</span>
-        <span class="ct" id="ctGroenten" style="display:none">Groentenverdeling</span>
-        <button id="btnHelp" class="help-btn" onclick="openHandleiding()" title="Open de handleiding">📖 Handleiding</button>
-      </div>
+      <span class="ct" id="ctPaden">Tuinindeling & bereikbaarheid</span>
+      <span class="ct" id="ctGroenten" style="display:none">Groentenverdeling</span>
       <div id="reachToggleWrap" style="display:none;gap:4px">
         <button id="btnReachLong" onclick="setReachMode('long')" class="ab active" style="font-size:9px;padding:.3rem .5rem">Lang gereedschap</button>
         <button id="btnReachArm" onclick="setReachMode('arm')" class="ab" style="font-size:9px;padding:.3rem .5rem">Armlengte</button>
@@ -556,20 +547,6 @@ canvas{border-radius:2px;display:block}
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="ab" onclick="confirmAntwoord(false)">Annuleren</button>
       <button class="ab danger" id="confirmJaBtn" onclick="confirmAntwoord(true)">Bevestigen</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── Handleiding-popup ── -->
-<div class="help-overlay" id="helpOverlay" style="display:none" onclick="if(event.target===this)sluitHandleiding()">
-  <div class="help-box">
-    <div class="gp-header">
-      <span class="gp-title">Handleiding</span>
-      <a href="/tools/tuinplanner-handleiding.html" target="_blank" rel="noopener" style="font-size:10px;color:rgba(245,240,232,.4);text-decoration:none;border-bottom:1px dotted rgba(245,240,232,.3);margin-right:.5rem;white-space:nowrap">↗ volledig scherm</a>
-      <button class="gp-close" onclick="sluitHandleiding()">✕</button>
-    </div>
-    <div class="help-body">
-      <iframe id="helpFrame" src="about:blank" title="Handleiding tuinplanner"></iframe>
     </div>
   </div>
 </div>
@@ -5009,16 +4986,6 @@ function sluitGewassenPopup(){
   document.getElementById('gewassenPopup').style.display='none';
 }
 
-// ── Handleiding-popup ─────────────────────────────────
-function openHandleiding(){
-  var frame=document.getElementById('helpFrame');
-  if(frame.getAttribute('src')==='about:blank') frame.src='/tools/tuinplanner-handleiding.html';
-  document.getElementById('helpOverlay').style.display='flex';
-}
-function sluitHandleiding(){
-  document.getElementById('helpOverlay').style.display='none';
-}
-
 function buildVegList(){
   var el=document.getElementById('vegList');
   if(!el) return;  // popup is gesloten — niets te doen
@@ -6143,7 +6110,6 @@ document.addEventListener('keydown',function(e){
     sluitPopup();
     sluitDetailPopup();
     sluitGewassenPopup();
-    sluitHandleiding();
   }
 });
 
