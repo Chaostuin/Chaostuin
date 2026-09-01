@@ -38,7 +38,7 @@
     document.querySelectorAll('#nav a[href^="/"]').forEach(a => {
       const href = a.getAttribute('href');
       if (href.startsWith('/#')) {
-        a.setAttribute('href', root + 'index.html' + href.substring(1));
+        a.setAttribute('href', root + href.slice(1));
       }
     });
   }
