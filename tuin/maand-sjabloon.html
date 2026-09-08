@@ -1,0 +1,102 @@
+<!--
+  ═══════════════════════════════════════════════════════════════
+  SJABLOON — "Mijn tuin van maand tot maand"
+  ═══════════════════════════════════════════════════════════════
+  Gebruik elke maand opnieuw:
+
+  1. Kopieer dit bestand en hernoem het naar  /tuin/JJJJ-MM.html
+     bv. september 2026  →  tuin/2026-09.html
+     (dat vaste patroon is belangrijk als je later ooit de
+     homepage-link automatisch naar "deze maand" wil laten wijzen)
+
+  2. Pas hieronder telkens de 4 gemarkeerde plekken aan:
+       [A] Titel + datum in de kop
+       [B] Je eigen tekst over deze maand
+       [C] De Instagram-embedcode (plak vanuit Instagram's "Insluiten")
+       [D] De link naar de vorige maand, onderaan
+
+  3. Vergeet niet: bovenaan de HOMEPAGE-link naar "deze maand" pas je
+     apart aan wanneer je dat effectief wil koppelen — dat doen we
+     bewust nog niet.
+  ═══════════════════════════════════════════════════════════════
+-->
+<!DOCTYPE html>
+<html lang="nl" data-root="/">
+<head>
+<!-- seo:start (canonical + hreflang, pas de maand in de url aan) -->
+<link rel="canonical" href="https://chaostuin.be/tuin/2026-09.html" />
+<!-- seo:end -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- [A] Titel van de pagina (verschijnt in browsertab en zoekresultaten) -->
+<title>Chaostuin — September 2026 in de tuin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+/* Kleine, pagina-eigen stijl enkel voor de reel-embeds hieronder —
+   de rest komt gewoon uit main.css, net als elke andere contentpagina. */
+.reel-block { margin-bottom: 3rem; }
+.reel-block:last-child { margin-bottom: 0; }
+.reel-caption {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #4a3f2f;
+  margin-top: 0.75rem;
+}
+/* Instagram's ingesloten reel is van zichzelf al responsive/gecentreerd;
+   dit zorgt er enkel voor dat hij nooit breder wordt dan de kolom. */
+.reel-block iframe, .reel-block blockquote { max-width: 100% !important; }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <p class="breadcrumb"><a href="/">Home</a> / Tuin van maand tot maand</p>
+    <!-- [A] Titel + ondertitel — pas de maand/het jaar aan -->
+    <h1 class="page-title">September 2026</h1>
+    <p class="page-lead">Wat er deze maand allemaal gebeurde in de chaostuin — in beeld.</p>
+  </div>
+</header>
+
+<main class="page-content">
+
+  <div class="content-section">
+    <!-- [B] Jouw eigen woorden over deze maand — een paar zinnen volstaan -->
+    <p>
+      Hier komt een korte inleiding over wat er deze maand speelde in de tuin:
+      wat er volop groeide, wat er geoogst werd, of wat er net begon.
+    </p>
+  </div>
+
+  <div class="content-section">
+
+    <!-- ═══════ [C] REEL 1 — plak hieronder de embedcode van Instagram ═══════
+         Ga op Instagram naar de reel → ⋯ → Insluiten → kopieer het
+         volledige blokje (begint met <blockquote class="instagram-media" ...)
+         en plak het hier in de plaats van dit voorbeeld. -->
+    <div class="reel-block">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/VOORBEELD/" data-instgrm-version="14"></blockquote>
+      <p class="reel-caption">Optioneel: een zin bij deze reel — wat je precies deed, of waarom.</p>
+    </div>
+
+    <!-- Nog een reel deze maand? Kopieer het hele .reel-block-blokje
+         hierboven nog eens en plak het eronder — zoveel als je wil. -->
+
+  </div>
+
+  <!-- [D] Link naar de vorige maand — pas de bestandsnaam + het label aan.
+       page-nav komt uit main.css en regelt zelf de opmaak (ook op mobiel). -->
+  <nav class="page-nav">
+    <a href="/tuin/2026-08.html" class="page-nav-up">← Augustus 2026</a>
+  </nav>
+
+</main>
+
+<div id="footer-placeholder"></div>
+<script async src="//www.instagram.com/embed.js"></script>
+<script src="/components/includes.js"></script>
+</body>
+</html>
