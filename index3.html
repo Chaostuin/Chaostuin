@@ -199,7 +199,6 @@ body {
 }
 
 .photo-orb {
-  display: block;
   border-radius: 50%;
   overflow: hidden;
   position: absolute;
@@ -237,47 +236,6 @@ body {
   animation: drift 15s ease-in-out infinite 3s;
 }
 .photo-orb-3.no-photo { background: var(--straw); }
-
-/* ── "Deze maand"-badge, gecentreerd op de grote foto-cirkel ──
-   Ondoorzichtige achtergrond: blijft altijd leesbaar, ongeacht
-   welke foto je die maand achter foto1.jpg zet. */
-.month-badge {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 1rem 1.4rem;
-  border-radius: 10px;
-  background: rgba(44,36,22,0.85);
-  border: 1px solid rgba(245,240,232,0.25);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  text-align: center;
-  transition: transform 0.2s, background 0.2s;
-}
-.month-badge-eyebrow {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--straw);
-}
-.month-badge-cta {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1.15rem;
-  color: #fff;
-  line-height: 1.15;
-}
-@media (hover: hover) and (pointer: fine) {
-  .photo-orb-1:hover .month-badge {
-    transform: translate(-50%, -50%) scale(1.06);
-    background: rgba(44,36,22,0.95);
-  }
-}
 
 .hero-quote {
   position: relative;
@@ -906,9 +864,6 @@ footer p {
   .hero-quote { padding: 1.5rem; }
   .hero-quote-mark { font-size: 4rem; margin-bottom: 0.5rem; }
   .photo-orb-1 { width: 170px; height: 170px; top: 15px; right: 15px; }
-  .month-badge { padding: 0.55rem 0.7rem; border-radius: 8px; gap: 0.1rem; }
-  .month-badge-eyebrow { font-size: 0.52rem; }
-  .month-badge-cta { font-size: 0.8rem; }
   .photo-orb-2 { width: 110px; height: 110px; bottom: 15px; left: 15px; }
   .photo-orb-3 { width: 75px; height: 75px; top: 55%; right: 10%; }
   .intro-strip, .calc-section, .over { grid-template-columns: 1fr; padding: 4rem 2.5rem; gap: 2.5rem; }
@@ -1345,17 +1300,11 @@ footer p {
     <div class="hero-right-inner">
 
       <div class="photo-orbs">
-        <!-- FOTO 1 (groot, rechtsboven): verander "foto1.jpg" naar jouw bestandsnaam.
-             Dit is nu meteen ook de link naar "deze maand in de tuin" — de href
-             wordt hieronder automatisch ingevuld door het scriptje. -->
-        <a href="/tuin/" id="orb1" class="photo-orb photo-orb-1 no-photo" aria-label="Bekijk deze maand in de tuin">
+        <!-- FOTO 1 (groot, rechtsboven): verander "foto1.jpg" naar jouw bestandsnaam -->
+        <div class="photo-orb photo-orb-1 no-photo" id="orb1">
           <img src="pictures/foto1.jpg" alt="Chaostuin foto 1"
                onerror="this.parentElement.classList.add('no-photo'); this.style.display='none'">
-          <span class="month-badge">
-            <span class="month-badge-eyebrow">📅 Deze maand</span>
-            <span class="month-badge-cta">in de tuin →</span>
-          </span>
-        </a>
+        </div>
         <!-- FOTO 2 (middel, linksonder): verander "foto2.jpg" naar jouw bestandsnaam -->
         <div class="photo-orb photo-orb-2 no-photo" id="orb2">
           <img src="pictures/foto2.jpg" alt="Chaostuin foto 2"
@@ -1367,20 +1316,6 @@ footer p {
                onerror="this.parentElement.classList.add('no-photo'); this.style.display='none'">
         </div>
       </div>
-      <script>
-        // Wijst de grote fotocirkel automatisch naar de pagina van de
-        // lopende maand — /tuin/JJJJ-MM.html — zodat dit nooit handmatig
-        // op de homepage moet worden aangepast. Enige vereiste: elke
-        // maand een nieuwe pagina met exact dat naampatroon aanmaken
-        // (zie maand-sjabloon.html).
-        (function () {
-          var d = new Date();
-          var jjjj = d.getFullYear();
-          var mm = String(d.getMonth() + 1).padStart(2, '0');
-          var orb = document.getElementById('orb1');
-          if (orb) orb.href = '/tuin/' + jjjj + '-' + mm + '.html';
-        })();
-      </script>
 
       <div class="hero-quote">
         <span class="hero-quote-mark">"</span>
