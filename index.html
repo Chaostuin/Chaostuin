@@ -336,8 +336,6 @@ nav.scrolled {
   text-decoration: none;
   transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--straw); }
-
 .lang-switch {
   margin-left: 0.75rem;
   padding: 0.3rem 0.7rem;
@@ -350,9 +348,14 @@ nav.scrolled {
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
 }
-.lang-switch:hover {
-  background: var(--straw);
-  color: #fff;
+
+/* Op puur aanraakschermen géén :hover-stijl toepassen: anders vereist
+   iOS/Android voor elke link een eerste "hover-tik" en pas een tweede
+   tik om echt te volgen. Enkel toestellen met een echte muis/trackpad
+   krijgen deze stijlen. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover { color: var(--straw); }
+  .lang-switch:hover { background: var(--straw); color: #fff; }
 }
 
 /* ── HAMBURGER (verborgen op desktop) ────────────────── */
@@ -864,6 +867,9 @@ footer p {
   .photo-orb-2 { width: 110px; height: 110px; bottom: 15px; left: 15px; }
   .photo-orb-3 { width: 75px; height: 75px; top: 55%; right: 10%; }
   .intro-strip, .calc-section, .over { grid-template-columns: 1fr; padding: 4rem 2.5rem; gap: 2.5rem; }
+  .aanpak { padding: 4rem 1.5rem; }
+  .aanpak-grid { grid-template-columns: 1fr; margin-top: 2.5rem; }
+  .aanpak-card { padding: 1.75rem 1.5rem; }
   .pillars { padding: 4rem 2.5rem; }
   .pillar-grid { grid-template-columns: 1fr; }
   .geboden { padding: 4rem 2.5rem; }
@@ -931,6 +937,8 @@ footer p {
     text-decoration: none;
     border-bottom: 1px solid rgba(245,240,232,0.06);
   }
+}
+@media (max-width: 900px) and (hover: hover) and (pointer: fine) {
   .nav-links > li > a:hover { color: var(--straw); }
 }
 
@@ -974,11 +982,17 @@ footer p {
   border-bottom: 5px solid rgba(245,240,232,0.12);
 }
 
-.nav-dropdown-item:hover .nav-dropdown,
 .nav-dropdown.open {
   opacity: 1;
   pointer-events: all;
   transform: translateX(-50%) translateY(0);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown-item:hover .nav-dropdown {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .nav-dropdown li a {
@@ -993,9 +1007,11 @@ footer p {
   transition: color 0.15s, background 0.15s;
   white-space: nowrap;
 }
-.nav-dropdown li a:hover {
-  color: var(--straw);
-  background: rgba(245,240,232,0.06);
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown li a:hover {
+    color: var(--straw);
+    background: rgba(245,240,232,0.06);
+  }
 }
 
 /* Mobiele override staat hier bewust ná de basisregels hierboven,
