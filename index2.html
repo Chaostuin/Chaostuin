@@ -29,7 +29,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -932,7 +932,29 @@ footer p {
     border-bottom: 1px solid rgba(245,240,232,0.06);
   }
   .nav-links > li > a:hover { color: var(--straw); }
+
+  /* ── MOBILE DROPDOWN ── */
+  .nav-dropdown {
+    position: static;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: rgba(61,82,41,0.4);
+    padding: 0;
     display: none;
+    min-width: unset;
+    transition: none;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown::before { display: none; }
+  .nav-dropdown li a {
+    padding: 0.75rem 2rem 0.75rem 3rem;
+    font-size: 0.82rem;
+    border-bottom: 1px solid rgba(245,240,232,0.04);
+  }
 }
 
 /* ── NAV DROPDOWN ────────────────────────────────────── */
@@ -997,35 +1019,6 @@ footer p {
 .nav-dropdown li a:hover {
   color: var(--straw);
   background: rgba(245,240,232,0.06);
-}
-
-/* Mobiele override staat hier bewust ná de basisregels hierboven,
-   zodat ze in de cascade wint (zelfde .nav-dropdown-selector, dus
-   bepaalt bronvolgorde — niet de aanwezigheid van de media query — wie wint). */
-@media (max-width: 900px) {
-  .nav-dropdown {
-    position: static;
-    transform: none !important;
-    opacity: 1 !important;
-    pointer-events: all !important;
-    box-shadow: none;
-    border: none;
-    border-radius: 0;
-    background: rgba(61,82,41,0.4);
-    padding: 0;
-    display: none;
-    min-width: unset;
-    max-width: 100%;
-    transition: none;
-  }
-  .nav-dropdown.open { display: block; }
-  .nav-dropdown::before { display: none; }
-  .nav-dropdown li a {
-    padding: 0.75rem 2rem 0.75rem 3rem;
-    font-size: 0.82rem;
-    white-space: normal;
-    border-bottom: 1px solid rgba(245,240,232,0.04);
-  }
 }
 
 /* ── HERO TEXT BLOCKS ────────────────────────────────── */
