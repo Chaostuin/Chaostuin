@@ -238,44 +238,77 @@ body {
 }
 .photo-orb-3.no-photo { background: var(--straw); }
 
-/* ── "Deze maand"-badge, gecentreerd op de grote foto-cirkel ──
-   Ondoorzichtige achtergrond: blijft altijd leesbaar, ongeacht
-   welke foto je die maand achter foto1.jpg zet. */
-.month-badge {
+/* ── Kalenderblaadje "Deze maand in de chaostuin", gecentreerd op de grote foto-cirkel ──
+   Volledig ondoorzichtig, zodat het leesbaar blijft ongeacht welke foto
+   je die maand achter foto1.jpg zet. Maand en jaar worden door het
+   scriptje onder de orbs automatisch ingevuld. */
+.maandblad {
   position: absolute;
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(-3deg);
+  width: 210px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 1rem 1.4rem;
-  border-radius: 10px;
-  background: rgba(44,36,22,0.85);
-  border: 1px solid rgba(245,240,232,0.25);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  background: #FFFDF8;
+  border-radius: 8px;
+  overflow: hidden;
   text-align: center;
-  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 12px 30px rgba(44,36,22,0.38), 0 0 0 1px rgba(44,36,22,0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.month-badge-eyebrow {
+.maandblad[hidden] { display: none; }
+
+.maandblad-top {
+  position: relative;
+  background: #B4532F;
+  color: #FFF6EC;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--straw);
+  letter-spacing: 0.3em;
+  padding: 0.5rem 0 0.5rem 0.3em;
 }
-.month-badge-cta {
+.maandblad-top::before,
+.maandblad-top::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 9px; height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: #FFFDF8;
+  opacity: 0.9;
+}
+.maandblad-top::before { left: 14px; }
+.maandblad-top::after  { right: 14px; }
+
+.maandblad-maand {
+  display: block;
   font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1.15rem;
-  color: #fff;
-  line-height: 1.15;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--earth);
+  line-height: 1.1;
+  padding: 0.85rem 0.5rem 0.7rem;
+  white-space: nowrap;
 }
+
+.maandblad-cta {
+  display: block;
+  background: #F6E7DC;
+  color: #8E3E1F;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.35;
+  padding: 0.6rem 0.5rem 0.65rem;
+}
+.maandblad-cta span { display: block; }
+
 @media (hover: hover) and (pointer: fine) {
-  .photo-orb-1:hover .month-badge {
-    transform: translate(-50%, -50%) scale(1.06);
-    background: rgba(44,36,22,0.95);
+  a.photo-orb-1[href]:hover .maandblad {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.06);
+    box-shadow: 0 16px 36px rgba(44,36,22,0.45), 0 0 0 1px rgba(44,36,22,0.15);
   }
 }
 
@@ -906,9 +939,13 @@ footer p {
   .hero-quote { padding: 1.5rem; }
   .hero-quote-mark { font-size: 4rem; margin-bottom: 0.5rem; }
   .photo-orb-1 { width: 170px; height: 170px; top: 15px; right: 15px; }
-  .month-badge { padding: 0.55rem 0.7rem; border-radius: 8px; gap: 0.1rem; }
-  .month-badge-eyebrow { font-size: 0.52rem; }
-  .month-badge-cta { font-size: 0.8rem; }
+  .maandblad { width: 124px; border-radius: 6px; }
+  .maandblad-top { font-size: 0.55rem; padding: 0.28rem 0 0.28rem 0.3em; }
+  .maandblad-top::before, .maandblad-top::after { width: 6px; height: 6px; margin-top: -3px; }
+  .maandblad-top::before { left: 9px; }
+  .maandblad-top::after  { right: 9px; }
+  .maandblad-maand { font-size: 1.15rem; padding: 0.5rem 0.3rem 0.4rem; }
+  .maandblad-cta { font-size: 0.56rem; padding: 0.35rem 0.3rem 0.4rem; }
   .photo-orb-2 { width: 110px; height: 110px; bottom: 15px; left: 15px; }
   .photo-orb-3 { width: 75px; height: 75px; top: 55%; right: 10%; }
   .intro-strip, .calc-section, .over { grid-template-columns: 1fr; padding: 4rem 2.5rem; gap: 2.5rem; }
@@ -1346,14 +1383,15 @@ footer p {
 
       <div class="photo-orbs">
         <!-- FOTO 1 (groot, rechtsboven): verander "foto1.jpg" naar jouw bestandsnaam.
-             Dit is nu meteen ook de link naar "deze maand in de tuin" — de href
-             wordt hieronder automatisch ingevuld door het scriptje. -->
+             Dit is ook de link naar "deze maand in de tuin": het kalenderblaadje
+             erop (maand, jaar en href) wordt hieronder automatisch ingevuld. -->
         <a href="/tuin/" id="orb1" class="photo-orb photo-orb-1 no-photo" aria-label="Bekijk deze maand in de tuin">
           <img src="pictures/foto1.jpg" alt="Chaostuin foto 1"
                onerror="this.parentElement.classList.add('no-photo'); this.style.display='none'">
-          <span class="month-badge">
-            <span class="month-badge-eyebrow">📅 Deze maand</span>
-            <span class="month-badge-cta">in de tuin →</span>
+          <span class="maandblad" id="maandblad">
+            <span class="maandblad-top" id="maandblad-jaar">2026</span>
+            <span class="maandblad-maand" id="maandblad-maand">deze maand</span>
+            <span class="maandblad-cta"><span>Deze maand</span><span>in de chaostuin →</span></span>
           </span>
         </a>
         <!-- FOTO 2 (middel, linksonder): verander "foto2.jpg" naar jouw bestandsnaam -->
@@ -1368,17 +1406,57 @@ footer p {
         </div>
       </div>
       <script>
-        // Wijst de grote fotocirkel automatisch naar de pagina van de
-        // lopende maand — /tuin/JJJJ-MM.html — zodat dit nooit handmatig
-        // op de homepage moet worden aangepast. Enige vereiste: elke
-        // maand een nieuwe pagina met exact dat naampatroon aanmaken
-        // (zie maand-sjabloon.html).
+        // Kalenderblaadje op de grote fotocirkel: toont de lopende maand en
+        // linkt naar /tuin/JJJJ-MM.html. Bestaat die pagina (nog) niet, dan
+        // wijst het blaadje naar de vorige maand. Bestaat die ook niet, dan
+        // verdwijnt het blaadje en is de cirkel gewoon een foto zonder link,
+        // zodat er nooit een dode link op de homepage staat.
+        // Enige vereiste: elke maand een pagina met exact dat naampatroon
+        // aanmaken (zie maand-sjabloon.html / maandpagina.py).
         (function () {
-          var d = new Date();
-          var jjjj = d.getFullYear();
-          var mm = String(d.getMonth() + 1).padStart(2, '0');
-          var orb = document.getElementById('orb1');
-          if (orb) orb.href = '/tuin/' + jjjj + '-' + mm + '.html';
+          var MAANDEN = ['januari', 'februari', 'maart', 'april', 'mei', 'juni',
+                         'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+          var orb   = document.getElementById('orb1');
+          var blad  = document.getElementById('maandblad');
+          var jaarEl  = document.getElementById('maandblad-jaar');
+          var maandEl = document.getElementById('maandblad-maand');
+          if (!orb || !blad) return;
+
+          function url(jaar, m) {
+            return '/tuin/' + jaar + '-' + String(m + 1).padStart(2, '0') + '.html';
+          }
+          function toon(jaar, m) {
+            orb.href = url(jaar, m);
+            jaarEl.textContent = jaar;
+            maandEl.textContent = MAANDEN[m];
+            blad.hidden = false;
+          }
+          function verberg() {
+            blad.hidden = true;
+            orb.removeAttribute('href');
+            orb.removeAttribute('aria-label');
+            orb.style.cursor = 'default';
+          }
+          function bestaat(u) {
+            return fetch(u, { method: 'HEAD' }).then(function (r) { return r.ok; });
+          }
+
+          var nu = new Date();
+          var jaar = nu.getFullYear(), m = nu.getMonth();
+          var vorig = new Date(jaar, m - 1, 1);
+
+          // Meteen de lopende maand tonen; daarna controleren of de pagina bestaat.
+          toon(jaar, m);
+
+          bestaat(url(jaar, m)).then(function (ok) {
+            if (ok) return;
+            return bestaat(url(vorig.getFullYear(), vorig.getMonth())).then(function (okVorig) {
+              if (okVorig) toon(vorig.getFullYear(), vorig.getMonth());
+              else verberg();
+            });
+          }).catch(function () {
+            // Netwerkfout: laat het blaadje naar de lopende maand wijzen.
+          });
         })();
       </script>
 
@@ -1611,7 +1689,7 @@ footer p {
           <span class="aanpak-link-icon">🧭</span>
           <div>
             <strong>Bijsturen</strong>
-            <p>Hen chaostuin is geen systeem dat je controleert, maar een systeem waarmee je samenwerkt</p>
+            <p>Een chaostuin is geen systeem dat je controleert, maar een systeem waarmee je samenwerkt</p>
             <a href="/aanpak/bijsturen" class="pillar-link">Bijsturen →</a>
           </div>
         </li>
@@ -1709,6 +1787,7 @@ footer p {
       </ul>
     </div>
   </div>
+</section>
 
 <section class="calc-section reveal" id="tools">
   <div class="calc-intro">
@@ -1721,7 +1800,7 @@ footer p {
       <span class="tool-card-icon">🌱</span>
       <div class="tool-card-body">
         <h3>Mulch calculator</h3>
-        <p>Hoeveel mulch heb je nodig voor jouw tuin? Geef aan hoe je bodem er nu voor staat, wat je aan mulchmateriaal ter beschikking hebt en welk doel je voor ogen hebt — de calculator toont hoeveel mulch je daarvoor jaarlijks nodig hebt, en of dat haalbaar is met wat je nu hebt.
+        <p>Hoeveel mulch heb je nodig voor jouw tuin? Geef aan hoe je bodem er nu voor staat, wat je aan mulchmateriaal ter beschikking hebt en welk doel je voor ogen hebt — de calculator toont hoeveel mulch je daarvoor jaarlijks nodig hebt, en of dat haalbaar is met wat je nu hebt.</p>
       </div>
       <span class="tool-card-arrow">→</span>
     </a>

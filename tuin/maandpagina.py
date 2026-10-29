@@ -191,6 +191,31 @@ def voeg_reel_toe(tekst, soort, code, bijschrift):
     return tekst[:pos] + "\n" + blok + tekst[pos:]
 
 
+def voeg_volgende_link_toe(tekst, volgende):
+    """
+    Zet in de page-nav van `tekst` (de pagina van de vorige maand) een link
+    naar de pagina van `volgende` (JJJJ-MM). Geeft (nieuwe_tekst, regel)
+    terug, of (None, None) als die link er al staat. Gooit PaginaFout als
+    er geen page-nav is om in te schrijven.
+    """
+    g = maskeer_commentaar(tekst)
+    m = re.search(r'<nav class="page-nav">(.*?)</nav>', g, flags=re.S)
+    if not m:
+        raise PaginaFout('geen <nav class="page-nav"> gevonden')
+    if f'href="/tuin/{volgende}.html"' in m.group(1):
+        return None, None
+    regel = (
+        f'    <a href="/tuin/{volgende}.html" class="page-nav-up">'
+        f"{maand_label(volgende)} \u2192</a>"
+    )
+    sluit = m.end() - len("</nav>")
+    pos = len(tekst[:sluit].rstrip(" \t"))
+    nieuw = tekst[:pos] + regel + "\n" + tekst[pos:]
+    if nieuw.replace(regel + "\n", "", 1) != tekst:
+        raise PaginaFout("onverwachte opbouw van de page-nav")
+    return nieuw, regel
+
+
 def maak_nieuwe_pagina(sjabloon, jjjj_mm, vorige_bestaat, intro, soort, code, bijschrift):
     t = sjabloon
     label = maand_label(jjjj_mm)
@@ -338,6 +363,7 @@ def vraag(prompt):
 
 
 def vraag_reel():
+    print("Let op: reels met Instagram-muziek spelen niet af op de site (ze openen Instagram).")
     while True:
         invoer = vraag("Link van de reel (leeg = stoppen): ")
         if not invoer:
@@ -374,13 +400,38 @@ def werk_nieuwe_pagina(jjjj_mm, pad):
     if fouten:
         raise PaginaFout("Controle mislukt, niets weggeschreven:\n- " + "\n- ".join(fouten))
 
+    # De pagina van de vorige maand krijgt een link naar deze nieuwe pagina.
+    vorige_update = None
+    if vorige_bestaat:
+        vorige_pad = MAP / f"{vorige}.html"
+        vorige_tekst, vorige_crlf = lees(vorige_pad)
+        try:
+            v_nieuw, regel = voeg_volgende_link_toe(vorige_tekst, jjjj_mm)
+            if v_nieuw is None:
+                print(f"{vorige_pad.name} heeft al een link naar {jjjj_mm}.html.")
+            else:
+                v_fouten = controleer(v_nieuw, tel_reels(vorige_tekst), blokken=[regel])
+                if v_fouten:
+                    raise PaginaFout("; ".join(v_fouten))
+                vorige_update = (vorige_pad, v_nieuw, vorige_crlf)
+        except PaginaFout as fout:
+            print(f"Let op: in {vorige_pad.name} kon ik geen link naar de nieuwe pagina "
+                  f"zetten ({fout}); die pagina laat ik ongemoeid.")
+
     print(f"\nNieuwe pagina {pad.name}: inleiding {'ja' if intro else 'nee'}, "
           f"1 reel ({code}), bijschrift {'ja' if bijschrift else 'nee'}.")
+    if vorige_update:
+        print(f"Daarnaast krijgt {vorige_update[0].name} een link naar {pad.name}.")
     if not bevestig():
         print("Niets weggeschreven.")
         return
     bewaar(pad, nieuw, crlf)
-    print(f"Klaar: {pad.name} is aangemaakt. Upload het bestand naar /tuin/.")
+    if vorige_update:
+        bewaar(*vorige_update)
+        print(f"Klaar: {pad.name} is aangemaakt en {vorige_update[0].name} is aangepast "
+              f"(oude versie: {vorige_update[0].name}.bak). Upload BEIDE bestanden naar /tuin/.")
+    else:
+        print(f"Klaar: {pad.name} is aangemaakt. Upload het bestand naar /tuin/.")
 
 
 def werk_bestaande_pagina(jjjj_mm, pad):
@@ -388,9 +439,33 @@ def werk_bestaande_pagina(jjjj_mm, pad):
     aantal = tel_reels(tekst)
     s = vind_secties(tekst)
     print(f"{pad.name} bestaat al ({aantal} reel(s), inleiding {'ja' if s.intro_start is not None else 'nee'}).")
+
+    # Mist de pagina van de vorige maand nog een link naar deze pagina?
+    vorige_pad = MAP / f"{vorige_maand(jjjj_mm)}.html"
+    link_update = None
+    if vorige_pad.exists():
+        v_tekst, v_crlf = lees(vorige_pad)
+        try:
+            v_nieuw, regel = voeg_volgende_link_toe(v_tekst, jjjj_mm)
+            if v_nieuw is not None and not controleer(v_nieuw, tel_reels(v_tekst), blokken=[regel]):
+                link_update = (vorige_pad, v_nieuw, v_crlf)
+        except PaginaFout:
+            pass
+
     print("  1 = een reel toevoegen")
     print("  2 = de inleiding toevoegen of wijzigen")
+    if link_update:
+        print(f"  3 = in {vorige_pad.name} een link naar {pad.name} toevoegen (ontbreekt nog)")
     keuze = vraag("Keuze (leeg = stoppen): ")
+
+    if keuze == "3" and link_update:
+        print(f"\n{vorige_pad.name}: link naar {pad.name} toevoegen.")
+        if not bevestig():
+            print("Niets weggeschreven.")
+            return
+        bewaar(*link_update)
+        print(f"Klaar. De oude versie staat in {vorige_pad.name}.bak. Upload {vorige_pad.name} naar /tuin/.")
+        return
 
     if keuze == "1":
         soort, code = vraag_reel()
