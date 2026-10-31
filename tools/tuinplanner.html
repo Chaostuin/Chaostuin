@@ -232,6 +232,12 @@ h1 span{font-style:italic;color:var(--straw)}
 .ob-sides span{flex:1}
 .ob-sides .ab{padding:.2rem .45rem;font-size:10px}
 .ob-status{font-size:10px;font-style:italic;color:rgba(200,169,110,.85);margin-bottom:.2rem}
+.vp-item{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(245,240,232,.65);padding:3px 0;border-bottom:1px solid rgba(245,240,232,.06)}
+.vp-item .vp-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;outline:1.5px dashed rgba(245,240,232,.6)}
+.vp-item span.t{flex:1;min-width:0}
+.vp-item button{background:none;border:none;color:rgba(245,240,232,.4);cursor:pointer;font-size:12px}
+.vp-item button:hover{color:#e66}
+#vpKleur{width:46px;height:24px;padding:0;border:1px solid rgba(245,240,232,.2);background:none;border-radius:3px;cursor:pointer}
 .hint{font-size:10px;color:rgba(245,240,232,.35);line-height:1.5;font-style:italic;margin-top:.4rem;min-height:2.4em}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:1rem}
 .stat{background:rgba(245,240,232,.05);border-radius:4px;padding:.6rem;text-align:center}
@@ -475,6 +481,18 @@ canvas{border-radius:2px;display:block}
       <button class="btn-reset-veg" onclick="resetGroenten()">↺ Herstel standaard gewassenlijst</button>
 
       <hr class="divider" style="margin:.5rem 0">
+      <div class="pt" style="margin-bottom:.35rem">Vaste planten</div>
+      <div style="font-size:9px;color:rgba(245,240,232,.45);margin-bottom:.5rem;line-height:1.4">
+        Struiken, bomen of andere planten die blijven staan. Je plaatst ze zelf op het plan, op een plek waar je er nog bij kan. De willekeurige verdeling plant er niets overheen en laat ze staan.
+      </div>
+      <div class="frow"><label>Naam</label><input type="text" id="vpNaam" class="obst-in" style="width:110px" placeholder="bv. framboos" maxlength="30"></div>
+      <div class="frow"><label>Kroonbreedte</label><input type="number" id="vpDiam" value="1.00" min="0.2" max="6" step="0.05"><span class="unit">m</span></div>
+      <div class="frow"><label>Kleur</label><input type="color" id="vpKleur" value="#7A5C3A"></div>
+      <button class="bcalc" id="btnVast" onclick="vastSetMode()" style="margin-top:.2rem">🌳 Plaats op plan</button>
+      <div id="vastList" style="margin-top:.4rem"></div>
+      <p class="hint" id="vastHint" style="min-height:1.2em"></p>
+
+      <hr class="divider" style="margin:.5rem 0">
       <div class="pt" style="margin-bottom:.35rem">Backup / uitwisseling</div>
       <div style="display:flex;gap:5px">
         <button class="btn-reset-veg" style="flex:1;border-color:var(--straw)" onclick="exportAllesJSON()">⬇ Volledig plan exporteren</button>
@@ -518,7 +536,7 @@ canvas{border-radius:2px;display:block}
 
       <button class="bcalc" id="btnPlace" onclick="placePlants()" disabled>Verdeel groenten willekeurig →</button>
       <button class="bcalc" id="btnFill" onclick="vulLegePlaatsen()" style="display:none;background:rgba(245,240,232,0.06);font-size:.78rem">⊕ Vul lege plaatsen op</button>
-      <button class="bcalc" id="btnGroentenUndo" onclick="groentenUndo()" style="display:none;background:rgba(245,240,232,0.06);font-size:.78rem">↩ Verplaatsing ongedaan maken</button>
+      <button class="bcalc" id="btnGroentenUndo" onclick="groentenUndo()" style="display:none;background:rgba(245,240,232,0.06);font-size:.78rem">↩ Laatste wijziging ongedaan maken</button>
       <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
       <div class="status-bar" id="statusBar"></div>
       <div class="errbox" id="errBox"></div>
@@ -4829,7 +4847,8 @@ function fsaBouwData(){
     data.planten=plants.map(function(p,idx){
       return {nr:idx+1,gewas:p.g.gewas,variant:p.g.variant||'',
               cx:parseFloat(p.cx.toFixed(3)),cy:parseFloat(p.cy.toFixed(3)),
-              diameter:p.g.diameter,kleur:p.g.kleur,combinatie:p.combinatie||null};
+              diameter:p.g.diameter,kleur:p.g.kleur,combinatie:p.combinatie||null,
+              vast:p.vast?true:undefined};
     });
   }
   return data;
@@ -4866,6 +4885,7 @@ function fsaLaadData(data){
     applyTuinData(data);
     if(data.planten&&data.planten.length){
       plants=data.planten.map(function(p){
+        if(p.vast) return {g:vastMakeG(p),cx:p.cx,cy:p.cy,combinatie:null,vast:true};
         var g=GROENTEN.find(function(gr){
           return gr.gewas===p.gewas&&(gr.variant||'')===p.variant;
         })||{gewas:p.gewas,variant:p.variant||'',diameter:p.diameter||0.3,
@@ -4944,7 +4964,9 @@ function liveTuinData(){
     paths:paths, secPaths:secPaths, stones:stones, segs:segs
   };
 }
-var plants=[];       // placed plants [{g:groent, cx, cy}]
+// Let op: 'herstelSessie' hierboven vult plants[] al bij het opstarten; zonder 'plants||' zou deze
+// declaratie de herstelde planten weer wissen (en het automatisch bewaren zou dat dan wegschrijven).
+var plants=plants||[];       // placed plants [{g:groent, cx, cy}]
 // W,L,pathW,pathWSec,work,armLen,stepLen,paths,secPaths,stones,segs:
 // gedeeld, gedeclareerd in het paden-gedeelte hierboven
 
@@ -5900,6 +5922,16 @@ function draw(){
       ctx.strokeStyle='rgba(120,120,120,0.3)'; ctx.lineWidth=1;
       ctx.stroke();
     }
+    if(p.vast){
+      // vaste plant: gestreepte rand + stipje voor de stam
+      ctx.save();
+      ctx.setLineDash([6,4]); ctx.lineWidth=2.5;
+      ctx.strokeStyle=isActive?'rgba(245,240,232,0.9)':'rgba(160,160,160,0.5)';
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+      ctx.restore();
+      ctx.beginPath(); ctx.arc(cx,cy,Math.max(2,r*0.06),0,Math.PI*2);
+      ctx.fillStyle='rgba(60,40,20,0.9)'; ctx.fill();
+    }
     // Label: naam + variant op actieve planten
     if(isActive){
       var fsz=Math.max(7,Math.min(13,r*0.45));
@@ -6003,6 +6035,7 @@ function draw(){
 
   // Sleep-overlay: gesleepte plant bovenop alles
   tekenSleepOverlay();
+  tekenVastPreview();
 }
 
 // ── PLANT PLACEMENT ───────────────────────────────────
@@ -6040,7 +6073,7 @@ function placePlants(){
   var actief=activeGroenten();
   if(!actief.length){showErr('Selecteer minstens één groente.');return;}
   hideErr();
-  plants=[];
+  plants=plants.filter(function(p){return p.vast;});
   groentenUndoStack=[];
   document.getElementById('btnGroentenUndo').style.display='none';
 
@@ -6068,6 +6101,7 @@ function shuffle(arr){
 
 function doPlace(actief, gap, behoudeGrid){
   if(!behoudeGrid) resetOccupiedGrid();
+  plants.forEach(function(p){ if(p.vast) markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
 
   var offX=(W-gridCols*GRID_R)/2, offY=(L-gridRows*GRID_R)/2;
   var baseCandidates=[];
@@ -6228,7 +6262,8 @@ function doPlace(actief, gap, behoudeGrid){
 function finishPlacement(reachArea, naSleep){
   var actief=activeGroenten();
   var btn=document.getElementById('btnPlace');
-  btn.disabled=false; btn.textContent=plants.length?'↺ Nieuwe willekeurige verdeling':'Verdeel groenten willekeurig →';
+  var nGr=plants.filter(function(p){return !p.vast;}).length;
+  btn.disabled=false; btn.textContent=nGr?'↺ Nieuwe willekeurige verdeling':'Verdeel groenten willekeurig →';
   document.getElementById('progBar').style.width='100%';
   setTimeout(function(){document.getElementById('progWrap').style.display='none';},600);
   document.getElementById('groentenHint').style.display='none';
@@ -6236,20 +6271,20 @@ function finishPlacement(reachArea, naSleep){
 
   var counts={};
   actief.forEach(function(g){counts[gewasKey(g)]=0;});
-  plants.forEach(function(p){counts[gewasKey(p.g)]=(counts[gewasKey(p.g)]||0)+1;});
+  plants.forEach(function(p){ if(p.vast) return; counts[gewasKey(p.g)]=(counts[gewasKey(p.g)]||0)+1;});
   var types=Object.values(counts).filter(function(v){return v>0;}).length;
 
   var usedArea=plants.reduce(function(s,p){var r=p.g.diameter/2;return s+Math.PI*r*r;},0);
   var free=Math.max(0,reachArea-usedArea);
 
-  document.getElementById('sPlants').textContent=plants.length;
+  document.getElementById('sPlants').textContent=nGr;
   document.getElementById('sTypes').textContent=types+'/'+actief.length;
   document.getElementById('sFree').textContent=free.toFixed(1);
   document.getElementById('statsDiv').style.display='grid';
 
   var status=document.getElementById('statusBar');
   status.style.display='block';
-  status.textContent='✓ '+plants.length+' planten geplaatst — klik ↺ voor een nieuwe verdeling';
+  status.textContent='✓ '+nGr+' planten geplaatst'+(plants.length>nGr?' (+ '+(plants.length-nGr)+' vast)':'')+' — klik ↺ voor een nieuwe verdeling';
 
   filterGroente=null; // reset filter bij nieuwe verdeling
   var legendEl=document.getElementById('groentenLegend');
@@ -6266,7 +6301,7 @@ function finishPlacement(reachArea, naSleep){
     var n=counts[key]||0;
     if(!n) return;
     var nrs=[];
-    plants.forEach(function(p,idx){ if(gewasKey(p.g)===key) nrs.push(idx+1); });
+    plants.forEach(function(p,idx){ if(!p.vast&&gewasKey(p.g)===key) nrs.push(idx+1); });
     var nrStr=nrs.length?' <span style="font-size:9px;color:rgba(245,240,232,.4)">#'+nrs.join(', #')+'</span>':'';
     var el=document.createElement('div');
     el.className='li';
@@ -6276,6 +6311,25 @@ function finishPlacement(reachArea, naSleep){
     el.addEventListener('click',function(){ setFilter(key); });
     legendEl.appendChild(el);
   });
+  // vaste planten in de legenda
+  var vastGroepen={};
+  plants.forEach(function(p,idx){
+    if(!p.vast) return;
+    var k=gewasKey(p.g);
+    if(!vastGroepen[k]) vastGroepen[k]={g:p.g,nrs:[]};
+    vastGroepen[k].nrs.push(idx+1);
+  });
+  Object.keys(vastGroepen).forEach(function(k){
+    var v=vastGroepen[k];
+    var el=document.createElement('div');
+    el.className='li';
+    el.dataset.naam=k;
+    el.innerHTML='<div class="ls" style="background:'+v.g.kleur+';width:10px;height:10px;border-radius:50%;outline:1.5px dashed rgba(245,240,232,.7)"></div>'
+      +'🌳 '+esc(gewasLabel(v.g))+' ('+v.nrs.length+'×) <span style="font-size:9px;color:rgba(245,240,232,.4)">#'+v.nrs.join(', #')+'</span>';
+    el.addEventListener('click',function(){ setFilter(k); });
+    legendEl.appendChild(el);
+  });
+  updateVastList();
 
   resize();
   fsaAutoSave();
@@ -6409,13 +6463,14 @@ document.getElementById('C').addEventListener('mouseup',function(e){
   if(isNaN(gap)) gap=0.05;
 
   // Positie geldig? (tuinrand, paden, stenen — maar NIET de bezetting want die herbouwen we)
-  if(!circleValid(nx,ny,r,plant.g.hoogte)){
+  var dropOk=plant.vast ? vastValid(nx,ny,r,plant).ok : (circleValid(nx,ny,r,plant.g.hoogte)&&!overlapsVast(nx,ny,r,plant));
+  if(!dropOk){
     // Terugveren
     draw(); return;
   }
 
   // Bewaar de toestand van vóór deze verplaatsing, voor "ongedaan maken"
-  groentenUndoStack.push(plants.map(function(p){return {g:p.g,cx:p.cx,cy:p.cy,combinatie:p.combinatie};}));
+  groentenUndoStack.push(plantSnapshot());
   if(groentenUndoStack.length>20) groentenUndoStack.shift();
   document.getElementById('btnGroentenUndo').style.display='block';
 
@@ -6425,6 +6480,7 @@ document.getElementById('C').addEventListener('mouseup',function(e){
   // 2. Verwijder alle planten die overlappen met de nieuwe positie
   var verwijderd=[];
   plants=plants.filter(function(p){
+    if(p.vast) return true;
     var minAfstand=(r + p.g.diameter/2) * (1-MAX_OVERLAP_FRAC);
     if(Math.hypot(p.cx-nx,p.cy-ny)<minAfstand){
       verwijderd.push(p);
@@ -6466,7 +6522,7 @@ function tekenSleepOverlay(){
   if(!plant) return;
   var r=plant.g.diameter/2;
   var nx=sleepState.wx, ny=sleepState.wy;
-  var geldig=circleValid(nx,ny,r,plant.g.hoogte);
+  var geldig=plant.vast ? vastValid(nx,ny,r,plant).ok : (circleValid(nx,ny,r,plant.g.hoogte)&&!overlapsVast(nx,ny,r,plant));
 
   // Dimme originele positie
   ctx.save();
@@ -6501,12 +6557,178 @@ function tekenSleepOverlay(){
   ctx.restore();
 }
 
+
+// ══════════════════════════════════════════════════════
+// ── VASTE PLANTEN ─────────────────────────────────────
+// Handmatig geplaatste planten (struik, boom, vaste plant) in plants[] met
+// vast:true. De willekeurige verdeling laat ze staan en plant er niet over.
+// Ze moeten bereikbaar zijn: de rand van de kroon moet binnen armlengte van
+// een pad, stapsteen of toegangszone liggen, zodat je er aan kan werken.
+// ══════════════════════════════════════════════════════
+var vastMode=false, vastMouse=null, vastRaf=false;
+var VAST_TOL=0.02;
+
+function vastMakeG(p){
+  var kleur=p.kleur||'#7A5C3A';
+  return {gewas:p.gewas||'Vaste plant',variant:'',categorie:'vaste plant',
+          diameter:parseFloat(p.diameter)||1,hoogte:'hoog',kleur:kleur,
+          tekst:contrastTekst(kleur),actief:true,vast:true};
+}
+function plantSnapshot(){
+  return plants.map(function(p){return {g:p.g,cx:p.cx,cy:p.cy,combinatie:p.combinatie,vast:p.vast};});
+}
+function vastHint(t){ var el=document.getElementById('vastHint'); if(el) el.textContent=t||''; }
+
+function overlapsVast(cx,cy,r,skip){
+  return plants.some(function(q){
+    return q.vast&&q!==skip&&Math.hypot(cx-q.cx,cy-q.cy)<(r+q.g.diameter/2)-0.01;
+  });
+}
+function vastValid(cx,cy,r,skip){
+  if(!W||!L) return {ok:false,reden:'er is nog geen tuin'};
+  if(cx-r<-0.001||cy-r<-0.001||cx+r>W+0.001||cy+r>L+0.001) return {ok:false,reden:'de kroon valt buiten de tuin'};
+  var i,o,nx,ny;
+  for(i=0;i<obstacles.length;i++){
+    o=obstacles[i];
+    nx=Math.max(o.x,Math.min(cx,o.x+o.w)); ny=Math.max(o.y,Math.min(cy,o.y+o.h));
+    if(Math.hypot(cx-nx,cy-ny)<r-VAST_TOL) return {ok:false,reden:'dit ligt op een obstakel'};
+  }
+  var lijsten=[paths,secPaths,stones];
+  for(var k=0;k<lijsten.length;k++){
+    for(i=0;i<lijsten[k].length;i++){
+      o=lijsten[k][i];
+      nx=Math.max(o.x,Math.min(cx,o.x+o.w)); ny=Math.max(o.y,Math.min(cy,o.y+o.h));
+      if(Math.hypot(cx-nx,cy-ny)<r-VAST_TOL) return {ok:false,reden:'dit ligt op een pad of stapsteen'};
+    }
+  }
+  if(overlapsVast(cx,cy,r,skip)) return {ok:false,reden:'dit overlapt een andere vaste plant'};
+  var save=armLen; armLen=save+r;
+  var bereikbaar=ptArmReachable(cx,cy);
+  armLen=save;
+  if(!bereikbaar) return {ok:false,reden:'hier kan je er niet bij (te ver van een pad of toegang)'};
+  return {ok:true,reden:''};
+}
+
+function vastSetMode(){
+  vastMode=!vastMode; vastMouse=null;
+  var b=document.getElementById('btnVast');
+  if(b) b.style.outline=vastMode?'2px solid var(--straw)':'';
+  if(vastMode){
+    if(!document.getElementById('vpNaam').value.trim()){
+      vastHint('Geef eerst een naam op, klik dan op het plan.');
+    } else vastHint('Klik op het plan waar de plant moet staan. Groen = kan, rood = kan niet. Esc om te stoppen.');
+    cv.style.cursor='crosshair';
+  } else { vastHint('Plaatsen gestopt.'); cv.style.cursor=''; }
+  draw();
+}
+
+function vastHerbouw(verwijderd,melding){
+  var gap=parseFloat(document.getElementById('rGap').value);
+  if(isNaN(gap)) gap=0.05;
+  resetOccupiedGrid();
+  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  finishPlacement(baseCandidatesArea(), true);
+  if(verwijderd>0) document.getElementById('btnFill').style.display='block';
+  document.getElementById('btnGroentenUndo').style.display='block';
+  if(melding) vastHint(melding);
+  fsaAutoSave();
+  draw();
+}
+function vastPushUndo(){
+  groentenUndoStack.push(plantSnapshot());
+  if(groentenUndoStack.length>20) groentenUndoStack.shift();
+}
+
+function vastPlaats(wx,wy){
+  var naam=document.getElementById('vpNaam').value.trim();
+  if(!naam){ vastHint('Geef eerst een naam op.'); return; }
+  var d=parseFloat(document.getElementById('vpDiam').value);
+  if(!(d>=0.2)){ vastHint('Kroonbreedte: minstens 0,2 m.'); return; }
+  var r=d/2;
+  wx=parseFloat(wx.toFixed(3)); wy=parseFloat(wy.toFixed(3));
+  var v=vastValid(wx,wy,r);
+  if(!v.ok){ vastHint('Kan hier niet: '+v.reden+'.'); return; }
+  var kleur=document.getElementById('vpKleur').value||'#7A5C3A';
+  var g=vastMakeG({gewas:naam,diameter:d,kleur:kleur});
+  vastPushUndo();
+  var weg=0;
+  plants=plants.filter(function(p){
+    if(p.vast) return true;
+    var min=(r+p.g.diameter/2)*(1-MAX_OVERLAP_FRAC);
+    if(Math.hypot(p.cx-wx,p.cy-wy)<min){ weg++; return false; }
+    return true;
+  });
+  plants.push({g:g,cx:wx,cy:wy,vast:true,combinatie:null});
+  vastHerbouw(weg, '"'+naam+'" geplaatst'+(weg?' ('+weg+' groente'+(weg>1?'n':'')+' die in de weg stonden verwijderd)':'')+'. Klik opnieuw voor nog een, of Esc om te stoppen.');
+}
+
+function vastVerwijder(idx){
+  var p=plants[idx]; if(!p||!p.vast) return;
+  vastPushUndo();
+  plants.splice(idx,1);
+  vastHerbouw(0,'"'+p.g.gewas+'" verwijderd. ↩ Ongedaan maken?');
+}
+
+function updateVastList(){
+  var el=document.getElementById('vastList'); if(!el) return;
+  var rijen=[];
+  plants.forEach(function(p,idx){
+    if(!p.vast) return;
+    rijen.push('<div class="vp-item"><span class="vp-dot" style="background:'+p.g.kleur+'"></span>'
+      +'<span class="t">#'+(idx+1)+' '+esc(p.g.gewas)+' · Ø '+p.g.diameter.toFixed(2)+' m · x='+p.cx.toFixed(2)+' y='+p.cy.toFixed(2)+'</span>'
+      +'<button title="Verwijder" onclick="vastVerwijder('+idx+')">✕</button></div>');
+  });
+  el.innerHTML=rijen.join('');
+}
+
+function tekenVastPreview(){
+  if(!vastMode||!vastMouse||activeTool!=='groenten') return;
+  var d=parseFloat(document.getElementById('vpDiam').value)||1, r=d/2;
+  var v=vastValid(vastMouse.wx,vastMouse.wy,r);
+  var kleur=document.getElementById('vpKleur').value||'#7A5C3A';
+  ctx.save();
+  ctx.globalAlpha=0.55;
+  ctx.beginPath(); ctx.arc(tx(vastMouse.wx),ty(vastMouse.wy),ts(r),0,Math.PI*2);
+  ctx.fillStyle=kleur; ctx.fill();
+  ctx.globalAlpha=1;
+  ctx.beginPath(); ctx.arc(tx(vastMouse.wx),ty(vastMouse.wy),ts(r)+3,0,Math.PI*2);
+  ctx.strokeStyle=v.ok?'rgba(120,200,80,.95)':'rgba(220,60,60,.95)'; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.restore();
+}
+
+cv.addEventListener('mousemove',function(e){
+  if(activeTool!=='groenten'||!vastMode||sleepState) return;
+  var pos=canvasWxy(e);
+  vastMouse={wx:pos.wx,wy:pos.wy};
+  cv.style.cursor='crosshair';
+  var dd=parseFloat(document.getElementById('vpDiam').value)||1;
+  var vv=vastValid(pos.wx,pos.wy,dd/2);
+  vastHint(vv.ok?'Klik om te plaatsen.':'Kan hier niet: '+vv.reden+'.');
+  if(vastRaf) return;
+  vastRaf=true;
+  requestAnimationFrame(function(){ vastRaf=false; draw(); });
+});
+cv.addEventListener('mouseleave',function(){
+  if(activeTool!=='groenten'||!vastMode) return;
+  vastMouse=null; draw();
+});
+cv.addEventListener('click',function(e){
+  if(activeTool!=='groenten'||!vastMode) return;
+  if(sleepState&&sleepState.isDragging) return;
+  var pos=canvasWxy(e);
+  vastPlaats(pos.wx,pos.wy);
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&vastMode) vastSetMode();
+});
+// ══════════════════════════════════════════════════════
+
 // Vervang de bestaande dblclick handler (klik is nu in mouseup verwerkt)
 document.getElementById('C').addEventListener('dblclick',function(e){
   if(activeTool!=='groenten')return;
   if(!plants.length) return;
   var res=plantOnderMuis(e);
-  if(!res.plant) return;
+  if(!res.plant||res.plant.vast) return;
   openComboPopup(res.plantIdx);
 });
 
@@ -6880,7 +7102,8 @@ function exportTuinplan(){
       cy:parseFloat(p.cy.toFixed(3)),
       diameter:p.g.diameter,
       kleur:p.g.kleur,
-      combinatie:p.combinatie||null
+      combinatie:p.combinatie||null,
+      vast:p.vast?true:undefined
     };
   });
   var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -6974,7 +7197,7 @@ function bouwLeesbareTuinplanHTML(){
           return '<span class="ct '+cls+'">'+fase.label+': '+fase.groep.map(gewasLabel).join(' + ')+'</span>';
         }).join(' ');
       } else {
-        chtml='<span class="gc">geen combinatie</span>';
+        chtml=inst.p.vast?'<span class="gc">vaste plant</span>':'<span class="gc">geen combinatie</span>';
       }
       html+='<tr><td><b>#'+inst.nr+'</b></td>'
         +'<td>x='+inst.p.cx.toFixed(2)+', y='+inst.p.cy.toFixed(2)+'</td>'
@@ -7030,6 +7253,7 @@ function importTuinplan(input){
       // Herstel planten als ze aanwezig zijn
       if(data.planten&&data.planten.length){
         plants=data.planten.map(function(p){
+          if(p.vast) return {g:vastMakeG(p), cx:p.cx, cy:p.cy, combinatie:null, vast:true};
           // Zoek gewas in GROENTEN, anders gebruik opgeslagen data
           var g=GROENTEN.find(function(gr){
             return gr.gewas===p.gewas&&(gr.variant||'')===p.variant;
@@ -7106,7 +7330,7 @@ function syncGroentenView(){
     plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
     finishPlacement(baseCandidatesArea(), true);
     document.getElementById('btnFill').style.display='block';
-    showErr(verwijderd+' groente'+(verwijderd>1?'n':'')+' verwijderd — ze stonden na een padwijziging niet meer op een geldige plek. Klik "Vul lege plaatsen op" om aan te vullen.');
+    showErr(verwijderd+' plant'+(verwijderd>1?'en':'')+' verwijderd — ze stonden na een wijziging van paden of obstakels niet meer op een geldige plek. Klik "Vul lege plaatsen op" om aan te vullen.');
     fsaAutoSave();
   }
 
@@ -7119,6 +7343,7 @@ function syncGroentenView(){
   }
   var btn=document.getElementById('btnPlace');
   if(btn) btn.disabled=!(W&&L);
+  updateVastList();
 }
 
 function switchTool(name){
@@ -7140,6 +7365,7 @@ function switchTool(name){
     document.getElementById('comboPanel').style.display='none';
     document.getElementById('groentenHint').style.display='none';
   }
+  if(name!=='groenten'&&vastMode) vastSetMode();
   document.querySelector('.app').style.gridTemplateColumns = (name==='groenten') ? '300px 1fr 300px' : '300px 1fr';
   MAR = (name==='paden') ? 62 : 40;
   if(name==='groenten') syncGroentenView();
