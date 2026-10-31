@@ -217,6 +217,21 @@ h1 span{font-style:italic;color:var(--straw)}
 .slist{margin-top:.4rem;max-height:60px;overflow-y:auto}
 .si{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:rgba(245,240,232,.55);padding:2px 0;border-bottom:1px solid rgba(245,240,232,.05)}
 .sd{background:none;border:none;color:rgba(245,240,232,.3);cursor:pointer;font-size:12px;padding:0 3px}
+.obst-btns{display:grid;grid-template-columns:1fr 1fr auto;gap:5px;margin:.2rem 0 .5rem}
+.obst-in{width:100%;background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.15);border-radius:3px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;padding:.3rem .45rem;outline:none}
+.oblist{max-height:260px;overflow-y:auto;margin-top:.3rem}
+.ob{border:1px solid rgba(245,240,232,.12);border-radius:4px;padding:.45rem .5rem;margin-bottom:.4rem;background:rgba(0,0,0,.12);cursor:pointer}
+.ob.sel{border-color:var(--straw);background:rgba(200,169,110,.08)}
+.ob-head{display:flex;align-items:center;gap:6px;margin-bottom:.35rem}
+.ob-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.ob-name{flex:1;min-width:0;background:transparent;border:none;border-bottom:1px dashed rgba(245,240,232,.2);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;padding:1px 2px;outline:none}
+.ob-dims{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:.35rem}
+.ob-dims label{font-size:9px;color:rgba(245,240,232,.45);display:flex;flex-direction:column;gap:1px}
+.ob-dims input{width:100%;background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.15);border-radius:3px;color:var(--cream);font-size:10px;padding:2px 3px;font-family:'DM Sans',sans-serif}
+.ob-sides{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(245,240,232,.45);margin-bottom:.3rem}
+.ob-sides span{flex:1}
+.ob-sides .ab{padding:.2rem .45rem;font-size:10px}
+.ob-status{font-size:10px;font-style:italic;color:rgba(200,169,110,.85);margin-bottom:.2rem}
 .hint{font-size:10px;color:rgba(245,240,232,.35);line-height:1.5;font-style:italic;margin-top:.4rem;min-height:2.4em}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:1rem}
 .stat{background:rgba(245,240,232,.05);border-radius:4px;padding:.6rem;text-align:center}
@@ -329,6 +344,25 @@ canvas{border-radius:2px;display:block}
         </div>
         <div class="slist" id="segList"></div>
         <p class="hint" id="hint">Klik een zijde aan of teken een segment.</p>
+
+        <div class="subgroup-label">Obstakels</div>
+        <div class="frow"><label>Soort</label>
+          <select id="obstSoort" class="tuin-select">
+            <option value="serre">Serre</option>
+            <option value="terras">Terras</option>
+            <option value="composthoop">Composthoop</option>
+            <option value="schuur">Schuur</option>
+            <option value="vijver">Vijver</option>
+            <option value="anders">Ander obstakel</option>
+          </select></div>
+        <div class="frow"><label>Naam (optioneel)</label><input type="text" id="obstNaam" class="obst-in" style="width:110px" maxlength="30"></div>
+        <div class="obst-btns">
+          <button class="ab" id="btn-obst" onclick="obstSetMode('rect')">▭ Teken<br>obstakel</button>
+          <button class="ab" id="btn-ozone" onclick="obstSetMode('zone')">⇥ Teken<br>toegangszone</button>
+          <button class="ab" onclick="undoConnect()" title="Ongedaan maken">↩</button>
+        </div>
+        <div class="oblist" id="obstList"></div>
+        <p class="hint" id="obstHint">Een obstakel is een rechthoek waar niets groeit (serre, terras, composthoop…). Zonder toegangszone is het afgesloten.</p>
       </div>
 
       <!-- ── Fase-tabs ── -->
@@ -866,6 +900,8 @@ function ppDraw(){
   // Draw step lines between connected objects
   if(stones.length) drawStepLines();
 
+  drawObstacles(true);
+
   // Draw selection highlight
   if(selected){
     var o=selected.obj;
@@ -879,7 +915,7 @@ function ppDraw(){
   if(hovered && hovered.deletable){
     var ho=hovered;
     ctx.save();
-    if(ho.type==='stone'||ho.type==='secpath'||ho.type==='mainpath'){
+    if(ho.type==='stone'||ho.type==='secpath'||ho.type==='mainpath'||ho.type==='obst'){
       ctx.fillStyle='rgba(255,60,60,0.28)';
       ctx.fillRect(tx(ho.obj.x),ty(ho.obj.y),ts(ho.obj.w),ts(ho.obj.h));
       ctx.strokeStyle='rgba(255,80,80,0.85)'; ctx.lineWidth=2;
@@ -950,6 +986,7 @@ function sPt(s,pos){
 }
 
 function drawReach(){
+  obstRefresh();
   var R=0.1, cols=Math.ceil(W/R), rows=Math.ceil(L/R);
   for(var r=0;r<rows;r++) for(var c=0;c<cols;c++){
     var cx=(c+.5)*R, cy=(r+.5)*R;
@@ -960,15 +997,7 @@ function drawReach(){
     } else {
       reach=ptReachable(cx,cy);
       if(!reach){
-        lightBlue=paths.some(function(p){
-          var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-          var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-          return Math.hypot(cx-nx,cy-ny)<=workSec;
-        }) || secPaths.some(function(p){
-          var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-          var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-          return Math.hypot(cx-nx,cy-ny)<=workSec;
-        });
+        lightBlue=rectReach(paths,cx,cy,workSec)||rectReach(secPaths,cx,cy,workSec);
       }
     }
     if(reach) ctx.fillStyle='rgba(100,200,255,0.35)';
@@ -979,6 +1008,550 @@ function drawReach(){
 }
 
 var stones=[], stoneL=0.6, stoneB=0.4, stepLen=0.5, armLen=0.6;
+var obstacles=[];   // obstakels: [{id,naam,soort,x,y,w,h,zones:[{side,from,to}]}]
+
+// ══════════════════════════════════════════════════════
+// ── OBSTAKELS (serre, terras, composthoop, …) ────────
+// Altijd rechthoekig. Toegangszones op de randen (zoals bij de tuinrand)
+// bepalen het gedrag: geen zones = afgesloten; zones = bereikbaar vanaf
+// die zones; alle vier de randen volledig toegankelijk = begaanbaar.
+// Valt een rand van het obstakel samen met een toegangssegment op de
+// tuinrand, dan geldt dat segment ook als toegangszone van het obstakel.
+// ══════════════════════════════════════════════════════
+var OBST_SOORTEN={
+  serre:      {label:'Serre',       kleur:'#8FBBC4'},
+  terras:     {label:'Terras',      kleur:'#B7A58C'},
+  composthoop:{label:'Composthoop', kleur:'#6B4F2F'},
+  schuur:     {label:'Schuur',      kleur:'#8A7A66'},
+  vijver:     {label:'Vijver',      kleur:'#4D7FA8'},
+  anders:     {label:'Obstakel',    kleur:'#8A8A8A'}
+};
+var OBST_MIN=0.3;          // minimale afmeting (m)
+var OBST_ZONE_MIN=0.4;     // minimale lengte van een toegangszone (m)
+var OBST_SNAP=0.05;        // rasterstap bij plaatsen/slepen (m)
+var OBST_BORDER_SNAP=0.12; // klikt vanzelf tegen de tuinrand binnen deze afstand (m)
+var obstClipped=false;     // true zodra paden werden uitgeknipt sinds de laatste berekening
+var obstMode=null;         // null | 'rect' | 'zone'
+var obstStart=null;        // eerste klik bij tekenen
+var obstMouse=null;        // laatste muispositie (wereldcoördinaten) voor voorbeeld
+var obstSel=null;          // id van geselecteerd obstakel
+var odrag=null;            // sleepstatus
+var odragMoved=false;
+var obstCounter=0;
+var OZ=[];                 // actuele toegangszones (absoluut): {x1,y1,x2,y2,side,o,derived}
+var OBLK=[];               // obstakels die niet begaanbaar zijn (blokkeren zicht + paden)
+var OWALK={};              // id -> true als begaanbaar
+
+function r4(v){return parseFloat(v.toFixed(4));}
+function snapO(v){return r4(Math.round(v/OBST_SNAP)*OBST_SNAP);}
+function clampN(v,a,b){return Math.max(a,Math.min(b,v));}
+
+function normalizeObstacle(o){
+  var soort=OBST_SOORTEN[o.soort]?o.soort:'anders';
+  var n={
+    id:o.id||('o'+Date.now()+'_'+(++obstCounter)),
+    naam:(o.naam&&String(o.naam).trim())||OBST_SOORTEN[soort].label,
+    soort:soort,
+    x:parseFloat(o.x)||0, y:parseFloat(o.y)||0,
+    w:Math.max(OBST_MIN,parseFloat(o.w)||OBST_MIN),
+    h:Math.max(OBST_MIN,parseFloat(o.h)||OBST_MIN),
+    zones:[]
+  };
+  (o.zones||[]).forEach(function(z){
+    if(z&&'NSWE'.indexOf(z.side)>=0&&z.side.length===1&&z.to>z.from)
+      n.zones.push({side:z.side,from:clampN(+z.from,0,1),to:clampN(+z.to,0,1)});
+  });
+  return n;
+}
+
+function clampObstacle(o){
+  o.w=Math.min(o.w,W); o.h=Math.min(o.h,L);
+  o.x=r4(clampN(o.x,0,W-o.w)); o.y=r4(clampN(o.y,0,L-o.h));
+}
+function clampObstacles(){
+  obstacles.forEach(clampObstacle);
+  obstRefresh(); updateObstList();
+}
+
+// Toegangszones van de tuinrand die samenvallen met een rand van het obstakel
+function derivedZones(o){
+  var res=[], eps=0.03;
+  function add(side,a,b,lo0,len){
+    var lo=Math.max(a,lo0), hi=Math.min(b,lo0+len);
+    if(hi-lo>0.05) res.push({side:side,from:(lo-lo0)/len,to:(hi-lo0)/len,derived:true});
+  }
+  segs.forEach(function(s){
+    if(s.side==='N'&&Math.abs(o.y)<=eps)       add('N',s.from*W,s.to*W,o.x,o.w);
+    else if(s.side==='S'&&Math.abs(o.y+o.h-L)<=eps) add('S',s.from*W,s.to*W,o.x,o.w);
+    else if(s.side==='W'&&Math.abs(o.x)<=eps)  add('W',s.from*L,s.to*L,o.y,o.h);
+    else if(s.side==='E'&&Math.abs(o.x+o.w-W)<=eps) add('E',s.from*L,s.to*L,o.y,o.h);
+  });
+  return res;
+}
+function effZones(o){
+  var z=(o.zones||[]).map(function(q){return {side:q.side,from:q.from,to:q.to,derived:false};});
+  return z.concat(derivedZones(o));
+}
+function sideCoverage(zs,side){
+  var iv=zs.filter(function(z){return z.side===side;}).map(function(z){return [z.from,z.to];});
+  iv.sort(function(a,b){return a[0]-b[0];});
+  var tot=0,cur=null;
+  iv.forEach(function(p){
+    if(!cur){cur=[p[0],p[1]];}
+    else if(p[0]<=cur[1]+0.001){cur[1]=Math.max(cur[1],p[1]);}
+    else {tot+=cur[1]-cur[0];cur=[p[0],p[1]];}
+  });
+  if(cur) tot+=cur[1]-cur[0];
+  return tot;
+}
+function obstWalkable(o){
+  var zs=effZones(o);
+  return ['N','S','W','E'].every(function(s){return sideCoverage(zs,s)>=0.97;});
+}
+function zoneAbs(o,z){
+  var x1,y1,x2,y2;
+  if(z.side==='N'){x1=o.x+z.from*o.w;x2=o.x+z.to*o.w;y1=y2=o.y;}
+  else if(z.side==='S'){x1=o.x+z.from*o.w;x2=o.x+z.to*o.w;y1=y2=o.y+o.h;}
+  else if(z.side==='W'){y1=o.y+z.from*o.h;y2=o.y+z.to*o.h;x1=x2=o.x;}
+  else {y1=o.y+z.from*o.h;y2=o.y+z.to*o.h;x1=x2=o.x+o.w;}
+  return {x1:x1,y1:y1,x2:x2,y2:y2,side:z.side,o:o,z:z,derived:!!z.derived};
+}
+// Cache van alle zones en blokkerende obstakels: wordt aan het begin van elke
+// zware bewerking (tekenen, berekenen, statistieken, raster) ververst.
+function obstRefresh(){
+  OZ=[]; OBLK=[]; OWALK={};
+  obstacles.forEach(function(o){
+    var walk=obstWalkable(o);
+    OWALK[o.id]=walk;
+    effZones(o).forEach(function(z){OZ.push(zoneAbs(o,z));});
+    if(!walk) OBLK.push(o);
+  });
+}
+
+function ptInObst(cx,cy){
+  for(var i=0;i<obstacles.length;i++){
+    var o=obstacles[i];
+    if(cx>=o.x&&cx<=o.x+o.w&&cy>=o.y&&cy<=o.y+o.h) return true;
+  }
+  return false;
+}
+function rectOverlapsObst(x,y,w,h,onlyBlocking){
+  var list=onlyBlocking?OBLK:obstacles;
+  for(var i=0;i<list.length;i++){
+    var o=list[i];
+    if(x<o.x+o.w-0.001&&x+w>o.x+0.001&&y<o.y+o.h-0.001&&y+h>o.y+0.001) return true;
+  }
+  return false;
+}
+function obstAt(gx,gy){
+  for(var i=obstacles.length-1;i>=0;i--){
+    var o=obstacles[i];
+    if(gx>=o.x&&gx<=o.x+o.w&&gy>=o.y&&gy<=o.y+o.h) return o;
+  }
+  return null;
+}
+
+// Lijnstuk (a→b) snijdt het binnenste van een rechthoek? (Liang–Barsky)
+function segHitsRect(ax,ay,bx,by,x0,y0,x1,y1){
+  var dx=bx-ax, dy=by-ay, t0=0, t1=1;
+  var p=[-dx,dx,-dy,dy], q=[ax-x0,x1-ax,ay-y0,y1-ay];
+  for(var i=0;i<4;i++){
+    if(Math.abs(p[i])<1e-12){ if(q[i]<0) return false; }
+    else {
+      var t=q[i]/p[i];
+      if(p[i]<0){ if(t>t1) return false; if(t>t0) t0=t; }
+      else      { if(t<t0) return false; if(t<t1) t1=t; }
+    }
+  }
+  return t0<=t1;
+}
+// Wordt de rechtstreekse lijn door een niet-begaanbaar obstakel geblokkeerd?
+function losBlocked(ax,ay,bx,by){
+  if(!OBLK.length) return false;
+  var e=0.01;
+  for(var i=0;i<OBLK.length;i++){
+    var o=OBLK[i];
+    if(segHitsRect(ax,ay,bx,by,o.x+e,o.y+e,o.x+o.w-e,o.y+o.h-e)) return true;
+  }
+  return false;
+}
+// Bereik vanuit een lijst rechthoeken (paden, stenen) binnen afstand d
+function rectReach(list,cx,cy,d){
+  for(var i=0;i<list.length;i++){
+    var p=list[i];
+    var nx=Math.max(p.x,Math.min(cx,p.x+p.w)), ny=Math.max(p.y,Math.min(cy,p.y+p.h));
+    if(Math.hypot(cx-nx,cy-ny)<=d && !losBlocked(nx,ny,cx,cy)) return true;
+  }
+  return false;
+}
+// Bereik vanuit de toegangssegmenten op de tuinrand
+function segReach(cx,cy,d){
+  for(var i=0;i<segs.length;i++){
+    var s=segs[i], ex, ey;
+    if(s.side==='N'){ex=Math.max(s.from*W,Math.min(cx,s.to*W));ey=0;}
+    else if(s.side==='S'){ex=Math.max(s.from*W,Math.min(cx,s.to*W));ey=L;}
+    else if(s.side==='W'){ex=0;ey=Math.max(s.from*L,Math.min(cy,s.to*L));}
+    else {ex=W;ey=Math.max(s.from*L,Math.min(cy,s.to*L));}
+    if(Math.hypot(cx-ex,cy-ey)<=d && !losBlocked(ex,ey,cx,cy)) return true;
+  }
+  return false;
+}
+// Bereik vanuit toegangszones van obstakels (alleen aan de buitenkant)
+function reachOZ(cx,cy,d){
+  for(var i=0;i<OZ.length;i++){
+    var z=OZ[i];
+    if(z.side==='N'&&cy>z.y1+0.0001) continue;
+    if(z.side==='S'&&cy<z.y1-0.0001) continue;
+    if(z.side==='W'&&cx>z.x1+0.0001) continue;
+    if(z.side==='E'&&cx<z.x1-0.0001) continue;
+    var nx=Math.max(Math.min(z.x1,z.x2),Math.min(cx,Math.max(z.x1,z.x2)));
+    var ny=Math.max(Math.min(z.y1,z.y2),Math.min(cy,Math.max(z.y1,z.y2)));
+    if(Math.hypot(cx-nx,cy-ny)<=d && !losBlocked(nx,ny,cx,cy)) return true;
+  }
+  return false;
+}
+
+// ── Paden uitknippen rond niet-begaanbare obstakels ──
+function subtractRect(r,o){
+  var ix0=Math.max(r.x,o.x), iy0=Math.max(r.y,o.y);
+  var ix1=Math.min(r.x+r.w,o.x+o.w), iy1=Math.min(r.y+r.h,o.y+o.h);
+  if(ix1-ix0<=0.001||iy1-iy0<=0.001) return [r];
+  var out=[];
+  function piece(x,y,w,h){
+    if(w>0.001&&h>0.001){
+      var n=Object.assign({},r); n.x=r4(x); n.y=r4(y); n.w=r4(w); n.h=r4(h); out.push(n);
+    }
+  }
+  piece(r.x,r.y,r.w,iy0-r.y);
+  piece(r.x,iy1,r.w,r.y+r.h-iy1);
+  piece(r.x,iy0,ix0-r.x,iy1-iy0);
+  piece(ix1,iy0,r.x+r.w-ix1,iy1-iy0);
+  return out;
+}
+function clipByObstacles(list){
+  if(!OBLK.length) return list;
+  var cur=list;
+  OBLK.forEach(function(o){
+    var next=[];
+    cur.forEach(function(r){
+      var thick=Math.min(r.w,r.h), vert=(r.h>=r.w);
+      subtractRect(r,o).forEach(function(p){
+        // restjes die te smal (schilfers) of korter dan de padbreedte zijn vallen weg
+        var perp=vert?p.w:p.h, para=vert?p.h:p.w;
+        if(perp>=0.6*thick-0.001 && para>=thick-0.001) next.push(p);
+      });
+    });
+    cur=next;
+  });
+  return cur;
+}
+function overlapsBlocking(r){
+  return rectOverlapsObst(r.x,r.y,r.w,r.h,true);
+}
+
+// Na toevoegen / verplaatsen / wijzigen: uitknippen en eventueel herberekenen aanbieden
+function obstAfterChange(opts){
+  opts=opts||{};
+  obstRefresh();
+  var changed=0;
+  if(calculated&&opts.clip){
+    var before=paths.length+secPaths.length+stones.length;
+    var sigBefore=JSON.stringify([paths,secPaths,stones]);
+    paths=clipByObstacles(paths);
+    secPaths=clipByObstacles(secPaths);
+    stones=stones.filter(function(s){return !rectOverlapsObst(s.x,s.y,s.w,s.h,false);});
+    solutions.forEach(function(sol){
+      sol.paths=clipByObstacles(sol.paths);
+      sol.secPaths=clipByObstacles(sol.secPaths);
+    });
+    changed=(JSON.stringify([paths,secPaths,stones])!==sigBefore)?1:0;
+    if(changed) obstClipped=true;
+  }
+  selected=null; hovered=null;
+  updateObstList();
+  if(calculated) updateStats();
+  resize();
+  fsaAutoSave();
+  if(calculated&&(paths.length||secPaths.length)&&(opts.ask==='always'||(opts.ask==='changed'&&(changed||obstClipped)))){
+    var tekst=changed
+      ? 'De padstukken die door het obstakel liepen zijn uitgeknipt. Wil je de paden nu opnieuw laten berekenen, rekening houdend met het obstakel?'
+      : 'Wil je de paden nu opnieuw laten berekenen, rekening houdend met de obstakels?';
+    if(stones.length) tekst+=' (De bestaande stapstenen worden dan gewist.)';
+    toonConfirm(tekst,'Paden herberekenen',function(){ calculate(true); });
+  }
+}
+
+// ── Bediening: modus en tekenen ──
+function obstSetMode(mode){
+  obstMode=(obstMode===mode)?null:mode;
+  obstStart=null; obstMouse=null;
+  if(obstMode){
+    drawMode=false; drawStart=null;
+    var bd=document.getElementById('btn-draw'); if(bd) bd.classList.remove('active');
+  }
+  document.getElementById('btn-obst').classList.toggle('active',obstMode==='rect');
+  document.getElementById('btn-ozone').classList.toggle('active',obstMode==='zone');
+  obstHint(obstMode==='rect'?'Klik op het plan op de eerste hoek van het obstakel.'
+          :obstMode==='zone'?'Klik op de rand van een obstakel om een toegangszone te starten.'
+          :'Tekenmodus uit.');
+  cv.style.cursor=obstMode?'crosshair':'default';
+  ppDraw();
+}
+function obstHint(t){ var el=document.getElementById('obstHint'); if(el) el.textContent=t; }
+
+function wxy(mx,my){ return {x:px2x(mx), y:px2y(my)}; }
+
+function obstNaamUniek(basis){
+  var namen=obstacles.map(function(o){return o.naam;});
+  if(namen.indexOf(basis)<0) return basis;
+  var n=2; while(namen.indexOf(basis+' '+n)>=0) n++;
+  return basis+' '+n;
+}
+
+// Snapt een punt op de dichtstbijzijnde rand van een obstakel (px-afstand)
+function obstSnapEdge(mx,my,onlyObst,onlySide){
+  var best=null;
+  obstacles.forEach(function(o){
+    if(onlyObst&&o!==onlyObst) return;
+    var edges=[
+      {side:'N',px1:tx(o.x),py1:ty(o.y),px2:tx(o.x+o.w),py2:ty(o.y),len:o.w,horiz:true},
+      {side:'S',px1:tx(o.x),py1:ty(o.y+o.h),px2:tx(o.x+o.w),py2:ty(o.y+o.h),len:o.w,horiz:true},
+      {side:'W',px1:tx(o.x),py1:ty(o.y),px2:tx(o.x),py2:ty(o.y+o.h),len:o.h,horiz:false},
+      {side:'E',px1:tx(o.x+o.w),py1:ty(o.y),px2:tx(o.x+o.w),py2:ty(o.y+o.h),len:o.h,horiz:false}
+    ];
+    edges.forEach(function(e){
+      if(onlySide&&e.side!==onlySide) return;
+      var t,d;
+      if(e.horiz){
+        t=clampN((mx-e.px1)/(e.px2-e.px1),0,1);
+        d=Math.hypot(mx-(e.px1+t*(e.px2-e.px1)), my-e.py1);
+      } else {
+        t=clampN((my-e.py1)/(e.py2-e.py1),0,1);
+        d=Math.hypot(mx-e.px1, my-(e.py1+t*(e.py2-e.py1)));
+      }
+      if(d<=SNAP&&(!best||d<best.d)) best={o:o,side:e.side,t:t,d:d,len:e.len};
+    });
+  });
+  return best;
+}
+
+function obstClick(mx,my){
+  var g=wxy(mx,my);
+  if(obstMode==='rect'){
+    var px=snapO(clampN(g.x,0,W)), py=snapO(clampN(g.y,0,L));
+    if(!obstStart){
+      obstStart={x:px,y:py};
+      obstHint('Klik nu op de tegenoverliggende hoek.');
+      ppDraw(); return;
+    }
+    var x0=Math.min(obstStart.x,px), y0=Math.min(obstStart.y,py);
+    var w=r4(Math.abs(px-obstStart.x)), h=r4(Math.abs(py-obstStart.y));
+    if(w<OBST_MIN||h<OBST_MIN){
+      obstHint('Te klein: minstens '+OBST_MIN.toFixed(1)+' × '+OBST_MIN.toFixed(1)+' m.');
+      obstStart=null; ppDraw(); return;
+    }
+    var soort=document.getElementById('obstSoort').value;
+    var naamIn=document.getElementById('obstNaam').value.trim();
+    var o=normalizeObstacle({soort:soort,naam:naamIn?naamIn:obstNaamUniek(OBST_SOORTEN[soort].label),
+                             x:x0,y:y0,w:w,h:h});
+    snapObstToBorders(o,true);
+    pushHistory();
+    obstacles.push(o);
+    obstSel=o.id;
+    obstStart=null;
+    document.getElementById('obstNaam').value='';
+    obstSetMode('rect'); // uitzetten
+    obstHint('Obstakel "'+o.naam+'" toegevoegd. Teken nu toegangszones op de randen als je er bij moet kunnen.');
+    obstAfterChange({clip:true,ask:'changed'});
+    return;
+  }
+  if(obstMode==='zone'){
+    if(!obstStart){
+      var sn=obstSnapEdge(mx,my);
+      if(!sn){ obstHint('Klik dichter bij de rand van een obstakel.'); return; }
+      obstStart={o:sn.o,side:sn.side,t:sn.t,len:sn.len};
+      obstSel=sn.o.id;
+      obstHint('Klik nu het einde van de toegangszone op dezelfde rand.');
+      ppDraw(); return;
+    }
+    var sn2=obstSnapEdge(mx,my,obstStart.o,obstStart.side);
+    if(!sn2){ obstHint('Klik op dezelfde rand van hetzelfde obstakel.'); return; }
+    var a=Math.min(obstStart.t,sn2.t), b=Math.max(obstStart.t,sn2.t);
+    var len=(b-a)*obstStart.len;
+    var minLen=Math.min(OBST_ZONE_MIN,obstStart.len);
+    if(len<minLen-0.001){
+      obstHint('Min. '+minLen.toFixed(1)+' m vereist.'); obstStart=null; ppDraw(); return;
+    }
+    pushHistory();
+    obstStart.o.zones.push({side:obstStart.side,from:r4(a),to:r4(b)});
+    obstStart=null;
+    obstHint('Toegangszone toegevoegd ('+len.toFixed(1)+' m).');
+    obstAfterChange({clip:true,ask:false});
+    return;
+  }
+}
+
+// Klik tegen de tuinrand als het obstakel er (bijna) tegen ligt.
+// extend=true: de rand schuift mee (vergroten); anders verschuift het hele obstakel.
+function snapObstToBorders(o,extend){
+  var s=OBST_BORDER_SNAP;
+  if(extend){
+    if(o.x<=s&&o.x>0){ o.w=r4(o.w+o.x); o.x=0; }
+    if(W-(o.x+o.w)<=s){ o.w=r4(W-o.x); }
+    if(o.y<=s&&o.y>0){ o.h=r4(o.h+o.y); o.y=0; }
+    if(L-(o.y+o.h)<=s){ o.h=r4(L-o.y); }
+  } else {
+    if(o.x<=s) o.x=0;
+    if(W-(o.x+o.w)<=s) o.x=r4(W-o.w);
+    if(o.y<=s) o.y=0;
+    if(L-(o.y+o.h)<=s) o.y=r4(L-o.h);
+  }
+}
+
+// ── Lijst in het paneel ──
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+var SIDE_NL={N:'Boven',S:'Onder',W:'Links',E:'Rechts'};
+function updateObstList(){
+  var el=document.getElementById('obstList');
+  if(!el) return;
+  obstRefresh();
+  if(!obstacles.length){ el.innerHTML=''; return; }
+  el.innerHTML=obstacles.map(function(o){
+    var s=OBST_SOORTEN[o.soort]||OBST_SOORTEN.anders;
+    var zs=effZones(o);
+    var walk=OWALK[o.id];
+    var status=walk?'begaanbaar':(zs.length?'bereikbaar via de toegangszones':'afgesloten');
+    var zl=zs.map(function(z,i){
+      var len=obstSideLen(o,z.side);
+      var txt=SIDE_NL[z.side]+': '+(z.from*len).toFixed(1)+'–'+(z.to*len).toFixed(1)+' m';
+      if(z.derived) return '<div class="si"><span>'+txt+' <i>(via tuinrand)</i></span></div>';
+      var ui=(o.zones.findIndex(function(q){return q.side===z.side&&Math.abs(q.from-z.from)<1e-9&&Math.abs(q.to-z.to)<1e-9;}));
+      return '<div class="si"><span>'+txt+'</span><button class="sd" title="Verwijder zone" onclick="obstDelZone(\''+o.id+'\','+ui+')">✕</button></div>';
+    }).join('');
+    function sideBtn(side,lab){
+      var full=o.zones.some(function(q){return q.side===side&&q.from<=0.001&&q.to>=0.999;});
+      return '<button class="ab'+(full?' active':'')+'" title="Volledige zijde als toegang" onclick="obstToggleSide(\''+o.id+'\',\''+side+'\')">'+lab+'</button>';
+    }
+    return '<div class="ob'+(o.id===obstSel?' sel':'')+'" onclick="obstSelect(\''+o.id+'\')">'
+      +'<div class="ob-head"><span class="ob-dot" style="background:'+s.kleur+'"></span>'
+      +'<input class="ob-name" value="'+esc(o.naam)+'" onclick="event.stopPropagation()" onchange="obstRename(\''+o.id+'\',this.value)">'
+      +'<button class="sd" title="Verwijder obstakel" onclick="event.stopPropagation();obstDelete(\''+o.id+'\')">🗑</button></div>'
+      +'<div class="ob-dims">'
+      +dimInput(o,'x','x')+dimInput(o,'y','y')+dimInput(o,'w','br.')+dimInput(o,'h','di.')
+      +'</div>'
+      +'<div class="ob-sides"><span>Toegang volledige zijde:</span>'
+      +sideBtn('N','▲')+sideBtn('W','◀')+sideBtn('E','▶')+sideBtn('S','▼')+'</div>'
+      +'<div class="ob-status">'+status+'</div>'
+      +zl+'</div>';
+  }).join('');
+}
+function dimInput(o,key,lab){
+  return '<label>'+lab+'<input type="number" step="0.05" value="'+o[key].toFixed(2)+'" onclick="event.stopPropagation()" onchange="obstSetDim(\''+o.id+'\',\''+key+'\',this.value)"></label>';
+}
+function obstSideLen(o,side){return (side==='N'||side==='S')?o.w:o.h;}
+function obstById(id){return obstacles.filter(function(o){return o.id===id;})[0]||null;}
+
+function obstSelect(id){ obstSel=id; updateObstList(); ppDraw(); }
+function obstRename(id,val){
+  var o=obstById(id); if(!o) return;
+  o.naam=(val&&val.trim())||OBST_SOORTEN[o.soort].label;
+  updateObstList(); resize(); fsaAutoSave();
+}
+function obstSetDim(id,key,val){
+  var o=obstById(id); if(!o) return;
+  var v=parseFloat(val); if(isNaN(v)) { updateObstList(); return; }
+  pushHistory();
+  if(key==='w'||key==='h') v=Math.max(OBST_MIN,v);
+  o[key]=r4(v);
+  clampObstacle(o);
+  obstAfterChange({clip:true,ask:'changed'});
+}
+function obstDelete(id){
+  var o=obstById(id); if(!o) return;
+  pushHistory();
+  obstacles=obstacles.filter(function(q){return q.id!==id;});
+  if(obstSel===id) obstSel=null;
+  obstHint('Obstakel "'+o.naam+'" verwijderd. ↩ Ongedaan maken?');
+  obstAfterChange({clip:false,ask:'always'});
+}
+function obstDelZone(id,idx){
+  var o=obstById(id); if(!o||idx<0) return;
+  pushHistory();
+  o.zones.splice(idx,1);
+  obstAfterChange({clip:true,ask:false});
+}
+function obstToggleSide(id,side){
+  var o=obstById(id); if(!o) return;
+  pushHistory();
+  var heeft=o.zones.some(function(q){return q.side===side&&q.from<=0.001&&q.to>=0.999;});
+  o.zones=o.zones.filter(function(q){return q.side!==side;});
+  if(!heeft) o.zones.push({side:side,from:0,to:1});
+  obstAfterChange({clip:true,ask:false});
+}
+
+// ── Tekenen ──
+function obstColor(o){return (OBST_SOORTEN[o.soort]||OBST_SOORTEN.anders).kleur;}
+function drawObstacles(metHandvat){
+  obstRefresh();
+  obstacles.forEach(function(o){
+    var x=tx(o.x), y=ty(o.y), w=ts(o.w), h=ts(o.h);
+    var kleur=obstColor(o);
+    ctx.save();
+    ctx.globalAlpha=0.93;
+    ctx.fillStyle=kleur;
+    ctx.fillRect(x,y,w,h);
+    ctx.globalAlpha=1;
+    // arcering: niet-begaanbaar = kruisarcering, begaanbaar = niets extra
+    if(!OWALK[o.id]){
+      ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
+      ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=1;
+      for(var k=-h;k<w;k+=9){ctx.beginPath();ctx.moveTo(x+k,y+h);ctx.lineTo(x+k+h,y);ctx.stroke();}
+    }
+    ctx.restore();
+    ctx.strokeStyle=(o.id===obstSel)?'#F0D060':'rgba(0,0,0,0.55)';
+    ctx.lineWidth=(o.id===obstSel)?2.5:1.5;
+    ctx.strokeRect(x,y,w,h);
+    // naam
+    var fsz=Math.max(9,Math.min(14,Math.min(w/Math.max(4,o.naam.length*0.62),h*0.35)));
+    ctx.fillStyle=contrastTekst(kleur);
+    ctx.font='bold '+fsz+'px "DM Sans",sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(o.naam,x+w/2,y+h/2,Math.max(10,w-6));
+    if(OWALK[o.id]){
+      ctx.font=Math.max(8,fsz-2)+'px "DM Sans",sans-serif';
+      ctx.fillText('(begaanbaar)',x+w/2,y+h/2+fsz*1.1,Math.max(10,w-6));
+    }
+    // toegangszones
+    OZ.forEach(function(z){
+      if(z.o!==o) return;
+      ctx.save();
+      ctx.strokeStyle='#E8A030'; ctx.lineCap='round';
+      ctx.lineWidth=z.derived?4:7;
+      if(z.derived) ctx.setLineDash([5,4]);
+      var off=0;
+      ctx.beginPath(); ctx.moveTo(tx(z.x1),ty(z.y1)); ctx.lineTo(tx(z.x2),ty(z.y2)); ctx.stroke();
+      ctx.restore();
+    });
+    if(metHandvat){
+      ctx.fillStyle='#F5F0E8'; ctx.strokeStyle='rgba(0,0,0,0.7)'; ctx.lineWidth=1;
+      ctx.fillRect(x+w-6,y+h-6,10,10); ctx.strokeRect(x+w-6,y+h-6,10,10);
+    }
+  });
+  // voorbeeld tijdens tekenen
+  if(obstMode==='rect'&&obstStart&&obstMouse){
+    var ax=snapO(clampN(obstMouse.x,0,W)), ay=snapO(clampN(obstMouse.y,0,L));
+    ctx.save();
+    ctx.setLineDash([6,4]); ctx.strokeStyle='#F0D060'; ctx.lineWidth=2;
+    ctx.strokeRect(tx(Math.min(obstStart.x,ax)),ty(Math.min(obstStart.y,ay)),ts(Math.abs(ax-obstStart.x)),ts(Math.abs(ay-obstStart.y)));
+    ctx.restore();
+  }
+  if(obstMode==='zone'&&obstStart){
+    var o2=obstStart.o;
+    var p=zoneAbs(o2,{side:obstStart.side,from:obstStart.t,to:obstStart.t});
+    ctx.fillStyle='#E8A030'; ctx.beginPath(); ctx.arc(tx(p.x1),ty(p.y1),6,0,Math.PI*2); ctx.fill();
+  }
+}
+
 
 function setReachMode(mode){
   reachMode=mode;
@@ -1006,7 +1579,8 @@ function snapshotState(){
     secPaths: secPaths.map(function(p){return Object.assign({},p);}),
     stones:   stones.map(function(s){return Object.assign({},s);}),
     segs:     segs.map(function(s){return Object.assign({},s);}),
-    fullSides:Object.assign({},fullSides)
+    fullSides:Object.assign({},fullSides),
+    obstacles:JSON.parse(JSON.stringify(obstacles))
   };
 }
 
@@ -1019,6 +1593,7 @@ function restoreState(snap){
   paths    = snap.paths.map(function(p){return Object.assign({},p);});
   secPaths = snap.secPaths.map(function(p){return Object.assign({},p);});
   stones   = snap.stones.map(function(s){return Object.assign({},s);});
+  if(snap.obstacles){ obstacles=snap.obstacles.map(normalizeObstacle); obstRefresh(); updateObstList(); }
   if(snap.segs){
     segs = snap.segs.map(function(s){return Object.assign({},s);});
     if(snap.fullSides) Object.assign(fullSides, snap.fullSides);
@@ -1033,70 +1608,27 @@ function restoreState(snap){
 // ─────────────────────────────────────────────────────
 
 function ptReachable(cx,cy){
-  // Bereikbaar vanuit hoofdpad (volledige werkzone voor bereikbaarheidskaart)
-  if(paths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-    var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=work;
-  })) return true;
-  // Bereikbaar vanuit secundair pad (handwerkzone)
-  if(secPaths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-    var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=workSec;
-  })) return true;
-  // Bereikbaar vanuit secundair pad
-  if(secPaths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-    var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=workSec;
-  })) return true;
-  // Bereikbaar vanuit hoofdpad via handwerkzone (workSec = 60cm)
-  if(paths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-    var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=workSec;
-  })) return true;
-  // Bereikbaar vanuit toegangssegment
-  if(segs.some(function(s){
-    if(s.side==='N'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy)<=work;}
-    if(s.side==='S'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy-L)<=work;}
-    if(s.side==='W'){var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx,cy-ey)<=work;}
-    var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx-W,cy-ey)<=work;
-  })) return true;
+  // Bereikbaar vanuit hoofdpad (volledige werkzone), secundair pad, handwerkzone,
+  // toegangssegment of toegangszone van een obstakel. Een niet-begaanbaar
+  // obstakel blokkeert de rechtstreekse lijn (je kan er niet doorheen reiken).
+  if(rectReach(paths,cx,cy,work)) return true;
+  if(rectReach(secPaths,cx,cy,workSec)) return true;
+  if(rectReach(paths,cx,cy,workSec)) return true;
+  if(segReach(cx,cy,work)) return true;
+  if(reachOZ(cx,cy,work)) return true;
   return false;
 }
 
 function stoneReachable(sx,sy,sw,sh){
   // A stone is placeable if at least one of its edges is within stepLen of
-  // an existing path, stone, or access segment (i.e. you can step onto it)
+  // an existing path, stone, access segment or obstacle access zone
   var pts=[[sx,sy],[sx+sw,sy],[sx,sy+sh],[sx+sw,sy+sh],
            [sx+sw/2,sy],[sx+sw/2,sy+sh],[sx,sy+sh/2],[sx+sw,sy+sh/2],
            [sx+sw/2,sy+sh/2]];
   return pts.some(function(pt){
     var cx=pt[0],cy=pt[1];
-    if(paths.some(function(p){
-      var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-      var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-      return Math.hypot(cx-nx,cy-ny)<=stepLen;
-    })) return true;
-    if(secPaths.some(function(p){
-      var nx=Math.max(p.x,Math.min(cx,p.x+p.w));
-      var ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-      return Math.hypot(cx-nx,cy-ny)<=stepLen;
-    })) return true;
-    if(stones.some(function(s){
-      var nx=Math.max(s.x,Math.min(cx,s.x+s.w));
-      var ny=Math.max(s.y,Math.min(cy,s.y+s.h));
-      return Math.hypot(cx-nx,cy-ny)<=stepLen;
-    })) return true;
-    // Stones-only mode: allow starting from access segments
-    return segs.some(function(s){
-      if(s.side==='N'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy)<=stepLen;}
-      if(s.side==='S'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy-L)<=stepLen;}
-      if(s.side==='W'){var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx,cy-ey)<=stepLen;}
-      var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx-W,cy-ey)<=stepLen;
-    });
+    return rectReach(paths,cx,cy,stepLen)||rectReach(secPaths,cx,cy,stepLen)
+        || rectReach(stones,cx,cy,stepLen)||segReach(cx,cy,stepLen)||reachOZ(cx,cy,stepLen);
   });
 }
 
@@ -1585,7 +2117,8 @@ function nextSolution(){
 function updateStats(){
   var tot=W*L,R=0.05;
   var cols=Math.round(W/R),rows=Math.round(L/R);
-  var pc=0,sc=0,rc=0,uc=0;
+  var pc=0,sc=0,rc=0,uc=0,oc=0;
+  obstRefresh();
   var useArm=stones.length>0 || reachMode==='arm';
   for(var r=0;r<rows;r++) for(var c=0;c<cols;c++){
     var cx=(c+.5)*R,cy=(r+.5)*R;
@@ -1595,6 +2128,7 @@ function updateStats(){
     var onStone=stones.some(function(s){return cx>=s.x&&cx<=s.x+s.w&&cy>=s.y&&cy<=s.y+s.h;});
     if(onPath){pc++;continue;}
     if(onStone){sc++;continue;}
+    if(ptInObst(cx,cy)){oc++;continue;}
     var reach=useArm?ptArmReachable(cx,cy):ptReachable(cx,cy);
     if(reach) rc++; else uc++;
   }
@@ -1602,8 +2136,10 @@ function updateStats(){
   var stn=sc*R*R;
   var bed=rc*R*R;
   var unreach=uc*R*R;
+  tot=Math.max(0.0001,tot-oc*R*R);
   var pct=Math.round(bed/tot*100);
   document.getElementById('sTot').textContent=tot.toFixed(1);
+  document.getElementById('sTot').parentElement.querySelector('.sl').textContent=oc>0?'Totaal excl. obstakels (m²)':'Totaal (m²)';
   document.getElementById('sBed').textContent=bed.toFixed(1);
   document.getElementById('sPct').textContent=pct+'%';
   // Show pad + stenen combined in the pad stat, or just pad if no stones
@@ -2208,6 +2744,7 @@ function undoConnect(){
   if(!undoStack.length) return;
   restoreState(undoStack.pop());
   selected=null; hovered=null;
+  updateObstList(); fsaAutoSave();
   if(!undoStack.length) document.getElementById('btnUndo').style.display='none';
   updateStoneStats(false);
   resize();
@@ -2270,6 +2807,21 @@ function findClicked(gx,gy){
     if(seg.side==='E'&&gx>=W-segTol&&gy>=seg.from*L-segTol&&gy<=seg.to*L+segTol)
       return {type:'seg', obj:segToObj(seg), seg:seg};
   }
+  // Toegangszones van obstakels (als verbindingsdoel voor stapstenen)
+  obstRefresh();
+  var zt=0.15;
+  for(var zi=OZ.length-1;zi>=0;zi--){
+    var z=OZ[zi];
+    if(z.derived) continue;
+    var zx0=Math.min(z.x1,z.x2), zx1=Math.max(z.x1,z.x2), zy0=Math.min(z.y1,z.y2), zy1=Math.max(z.y1,z.y2);
+    var zr;
+    if(z.side==='N') zr={x:zx0,y:zy0-zt,w:zx1-zx0,h:zt};
+    else if(z.side==='S') zr={x:zx0,y:zy0,w:zx1-zx0,h:zt};
+    else if(z.side==='W') zr={x:zx0-zt,y:zy0,w:zt,h:zy1-zy0};
+    else zr={x:zx0,y:zy0,w:zt,h:zy1-zy0};
+    if(gx>=zr.x-zt&&gx<=zr.x+zr.w+zt&&gy>=zr.y-zt&&gy<=zr.y+zr.h+zt)
+      return {type:'seg', obj:zr, seg:null};
+  }
   return null;
 }
 
@@ -2307,6 +2859,9 @@ function findDeletable(gx,gy){
     if(seg.side==='E'&&gx>=W-segTol&&gy>=seg.from*L-segTol&&gy<=seg.to*L+segTol)
       return {type:'seg', obj:segToObj(seg), seg:seg, idx:i, deletable:true};
   }
+  // Obstakels
+  var ob=obstAt(gx,gy);
+  if(ob) return {type:'obst', obj:ob, deletable:true};
   return null;
 }
 
@@ -2639,6 +3194,8 @@ function ctxDoDelete(){
     selected=null; hovered=null;
     chint('Hoofdpad verwijderd. ↩ Ongedaan maken?');
     updateStats(); resize();
+  } else if(hit.type==='obst'){
+    obstDelete(hit.obj.id);
   } else if(hit.type==='seg'){
     pushHistory();
     var seg=hit.seg;
@@ -2781,7 +3338,7 @@ function connectObjects(selA, selB, clickA, clickB){
     sx=Math.max(0,Math.min(W-sw,sx));
     sy=Math.max(0,Math.min(L-sh,sy));
 
-    var overlaps=stones.some(function(s){
+    var overlaps=rectOverlapsObst(sx,sy,sw,sh,false) || stones.some(function(s){
       return sx<s.x+s.w-0.01&&sx+sw>s.x+0.01&&sy<s.y+s.h-0.01&&sy+sh>s.y+0.01;
     }) || paths.some(function(p){
       return sx<p.x+p.w-0.01&&sx+sw>p.x+0.01&&sy<p.y+p.h-0.01&&sy+sh>p.y+0.01;
@@ -2851,7 +3408,7 @@ function calculateStones(){
         if(!stoneReachable(sx,sy,sw,sh)) continue;
 
         // Skip if this stone rectangle overlaps any existing stone or path
-        var overlapsExisting=stones.some(function(s){
+        var overlapsExisting=rectOverlapsObst(sx,sy,sw,sh,false)||stones.some(function(s){
           return sx<s.x+s.w-0.001&&sx+sw>s.x+0.001&&sy<s.y+s.h-0.001&&sy+sh>s.y+0.001;
         })||paths.some(function(p){
           return sx<p.x+p.w-0.001&&sx+sw>p.x+0.001&&sy<p.y+p.h-0.001&&sy+sh>p.y+0.001;
@@ -3227,13 +3784,15 @@ function downloadPDF(){
   doc.save('chaostuin_indeling.pdf');
 }
 
-function calculate(){
+function calculate(skipConfirm){
   if(!segs.length){ppShowErr('Voeg eerst minstens één toegangssegment toe.');return;}
+  clampObstacles();
+  obstClipped=false;
   var main=document.getElementById('chkMain').checked;
   var sec=document.getElementById('chkSec').checked;
   var stn=document.getElementById('chkStones').checked;
   if(!main&&!sec){ppShowErr('Vink hoofd- en/of secundaire paden aan.');return;}
-  if(stones.length){
+  if(stones.length&&!skipConfirm){
     if(!confirm('Er staan al '+stones.length+' stapsteen'+(stones.length>1?'en':'')+'. Paden (her)berekenen verwijdert die. Doorgaan?')) return;
   }
   ppHideErr();
@@ -3413,6 +3972,12 @@ function calculate(){
     }
   });
 
+  // Paden uitknippen rond niet-begaanbare obstakels
+  solutions.forEach(function(sol){
+    sol.paths=clipByObstacles(sol.paths);
+    sol.secPaths=clipByObstacles(sol.secPaths);
+  });
+
   // Score and sort solutions by benutting
   if(solutions.length){
     var R=0.1, cols=Math.round(W/R), rows=Math.round(L/R);
@@ -3476,6 +4041,7 @@ function ppShowErr(m){var e=document.getElementById('errBoxPaden');e.textContent
 function ppHideErr(){document.getElementById('errBoxPaden').style.display='none';}
 
 function setDraw(){
+  if(obstMode) obstSetMode(obstMode);
   drawMode=!drawMode;drawStart=null;
   document.getElementById('btn-draw').classList.toggle('active',drawMode);
   hint(drawMode?'Klik op de rand om te starten.':'Tekenmodus uit.');
@@ -3526,6 +4092,9 @@ function confirmAntwoord(akkoord){
 function clearAll(){
   calculated=false;
   segs=[];paths=[];secPaths=[];stones=[];drawStart=null;drawMode=false;
+  obstacles=[];obstSel=null;obstMode=null;obstStart=null;
+  ['btn-obst','btn-ozone'].forEach(function(id){var b=document.getElementById(id);if(b)b.classList.remove('active');});
+  obstRefresh(); updateObstList();
   showReachToggle(false);
   chint('');
   Object.keys(fullSides).forEach(function(k){fullSides[k]=false;});
@@ -3632,6 +4201,9 @@ cv.addEventListener('click',function(e){
   var scaleX=cv.width/r.width;
   var scaleY=cv.height/r.height;
   var mx=(e.clientX-r.left)*scaleX, my=(e.clientY-r.top)*scaleY;
+
+  if(obstMode){ obstClick(mx,my); return; }
+  if(odragMoved) return;
 
   // Draw mode: segment drawing
   if(drawMode){
@@ -3827,6 +4399,84 @@ cv.addEventListener('mousemove',function(e){
   if(hovered!==prevHovered) ppDraw();
 });
 
+// ── Slepen en verkleinen van obstakels (tabblad Paden) ──
+cv.addEventListener('mousedown',function(e){
+  if(activeTool!=='paden'||e.button!==0||drawMode||obstMode||drag) return;
+  var r=cv.getBoundingClientRect();
+  var mx=(e.clientX-r.left)*(cv.width/r.width), my=(e.clientY-r.top)*(cv.height/r.height);
+  var g=wxy(mx,my);
+  for(var i=obstacles.length-1;i>=0;i--){
+    var o=obstacles[i];
+    // handvat rechtsonder
+    if(Math.abs(mx-tx(o.x+o.w))<=9&&Math.abs(my-ty(o.y+o.h))<=9){
+      odrag={o:o,mode:'resize',ox:o.x,oy:o.y,ow:o.w,oh:o.h,sx:mx,sy:my,moved:false};
+      obstSel=o.id; e.preventDefault(); return;
+    }
+  }
+  var o2=obstAt(g.x,g.y);
+  if(o2){
+    odrag={o:o2,mode:'move',dx:g.x-o2.x,dy:g.y-o2.y,ox:o2.x,oy:o2.y,ow:o2.w,oh:o2.h,sx:mx,sy:my,moved:false};
+    obstSel=o2.id; updateObstList(); e.preventDefault();
+  }
+});
+cv.addEventListener('mousemove',function(e){
+  if(activeTool!=='paden') return;
+  var r=cv.getBoundingClientRect();
+  var mx=(e.clientX-r.left)*(cv.width/r.width), my=(e.clientY-r.top)*(cv.height/r.height);
+  var g=wxy(mx,my);
+  if(obstMode){
+    obstMouse=g; cv.style.cursor='crosshair';
+    if(obstStart) ppDraw();
+    return;
+  }
+  if(odrag){
+    if(!odrag.moved&&Math.hypot(mx-odrag.sx,my-odrag.sy)>3){ pushHistory(); odrag.moved=true; }
+    if(odrag.moved){
+      var o=odrag.o;
+      if(odrag.mode==='move'){
+        o.x=r4(clampN(g.x-odrag.dx,0,W-o.w)); o.y=r4(clampN(g.y-odrag.dy,0,L-o.h));
+      } else {
+        o.w=r4(clampN(g.x-o.x,OBST_MIN,W-o.x)); o.h=r4(clampN(g.y-o.y,OBST_MIN,L-o.y));
+      }
+      cv.style.cursor=odrag.mode==='move'?'grabbing':'nwse-resize';
+      ppDraw();
+    }
+    return;
+  }
+  // hover-cursor boven obstakels (alleen als er niets anders onder de muis ligt)
+  if(!drag&&!drawMode){
+    for(var i=obstacles.length-1;i>=0;i--){
+      var oo=obstacles[i];
+      if(Math.abs(mx-tx(oo.x+oo.w))<=9&&Math.abs(my-ty(oo.y+oo.h))<=9){ cv.style.cursor='nwse-resize'; return; }
+    }
+    var onS=stones.some(function(s){return g.x>=s.x&&g.x<=s.x+s.w&&g.y>=s.y&&g.y<=s.y+s.h;})
+         || secPaths.some(function(p){return g.x>=p.x&&g.x<=p.x+p.w&&g.y>=p.y&&g.y<=p.y+p.h;});
+    if(!onS&&obstAt(g.x,g.y)) cv.style.cursor='move';
+  }
+});
+document.addEventListener('mouseup',function(){
+  if(!odrag) return;
+  var d=odrag; odrag=null;
+  if(!d.moved) return;
+  odragMoved=true;
+  setTimeout(function(){odragMoved=false;},0);
+  var o=d.o;
+  if(d.mode==='move'){ o.x=snapO(o.x); o.y=snapO(o.y); snapObstToBorders(o,false); }
+  else { o.w=Math.max(OBST_MIN,snapO(o.w)); o.h=Math.max(OBST_MIN,snapO(o.h)); snapObstToBorders(o,true); }
+  clampObstacle(o);
+  obstAfterChange({clip:true,ask:'changed'});
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&(obstMode||obstStart)){
+    obstMode=null; obstStart=null; obstMouse=null;
+    var a=document.getElementById('btn-obst'), b=document.getElementById('btn-ozone');
+    if(a) a.classList.remove('active'); if(b) b.classList.remove('active');
+    obstHint('Tekenmodus uit.'); cv.style.cursor='default'; ppDraw();
+  }
+});
+// ══════════════════════════════════════════════════════
+
+
 function setGroupOpen(panelId,bodyId,open){
   var panel=document.getElementById(panelId);
   var body=document.getElementById(bodyId);
@@ -3901,6 +4551,7 @@ function snapshotState(){
     paths:JSON.parse(JSON.stringify(paths)),
     secPaths:JSON.parse(JSON.stringify(secPaths)),
     stones:JSON.parse(JSON.stringify(stones)),
+    obstacles:JSON.parse(JSON.stringify(obstacles)),
     solutions:JSON.parse(JSON.stringify(solutions||[])),
     solIdx:solIdx,
     chkMain:document.getElementById('chkMain').checked,
@@ -3973,6 +4624,7 @@ function loadVariant(id){
   paths=JSON.parse(JSON.stringify(s.paths));
   secPaths=JSON.parse(JSON.stringify(s.secPaths));
   stones=JSON.parse(JSON.stringify(s.stones));
+  obstacles=(s.obstacles||[]).map(normalizeObstacle); obstSel=null; obstRefresh(); updateObstList();
   solutions=JSON.parse(JSON.stringify(s.solutions||[]));
   solIdx=s.solIdx||0;
   undoStack=[]; selected=null;
@@ -4171,6 +4823,7 @@ function fsaBouwData(){
     data.tuin=live.tuin; data.params=live.params;
     data.paths=live.paths; data.secPaths=live.secPaths;
     data.stones=live.stones; data.segs=live.segs;
+    data.obstakels=JSON.parse(JSON.stringify(obstacles));
   }
   if(plants.length){
     data.planten=plants.map(function(p,idx){
@@ -4360,27 +5013,12 @@ function setFilter(naam){
 function ptOnPath(cx,cy){
   return paths.some(function(p){return cx>=p.x&&cx<=p.x+p.w&&cy>=p.y&&cy<=p.y+p.h;})
       || secPaths.some(function(p){return cx>=p.x&&cx<=p.x+p.w&&cy>=p.y&&cy<=p.y+p.h;})
-      || stones.some(function(s){return cx>=s.x&&cx<=s.x+s.w&&cy>=s.y&&cy<=s.y+s.h;});
+      || stones.some(function(s){return cx>=s.x&&cx<=s.x+s.w&&cy>=s.y&&cy<=s.y+s.h;})
+      || ptInObst(cx,cy);
 }
 function ptArmReachable(cx,cy){
-  if(paths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w)),ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=armLen;
-  })) return true;
-  if(secPaths.some(function(p){
-    var nx=Math.max(p.x,Math.min(cx,p.x+p.w)),ny=Math.max(p.y,Math.min(cy,p.y+p.h));
-    return Math.hypot(cx-nx,cy-ny)<=armLen;
-  })) return true;
-  if(stones.some(function(s){
-    var nx=Math.max(s.x,Math.min(cx,s.x+s.w)),ny=Math.max(s.y,Math.min(cy,s.y+s.h));
-    return Math.hypot(cx-nx,cy-ny)<=armLen;
-  })) return true;
-  return segs.some(function(s){
-    if(s.side==='N'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy)<=armLen;}
-    if(s.side==='S'){var ex=Math.max(s.from*W,Math.min(cx,s.to*W));return Math.hypot(cx-ex,cy-L)<=armLen;}
-    if(s.side==='W'){var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx,cy-ey)<=armLen;}
-    var ey=Math.max(s.from*L,Math.min(cy,s.to*L));return Math.hypot(cx-W,cy-ey)<=armLen;
-  });
+  return rectReach(paths,cx,cy,armLen)||rectReach(secPaths,cx,cy,armLen)
+      || rectReach(stones,cx,cy,armLen)||segReach(cx,cy,armLen)||reachOZ(cx,cy,armLen);
 }
 
 // Check: entire circle fits within arm-reachable zone and outside paths/stones
@@ -4485,6 +5123,7 @@ var reachGrid=null;
 var stepLinks=[];
 
 function buildReachGrid(){
+  obstRefresh();
   gridCols=Math.round(W/GRID_R);
   gridRows=Math.round(L/GRID_R);
   reachGrid=new Uint8Array(gridCols*gridRows);
@@ -4545,6 +5184,11 @@ function markOccupied(cx,cy,r,gap){
 function circleValid(cx,cy,r,hoogte){
   if(!reachGrid) return false;
   if(cx-r<0||cx+r>W||cy-r<0||cy+r>L) return false;
+  for(var oi=0;oi<obstacles.length;oi++){
+    var ob=obstacles[oi];
+    var onx=Math.max(ob.x,Math.min(cx,ob.x+ob.w)), ony=Math.max(ob.y,Math.min(cy,ob.y+ob.h));
+    if(Math.hypot(cx-onx,cy-ony)<r-0.001) return false;
+  }
   var gi=gridXY(cx,cy);
   if(!reachGrid[gi.r*gridCols+gi.c]) return false;
   var maxOH=pathW*PATH_OVERHANG;
@@ -4621,6 +5265,7 @@ function applyTuinData(data){
   paths=data.paths||[];
   secPaths=data.secPaths||[];
   stones=data.stones||[];
+  obstacles=(data.obstakels||[]).map(normalizeObstacle); obstSel=null; obstRefresh(); updateObstList();
   plants=[];
 
   // Pre-compute rasters en stapverbindingen (eenmalig bij laden)
@@ -4631,7 +5276,7 @@ function applyTuinData(data){
   document.getElementById('tuinInfo').textContent=
     'Tuin: '+W.toFixed(1)+' × '+L.toFixed(1)+' m  •  '+
     paths.length+' paden  •  '+secPaths.length+' sec. paden  •  '+
-    stones.length+' stapstenen  •  '+stepLinks.length+' stapverbindingen';
+    stones.length+' stapstenen  •  '+stepLinks.length+' stapverbindingen'+(obstacles.length?'  •  '+obstacles.length+' obstakel'+(obstacles.length>1?'s':''):'');
 
   document.getElementById('btnPlace').disabled=false;
   document.getElementById('btnPlace').textContent='Verdeel groenten willekeurig →';
@@ -5332,6 +5977,8 @@ function draw(){
     ctx.setLineDash([]);
     ctx.restore();
   }
+
+  drawObstacles(false);
 
   // 5. Toegangssegmenten (bovenop alles)
   ctx.strokeStyle='#E8A030'; ctx.lineWidth=5; ctx.lineCap='round';
@@ -6432,7 +7079,7 @@ var activeTool='paden';
 // niet steeds een dure herberekening triggert.
 function verwijderGeraakteGroenten(){
   if(!plants.length) return 0;
-  var obstakels=paths.concat(secPaths).concat(stones);
+  var obstakels=paths.concat(secPaths).concat(stones).concat(obstacles);
   var voor=plants.length;
   plants=plants.filter(function(p){
     var r=p.g.diameter/2;
@@ -6468,7 +7115,7 @@ function syncGroentenView(){
     info.style.display='block';
     info.textContent='Tuin: '+W.toFixed(1)+' × '+L.toFixed(1)+' m  •  '+
       paths.length+' paden  •  '+secPaths.length+' sec. paden  •  '+
-      stones.length+' stapstenen  •  '+stepLinks.length+' stapverbindingen';
+      stones.length+' stapstenen  •  '+stepLinks.length+' stapverbindingen'+(obstacles.length?'  •  '+obstacles.length+' obstakel'+(obstacles.length>1?'s':''):'');
   }
   var btn=document.getElementById('btnPlace');
   if(btn) btn.disabled=!(W&&L);
