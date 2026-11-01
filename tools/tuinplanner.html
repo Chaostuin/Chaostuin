@@ -2620,6 +2620,22 @@ function addSecondaryConnector(seg, primSide, primSegs){
   }
 }
 
+
+function obstZonesTekst(o){
+  obstRefresh();
+  var nm={N:'boven',S:'onder',W:'links',E:'rechts'};
+  if(OWALK[o.id]) return 'begaanbaar (toegang rondom)';
+  var zs=effZones(o);
+  if(!zs.length) return 'afgesloten (geen toegangszones)';
+  return 'toegang: '+zs.map(function(z){
+    var dim=(z.side==='N'||z.side==='S')?o.w:o.h;
+    return nm[z.side]+' '+(z.from*dim).toFixed(1)+'\u2013'+(z.to*dim).toFixed(1)+' m';
+  }).join(', ');
+}
+function obstTotaalOppervlak(){
+  var a=0; obstacles.forEach(function(o){a+=o.w*o.h;}); return a;
+}
+
 function copyLayout(){
   if(!paths.length&&!secPaths.length&&!stones.length){alert('Bereken eerst een indeling.');return;}
   var lines=[];
@@ -2665,6 +2681,20 @@ function copyLayout(){
         ' b='+s.w.toFixed(2)+' h='+s.h.toFixed(2));
     });
   }
+  if(obstacles.length){
+    lines.push('OBSTAKELS (x, y, breedte, hoogte) in meters:');
+    obstacles.forEach(function(o,i){
+      lines.push('  '+(i+1)+'. '+o.naam+' ['+OBST_SOORTEN[o.soort].label.toLowerCase()+']: x='+o.x.toFixed(2)+' y='+o.y.toFixed(2)+
+        ' b='+o.w.toFixed(2)+' h='+o.h.toFixed(2)+' \u2014 '+obstZonesTekst(o));
+    });
+  }
+  var vastL=plants.filter(function(p){return p.vast;});
+  if(vastL.length){
+    lines.push('VASTE PLANTEN:');
+    vastL.forEach(function(p,i){
+      lines.push('  '+(i+1)+'. '+gewasLabel(p.g)+': x='+p.cx.toFixed(2)+' y='+p.cy.toFixed(2)+' (\u00d8 '+p.g.diameter.toFixed(2)+' m)');
+    });
+  }
   lines.push('');
   // Bed zones along X — combine main + secondary vertical paths
   var allVp=paths.filter(function(p){return !p.conn&&p.h>p.w;}).map(function(p){return {x:p.x,w:p.w,sec:false};})
@@ -2698,12 +2728,14 @@ function copyLayout(){
   var R2=0.05,cols2=Math.round(W/R2),rows2=Math.round(L/R2),pc2=0,rc2=0,uc2=0;
   for(var r2=0;r2<rows2;r2++) for(var c2=0;c2<cols2;c2++){
     var cx2=(c2+.5)*R2,cy2=(r2+.5)*R2;
+    if(ptInObst(cx2,cy2)) continue;
     if(ptOnPath(cx2,cy2)){pc2++;continue;}
     if(ptReachable(cx2,cy2)) rc2++; else uc2++;
   }
-  var padA=pc2*R2*R2, bedA=rc2*R2*R2, unreachA=uc2*R2*R2, totA=W*L;
+  var obA=obstTotaalOppervlak();
+  var padA=pc2*R2*R2, bedA=rc2*R2*R2, unreachA=uc2*R2*R2, totA=W*L-obA;
   lines.push('STATISTIEKEN:');
-  lines.push('  Totaal: '+totA.toFixed(1)+' m²');
+  lines.push('  Totaal'+(obstacles.length?' excl. obstakels ('+obA.toFixed(1)+' m²)':'')+': '+totA.toFixed(1)+' m²');
   lines.push('  Paden: '+padA.toFixed(1)+' m²');
   lines.push('  Bereikbare teelt: '+bedA.toFixed(1)+' m²');
   lines.push('  Onbereikbaar: '+unreachA.toFixed(1)+' m²');
@@ -3577,6 +3609,48 @@ function downloadPDF(){
     doc.text(String(i+1), gX+(s.x+s.w/2)*scale, gY+(s.y+s.h/2)*scale+fsz*0.35, {align:'center'});
   });
 
+  // Obstacles
+  obstRefresh();
+  obstacles.forEach(function(o,i){
+    var hx=obstColor(o).replace('#','');
+    var rr=parseInt(hx.substr(0,2),16),gg=parseInt(hx.substr(2,2),16),bb=parseInt(hx.substr(4,2),16);
+    doc.setFillColor(rr,gg,bb);
+    doc.rect(gX+o.x*scale,gY+o.y*scale,o.w*scale,o.h*scale,'F');
+    doc.setDrawColor(50,50,50); doc.setLineWidth(0.3);
+    doc.rect(gX+o.x*scale,gY+o.y*scale,o.w*scale,o.h*scale,'S');
+    if(!OWALK[o.id]){ // arcering
+      doc.setDrawColor(0,0,0); doc.setLineWidth(0.1);
+      var bx=gX+o.x*scale, by=gY+o.y*scale, bw=o.w*scale, bh=o.h*scale;
+      for(var k=2;k<bw+bh;k+=2.5){
+        var x1=bx+Math.min(k,bw), y1=by+Math.max(0,k-bw), x2=bx+Math.max(0,k-bh), y2=by+Math.min(k,bh);
+        doc.line(x1,y1,x2,y2);
+      }
+    }
+    var lum=(rr*299+gg*587+bb*114)/1000;
+    doc.setFont('helvetica','bold');
+    var fs=Math.max(5,Math.min(8,o.w*scale/Math.max(4,o.naam.length)*1.6));
+    doc.setFontSize(fs);
+    if(lum>150) doc.setTextColor(30,30,30); else doc.setTextColor(255,255,255);
+    doc.text(o.naam,gX+(o.x+o.w/2)*scale,gY+(o.y+o.h/2)*scale+fs*0.15,{align:'center',maxWidth:Math.max(8,o.w*scale-2)});
+    // toegangszones
+    doc.setDrawColor(232,160,48); doc.setLineWidth(1.2);
+    OZ.forEach(function(z){
+      if(z.o!==o) return;
+      doc.line(gX+z.x1*scale,gY+z.y1*scale,gX+z.x2*scale,gY+z.y2*scale);
+    });
+  });
+
+  // Vaste planten
+  plants.forEach(function(p){
+    if(!p.vast) return;
+    var hx=(p.g.kleur||'#4E9A2E').replace('#','');
+    doc.setFillColor(parseInt(hx.substr(0,2),16),parseInt(hx.substr(2,2),16),parseInt(hx.substr(4,2),16));
+    doc.setDrawColor(255,255,255); doc.setLineWidth(0.4);
+    doc.circle(gX+p.cx*scale,gY+p.cy*scale,p.g.diameter/2*scale,'FD');
+    doc.setFillColor(60,40,20);
+    doc.circle(gX+p.cx*scale,gY+p.cy*scale,0.5,'F');
+  });
+
   // Access segments
   doc.setDrawColor(232,160,48);
   doc.setLineWidth(1.5);
@@ -3656,6 +3730,8 @@ function downloadPDF(){
   legendItem(gX+22,ly,200,184,154,'Kruiwagenpad');
   legendItem(gX+54,ly,160,120,90,'Stapsteen');
   legendItem(gX+76,ly,232,160,48,'Toegang');
+  if(obstacles.length) legendItem(gX+96,ly,138,138,138,'Obstakel');
+  if(plants.some(function(p){return p.vast;})) legendItem(gX+116,ly,78,154,46,'Vaste plant');
 
   // Scale bar
   var sbLen=Math.min(2,Math.floor(gW/scale/3));
@@ -3705,11 +3781,15 @@ function downloadPDF(){
   var useArm=stones.length>0;
   for(var r2=0;r2<rows2;r2++) for(var c2=0;c2<cols2;c2++){
     var cx2=(c2+.5)*R2, cy2=(r2+.5)*R2;
+    if(ptInObst(cx2,cy2)) continue;
     if(ptOnPath(cx2,cy2)){pc2++;continue;}
     if(useArm?ptArmReachable(cx2,cy2):ptReachable(cx2,cy2)) rc2++; else uc2++;
   }
+  var obA2=obstTotaalOppervlak();
+  totA=W*L-obA2;
   var padA=pc2*R2*R2, bedA=rc2*R2*R2, unreachA=uc2*R2*R2;
-  pdfRow('Totale oppervlakte',totA.toFixed(1)+' m\u00b2');
+  pdfRow(obstacles.length?'Totaal excl. obstakels':'Totale oppervlakte',totA.toFixed(1)+' m\u00b2');
+  if(obstacles.length) pdfRow('Obstakels',obA2.toFixed(1)+' m\u00b2');
   pdfRow('Paden & stenen',padA.toFixed(1)+' m\u00b2');
   pdfRow(useArm?'Bewerkbare teelt':'Bereikbare teelt',bedA.toFixed(1)+' m\u00b2');
   pdfRow('Onbereikbaar',unreachA.toFixed(1)+' m\u00b2');
@@ -3782,6 +3862,26 @@ function downloadPDF(){
       doc.text('Steen '+(i+1)+': x='+s.x.toFixed(2)+' m, y='+s.y.toFixed(2)+' m  ('+s.w.toFixed(2)+'\u00d7'+s.h.toFixed(2)+')',
         stoneX[col],cy+(col>0?0:0));
       if(col===1||(i===stones.length-1)) cy+=5;
+    });
+    cy+=3;
+  }
+
+  // Obstacles
+  if(obstacles.length){
+    pdfSection('Obstakels ('+obstacles.length+')');
+    obstacles.forEach(function(o,i){
+      if(cy>PH-25){doc.addPage();cy=MAR_PDF;pdfSection('Obstakels (vervolg)');}
+      pdfRow(o.naam+' ('+OBST_SOORTEN[o.soort].label.toLowerCase()+')','x='+o.x.toFixed(2)+', y='+o.y.toFixed(2)+', '+o.w.toFixed(2)+'\u00d7'+o.h.toFixed(2)+' m');
+      pdfNote('    '+obstZonesTekst(o));
+    });
+    cy+=3;
+  }
+  var vastP=plants.filter(function(p){return p.vast;});
+  if(vastP.length){
+    pdfSection('Vaste planten ('+vastP.length+')');
+    vastP.forEach(function(p){
+      if(cy>PH-25){doc.addPage();cy=MAR_PDF;pdfSection('Vaste planten (vervolg)');}
+      pdfRow(gewasLabel(p.g),'x='+p.cx.toFixed(2)+', y='+p.cy.toFixed(2)+', \u00d8 '+p.g.diameter.toFixed(2)+' m');
     });
     cy+=3;
   }
@@ -7205,6 +7305,15 @@ function bouwLeesbareTuinplanHTML(){
     });
     html+='</tbody></table></div>';
   });
+  if(obstacles.length){
+    html+='<h2>Obstakels</h2><div class="blok"><table><thead><tr><th>Naam</th><th>Positie en afmeting</th><th>Toegang</th></tr></thead><tbody>';
+    obstacles.forEach(function(o){
+      html+='<tr><td><b>'+esc(o.naam)+'</b> <span class="gc">('+OBST_SOORTEN[o.soort].label.toLowerCase()+')</span></td>'
+        +'<td>x='+o.x.toFixed(2)+', y='+o.y.toFixed(2)+' &nbsp;·&nbsp; '+o.w.toFixed(2)+' × '+o.h.toFixed(2)+' m</td>'
+        +'<td>'+esc(obstZonesTekst(o))+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
   html+='</body></html>';
   return html;
 }
