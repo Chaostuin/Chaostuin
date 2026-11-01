@@ -54,6 +54,18 @@ canvas{border-radius:2px;display:block}
 .stat{background:rgba(245,240,232,.05);border-radius:4px;padding:.6rem;text-align:center}
 .sv{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--straw);display:block;line-height:1;margin-bottom:2px}
 .sl{font-size:9px;color:rgba(245,240,232,.35);letter-spacing:.05em}
+/* ── Maandkiezer (Groenten) ── */
+.maandbalk{display:none;gap:4px;margin:.5rem 0 .4rem}
+.mb{position:relative;flex:1 1 0;min-width:0;padding:.4rem .1rem;background:rgba(245,240,232,.06);border:1px solid rgba(245,240,232,.15);color:rgba(245,240,232,.7);font-size:11px;font-family:inherit;border-radius:3px;cursor:pointer;overflow:hidden}
+.mb span{position:relative;z-index:1}
+.mb i{position:absolute;left:0;right:0;bottom:0;height:0;background:rgba(168,210,100,.30);pointer-events:none}
+.mb:hover{border-color:var(--straw);color:var(--cream)}
+.mb.active{border-color:var(--straw);color:var(--cream);background:rgba(200,169,110,.18);font-weight:600}
+.maandinfo{display:none;margin-top:.6rem;font-size:11px;line-height:1.55;color:rgba(245,240,232,.7);background:rgba(245,240,232,.05);border-radius:4px;padding:.6rem .8rem}
+.maandinfo b{color:var(--straw);font-weight:500}
+.mi-titel{font-family:'Playfair Display',serif;font-size:1rem;color:var(--straw);text-transform:capitalize;margin-bottom:.3rem}
+.mi-staat{margin-top:.35rem;padding-top:.35rem;border-top:1px solid rgba(245,240,232,.1)}
+.mi-noot{margin-top:.35rem;font-size:9px;color:rgba(245,240,232,.35)}
 /* ── Gewassen-popup (lijst + beheer) ── */
 .gp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center}
 .gp-box{background:#2a2218;border:1px solid rgba(245,240,232,.15);border-radius:8px;width:380px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
@@ -568,6 +580,7 @@ canvas{border-radius:2px;display:block}
     </div>
     <div id="canvasHint" style="display:none;font-size:11px;color:rgba(200,169,110,0.9);font-style:italic;margin-bottom:.4rem;min-height:1.4em;text-align:center"></div>
     <div id="groentenHint" style="display:none;font-size:11px;color:rgba(200,169,110,0.9);font-style:italic;margin-bottom:.4rem;min-height:1.4em;text-align:center"></div>
+    <div class="maandbalk" id="maandBalk"></div>
     <div class="cw" id="canvasWrap" style="overflow:auto;cursor:grab"><canvas id="C"></canvas></div>
     <div class="legend" id="padenLegend">
 
@@ -582,6 +595,7 @@ canvas{border-radius:2px;display:block}
       <div class="li"><div class="ls" style="background:rgba(100,200,255,0.2)"></div>Bereikbaar (hand)</div>
       <div class="li"><div class="ls" style="background:rgba(255,80,80,0.45)"></div>Onbereikbaar</div>
         </div>
+    <div class="maandinfo" id="maandInfo"></div>
     <div class="legend" id="groentenLegend" style="display:none"></div>
   </div>
 
@@ -765,6 +779,11 @@ canvas{border-radius:2px;display:block}
 
 
 <script>
+// ── MAANDEN (moet vóór de sessieherstel staan) ──
+var ALLE_MAANDEN=4095;
+var MAAND_KORT=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+var MAAND_LANG=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+var actieveMaand=(new Date()).getMonth()+1; // getoonde maand in de Groenten-tab
 // ── GEDEELD CANVAS (moet vóór alle andere scriptcode staan) ──
 var cv=document.getElementById('C');
 var ctx=cv.getContext('2d');
@@ -4180,7 +4199,7 @@ function nieuweTuin(){
       groentenUndoStack=[];
       document.getElementById('btnGroentenUndo').style.display='none';
       document.getElementById('btnFill').style.display='none';
-      document.getElementById('statsDiv').style.display='none';
+      document.getElementById('statsDiv').style.display='none'; updateMaandUI();
       document.getElementById('tuinInfo').style.display='none';
       document.getElementById('btnPlace').textContent='Verdeel groenten willekeurig →';
       document.getElementById('btnPlace').disabled=false;
@@ -4975,6 +4994,7 @@ function fsaLaadData(data){
               diameter:parseFloat(parseFloat(g.diameter||0.3).toFixed(3)),
               hoogte:g.hoogte||null,duur:g.duur||null,
               zaai_min:g.zaai_min||null,zaai_max:g.zaai_max||null,
+              plant_min:g.plant_min||null,plant_max:g.plant_max||null,
               oogst_min:g.oogst_min||null,oogst_max:g.oogst_max||null,
               kleur:kleur,tekst:g.tekst||contrastTekst(kleur),
               actief:g.actief!==false,kweeknota:g.kweeknota||''};
@@ -4995,7 +5015,7 @@ function fsaLaadData(data){
       var gap=parseFloat(document.getElementById('rGap').value);
       if(isNaN(gap)) gap=0.05;
       resetOccupiedGrid();
-      plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+      plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
       finishPlacement(baseCandidatesArea());
     }
   }
@@ -5108,7 +5128,7 @@ function setFilter(naam){
   // Toon coördinaten van gefilterde planten
   document.querySelectorAll('.li-coords').forEach(function(el){ el.remove(); });
   if(filterGroente){
-    var matches=plants.filter(function(p){ return gewasKey(p.g)===filterGroente; });
+    var matches=plants.filter(function(p){ return gewasKey(p.g)===filterGroente&&inMaand(p,actieveMaand); });
     var actEl=document.querySelector('.li.active:not(.li-all)');
     if(actEl&&matches.length){
       var coords=document.createElement('div');
@@ -5285,11 +5305,38 @@ function circleIntersectsSegment(cx,cy,r,ax,ay,bx,by){
 // ── RASTER-GEBASEERDE VALIDATIE ──────────────────────
 var occupiedGrid=null;
 
+// ── TIJDSBEWUST RASTER ────────────────────────────────
+// Elke rastercel onthoudt in welke maanden ze bezet is (bitmasker, 12 bits:
+// bit 0 = januari … bit 11 = december). Kringloopjaar: een teelt die in
+// augustus start en in maart wordt geoogst, bezet aug–dec én jan–mrt.
+
+// Bitmasker van maand a t/m b (kringloop: b < a loopt over de jaarwisseling)
+function maandenBoog(a,b){
+  if(!a||!b) return 0;
+  var m=0, x=a;
+  for(var i=0;i<12;i++){ m|=1<<(x-1); if(x===b) break; x=x%12+1; }
+  return m;
+}
+// Maanden waarin een gewas de plek in de tuin bezet: vanaf het uitplanten
+// (of, bij rechtstreeks zaaien, vanaf het zaaien) tot het einde van de oogst.
+// Zaaien in kas of bakje bezet de tuin nog niet.
+function bezetMasker(g){
+  if(!g||g.vast) return ALLE_MAANDEN;
+  var start=g.plant_min||g.zaai_min, einde=g.oogst_max||g.oogst_min;
+  if(!start||!einde) return ALLE_MAANDEN;
+  return maandenBoog(start,einde);
+}
+function plantMask(p){ return p.vast?ALLE_MAANDEN:bezetMasker(p.g); }
+function inMaand(p,m){ return ((plantMask(p)>>(m-1))&1)===1; }
+function aantalBits(mask){ var n=0; while(mask){ n+=mask&1; mask>>=1; } return n; }
+function ruimteTijd(g){ return g.diameter*g.diameter*aantalBits(bezetMasker(g)); }
+
 function resetOccupiedGrid(){
-  occupiedGrid=new Uint8Array(gridCols*gridRows);
+  occupiedGrid=new Uint16Array(gridCols*gridRows);
 }
 
-function markOccupied(cx,cy,r,gap){
+function markOccupied(cx,cy,r,gap,mask){
+  mask=mask||ALLE_MAANDEN;
   var effectR=r+(gap>0?gap:0);
   var offX=(W-gridCols*GRID_R)/2, offY=(L-gridRows*GRID_R)/2;
   var g=gridXY(cx-effectR, cy-effectR);
@@ -5298,7 +5345,7 @@ function markOccupied(cx,cy,r,gap){
     for(var col=g.c;col<=g2.c;col++){
       var wcx=offX+(col+0.5)*GRID_R, wcy=offY+(row+0.5)*GRID_R;
       if(Math.hypot(wcx-cx,wcy-cy)<=effectR)
-        occupiedGrid[row*gridCols+col]=1;
+        occupiedGrid[row*gridCols+col]|=mask;
     }
   }
 }
@@ -5348,8 +5395,9 @@ function circleValid(cx,cy,r,hoogte){
   return true;
 }
 
-function circleOverlaps(cx,cy,r,gap){
+function circleOverlaps(cx,cy,r,gap,mask){
   if(!occupiedGrid) return false;
+  mask=mask||ALLE_MAANDEN;
   var effectR=r+(gap>0?gap:0);
   // Tolerantie: een bezette cel telt alleen als overlap als zijn middelpunt
   // meer dan een halve rastercel binnen de effectieve zone valt.
@@ -5360,13 +5408,14 @@ function circleOverlaps(cx,cy,r,gap){
   var g2=gridXY(cx+effectR,cy+effectR);
   for(var row=g.r;row<=g2.r;row++){
     for(var col=g.c;col<=g2.c;col++){
-      if(!occupiedGrid[row*gridCols+col]) continue;
+      if(!(occupiedGrid[row*gridCols+col]&mask)) continue;
       var wcx=offX+(col+0.5)*GRID_R, wcy=offY+(row+0.5)*GRID_R;
       if(Math.hypot(wcx-cx,wcy-cy)<effectR-tol) return true;
     }
   }
   if(gap<0){
     return plants.some(function(p){
+      if(!(plantMask(p)&mask)) return false;
       var dist=Math.hypot(cx-p.cx,cy-p.cy);
       var maxD=Math.min(r,p.g.diameter/2)*MAX_OVERLAP_FRAC*2;
       return dist<r+p.g.diameter/2-maxD;
@@ -5402,7 +5451,7 @@ function applyTuinData(data){
 
   document.getElementById('btnPlace').disabled=false;
   document.getElementById('btnPlace').textContent='Verdeel groenten willekeurig →';
-  document.getElementById('statsDiv').style.display='none';
+  document.getElementById('statsDiv').style.display='none'; updateMaandUI();
   buildVegList();
   hideErr();
   resize();
@@ -5906,6 +5955,8 @@ function bevestigPopup(){
     kweeknota:document.getElementById('pKweeknota').value.trim(),
   };
   if(popupEditIndex>=0){
+    var oud=GROENTEN[popupEditIndex];
+    if(oud&&oud.plant_min){ item.plant_min=oud.plant_min; item.plant_max=oud.plant_max; }
     GROENTEN[popupEditIndex]=item;
   } else {
     GROENTEN.push(item);
@@ -5952,6 +6003,7 @@ function importGroenten(input){
           hoogte:   g.hoogte||null,
           duur:     g.duur||null,
           zaai_min: g.zaai_min||null, zaai_max: g.zaai_max||null,
+          plant_min:g.plant_min||null,plant_max:g.plant_max||null,
           oogst_min:g.oogst_min||null,oogst_max:g.oogst_max||null,
           kleur:    kleur,
           tekst:    g.tekst||contrastTekst(kleur),
@@ -6005,6 +6057,7 @@ function draw(){
   plants.forEach(function(p,idx){
     // Sla de gesleepte plant over — die wordt door tekenSleepOverlay getekend
     if(sleepState&&sleepState.isDragging&&idx===sleepState.plantIdx) return;
+    if(!inMaand(p,actieveMaand)) return;
     var nr=idx+1; // globaal volgnummer (1-based)
     var isActive=(filterGroente===null||gewasKey(p.g)===filterGroente);
     var r=ts(p.g.diameter/2);
@@ -6147,7 +6200,7 @@ function groentenUndo(){
   var gap=parseFloat(document.getElementById('rGap').value);
   if(isNaN(gap)) gap=0.05;
   resetOccupiedGrid();
-  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
   finishPlacement(baseCandidatesArea(), true);
   document.getElementById('btnFill').style.display='block';
   fsaAutoSave();
@@ -6160,7 +6213,7 @@ function vulLegePlaatsen(){
   if(isNaN(gap)) gap=0.05;
   // Herbouw occupiedGrid vanuit huidige planten (plants[] blijft intact)
   resetOccupiedGrid();
-  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
   // doPlace met behoudeGrid=true: reset grid niet, reset plants niet
   document.getElementById('btnFill').style.display='none';
   doPlace(activeGroenten(), gap, true);
@@ -6201,7 +6254,7 @@ function shuffle(arr){
 
 function doPlace(actief, gap, behoudeGrid){
   if(!behoudeGrid) resetOccupiedGrid();
-  plants.forEach(function(p){ if(p.vast) markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  plants.forEach(function(p){ if(p.vast) markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
 
   var offX=(W-gridCols*GRID_R)/2, offY=(L-gridRows*GRID_R)/2;
   var baseCandidates=[];
@@ -6221,10 +6274,10 @@ function doPlace(actief, gap, behoudeGrid){
 
   function tryOne(g, grid, startK, batchSize){
     // Probeer max batchSize posities vanaf startK. Geeft gevonden index of -1.
-    var r=g.diameter/2, h=g.hoogte||null;
+    var r=g.diameter/2, h=g.hoogte||null, mk=bezetMasker(g);
     var end=Math.min(startK+batchSize, grid.length);
     for(var k=startK;k<end;k++){
-      if(circleValid(grid[k][0],grid[k][1],r,h)&&!circleOverlaps(grid[k][0],grid[k][1],r,gap))
+      if(circleValid(grid[k][0],grid[k][1],r,h)&&!circleOverlaps(grid[k][0],grid[k][1],r,gap,mk))
         return k;
     }
     return -1;
@@ -6234,8 +6287,10 @@ function doPlace(actief, gap, behoudeGrid){
   // actiefGroot[soortIdx] is de huidige soort
   // scanK is de huidige positie in het grid
   // Na elke batch: yield via setTimeout
-  var actiefGroot=actief.slice().sort(function(a,b){return b.diameter-a.diameter;});
-  var actiefKlein=actief.slice().sort(function(a,b){return a.diameter-b.diameter;});
+  // Volgorde op ruimte × tijd: eerst de gewassen die lang veel plaats innemen,
+  // daarna worden de gaten (in plaats én tijd) met kortere teelten aangevuld.
+  var actiefGroot=actief.slice().sort(function(a,b){return ruimteTijd(b)-ruimteTijd(a);});
+  var actiefKlein=actief.slice().sort(function(a,b){return ruimteTijd(a)-ruimteTijd(b);});
 
   var BATCH=200; // aantal posities per setTimeout-tick
   var f1Grid=null; // huidig geshuffle grid voor fase 1
@@ -6243,23 +6298,24 @@ function doPlace(actief, gap, behoudeGrid){
   var f1ScanK=0;
   var f1Round=0;
   var avgR=actief.reduce(function(s,g){return s+g.diameter/2;},0)/actief.length;
-  var maxRounds=Math.max(8, Math.ceil(reachArea/(Math.PI*avgR*avgR)*1.5/actief.length));
+  var avgMnd=actief.reduce(function(s,g){return s+aantalBits(bezetMasker(g));},0)/actief.length;
+  var maxRounds=Math.max(8, Math.ceil(reachArea*(12/Math.max(1,avgMnd))/(Math.PI*avgR*avgR)*1.5/actief.length));
 
   function fase1(){
+    var g=actiefGroot[f1SoortIdx], mk1=bezetMasker(g);
     if(f1Grid===null){
       f1Grid=shuffle(baseCandidates.filter(function(p){
-        var gp=gridXY(p[0],p[1]); return !occupiedGrid[gp.r*gridCols+gp.c];
+        var gp=gridXY(p[0],p[1]); return !(occupiedGrid[gp.r*gridCols+gp.c]&mk1);
       }));
       f1ScanK=0;
     }
 
-    var g=actiefGroot[f1SoortIdx];
     var k=tryOne(g, f1Grid, f1ScanK, BATCH);
 
     if(k>=0){
       // Gevonden: plaats en ga naar volgende soort
       plants.push({g:g, cx:f1Grid[k][0], cy:f1Grid[k][1]});
-      markOccupied(f1Grid[k][0], f1Grid[k][1], g.diameter/2, gap);
+      markOccupied(f1Grid[k][0], f1Grid[k][1], g.diameter/2, gap, mk1);
       f1Grid.splice(k,1);
       schedDraw();
       f1SoortIdx++;
@@ -6308,19 +6364,19 @@ function doPlace(actief, gap, behoudeGrid){
   var f2ScanK=0;
 
   function fase2(){
+    var g=actiefKlein[f2SoortIdx], mk2=bezetMasker(g);
     if(f2Grid===null){
       f2Grid=shuffle(baseCandidates.filter(function(p){
-        var gp=gridXY(p[0],p[1]); return !occupiedGrid[gp.r*gridCols+gp.c];
+        var gp=gridXY(p[0],p[1]); return !(occupiedGrid[gp.r*gridCols+gp.c]&mk2);
       }));
       f2ScanK=0;
     }
 
-    var g=actiefKlein[f2SoortIdx];
     var k=tryOne(g, f2Grid, f2ScanK, BATCH);
 
     if(k>=0){
       plants.push({g:g, cx:f2Grid[k][0], cy:f2Grid[k][1]});
-      markOccupied(f2Grid[k][0], f2Grid[k][1], g.diameter/2, gap);
+      markOccupied(f2Grid[k][0], f2Grid[k][1], g.diameter/2, gap, mk2);
       f2Grid.splice(k,1);
       schedDraw();
       f2AnyPlaced=true;
@@ -6374,7 +6430,8 @@ function finishPlacement(reachArea, naSleep){
   plants.forEach(function(p){ if(p.vast) return; counts[gewasKey(p.g)]=(counts[gewasKey(p.g)]||0)+1;});
   var types=Object.values(counts).filter(function(v){return v>0;}).length;
 
-  var usedArea=plants.reduce(function(s,p){var r=p.g.diameter/2;return s+Math.PI*r*r;},0);
+  var usedArea=0;
+  plants.forEach(function(p){ if(inMaand(p,actieveMaand)){var r=p.g.diameter/2; usedArea+=Math.PI*r*r;} });
   var free=Math.max(0,reachArea-usedArea);
 
   document.getElementById('sPlants').textContent=nGr;
@@ -6382,16 +6439,28 @@ function finishPlacement(reachArea, naSleep){
   document.getElementById('sFree').textContent=free.toFixed(1);
   document.getElementById('statsDiv').style.display='grid';
 
+  var nMaand=plants.filter(function(p){return !p.vast&&inMaand(p,actieveMaand);}).length;
   var status=document.getElementById('statusBar');
   status.style.display='block';
-  status.textContent='✓ '+nGr+' planten geplaatst'+(plants.length>nGr?' (+ '+(plants.length-nGr)+' vast)':'')+' — klik ↺ voor een nieuwe verdeling';
+  status.textContent='✓ '+nGr+' planten geplaatst, waarvan '+nMaand+' in '+MAAND_LANG[actieveMaand-1]+(plants.length>nGr?' (+ '+(plants.length-nGr)+' vast)':'')+' — klik ↺ voor een nieuwe verdeling';
 
   filterGroente=null; // reset filter bij nieuwe verdeling
+  bouwLegenda();
+  updateVastList();
+
+  resize();
+  fsaAutoSave();
+}
+
+// Legenda van de gekozen maand (aantallen en nummers enkel van planten die dan in de tuin staan)
+function bouwLegenda(){
+  var actief=activeGroenten();
+  var counts={};
+  plants.forEach(function(p){ if(p.vast||!inMaand(p,actieveMaand)) return; counts[gewasKey(p.g)]=(counts[gewasKey(p.g)]||0)+1;});
   var legendEl=document.getElementById('groentenLegend');
-  // Bouw legenda via DOM zodat event listeners bewaard blijven
   legendEl.innerHTML='';
   var allEl=document.createElement('div');
-  allEl.className='li li-all active';
+  allEl.className='li li-all'+(filterGroente===null?' active':'');
   allEl.dataset.naam='__all__';
   allEl.innerHTML='<div class="ls" style="background:rgba(245,240,232,.2);width:10px;height:10px;border-radius:50%"></div>Alle';
   allEl.addEventListener('click',function(){ setFilter(null); });
@@ -6401,10 +6470,10 @@ function finishPlacement(reachArea, naSleep){
     var n=counts[key]||0;
     if(!n) return;
     var nrs=[];
-    plants.forEach(function(p,idx){ if(!p.vast&&gewasKey(p.g)===key) nrs.push(idx+1); });
+    plants.forEach(function(p,idx){ if(!p.vast&&inMaand(p,actieveMaand)&&gewasKey(p.g)===key) nrs.push(idx+1); });
     var nrStr=nrs.length?' <span style="font-size:9px;color:rgba(245,240,232,.4)">#'+nrs.join(', #')+'</span>':'';
     var el=document.createElement('div');
-    el.className='li';
+    el.className='li'+(filterGroente===key?' active':'');
     el.dataset.naam=key;
     el.innerHTML='<div class="ls" style="background:'+g.kleur+';width:10px;height:10px;border-radius:50%"></div>'
       +gewasLabel(g)+' ('+n+'×)'+nrStr;
@@ -6422,17 +6491,97 @@ function finishPlacement(reachArea, naSleep){
   Object.keys(vastGroepen).forEach(function(k){
     var v=vastGroepen[k];
     var el=document.createElement('div');
-    el.className='li';
+    el.className='li'+(filterGroente===k?' active':'');
     el.dataset.naam=k;
     el.innerHTML='<div class="ls" style="background:'+v.g.kleur+';width:10px;height:10px;border-radius:50%;outline:1.5px dashed rgba(245,240,232,.7)"></div>'
       +'🌳 '+esc(gewasLabel(v.g))+' ('+v.nrs.length+'×) <span style="font-size:9px;color:rgba(245,240,232,.4)">#'+v.nrs.join(', #')+'</span>';
     el.addEventListener('click',function(){ setFilter(k); });
     legendEl.appendChild(el);
   });
-  updateVastList();
+  updateMaandUI();
+}
 
-  resize();
-  fsaAutoSave();
+// ── MAANDKIEZER ───────────────────────────────────────
+function bouwMaandBalk(){
+  var el=document.getElementById('maandBalk'); if(!el) return;
+  el.innerHTML='';
+  for(var m=1;m<=12;m++){
+    (function(m){
+      var b=document.createElement('button');
+      b.type='button'; b.className='mb'; b.dataset.m=m;
+      b.innerHTML='<span>'+MAAND_KORT[m-1]+'</span><i></i>';
+      b.addEventListener('click',function(){ kiesMaand(m); });
+      el.appendChild(b);
+    })(m);
+  }
+}
+
+function kiesMaand(m){
+  actieveMaand=m;
+  bouwLegenda();   // herbouwt ook de maand-UI
+  draw();
+}
+
+// Per maand: aandeel van de bereikbare oppervlakte dat bezet is
+function bezettingPerMaand(){
+  var reach=baseCandidatesArea();
+  var res=[];
+  for(var m=1;m<=12;m++){
+    var opp=0,n=0;
+    plants.forEach(function(p){ if(inMaand(p,m)){ var r=p.g.diameter/2; opp+=Math.PI*r*r; n++; } });
+    res.push({n:n,frac:reach>0?Math.min(1,opp/reach):0});
+  }
+  return res;
+}
+
+// Wat gebeurt er in maand m voor een plant? (venster-maanden uit de gewasdata)
+function maandActies(g,m){
+  var bit=function(a,b){ return a&&b?((maandenBoog(a,b)>>(m-1))&1)===1:false; };
+  var acts=[];
+  var heeftPlant=!!g.plant_min;
+  // zaai- en plantvenster identiek (aardappel, knoflook, witlof in tonnen…): enkel uitplanten
+  var zaaiGelijkPlant=heeftPlant&&g.zaai_min===g.plant_min&&(g.zaai_max||g.zaai_min)===(g.plant_max||g.plant_min);
+  if(!zaaiGelijkPlant&&bit(g.zaai_min,g.zaai_max||g.zaai_min)) acts.push(heeftPlant?'voorzaaien':'zaaien');
+  if(heeftPlant&&bit(g.plant_min,g.plant_max||g.plant_min)) acts.push('uitplanten');
+  if(bit(g.oogst_min,g.oogst_max||g.oogst_min)) acts.push('oogsten');
+  return acts;
+}
+
+function updateMaandUI(){
+  var bal=document.getElementById('maandBalk'), info=document.getElementById('maandInfo');
+  if(!bal||!info) return;
+  var heeft=plants.length>0;
+  bal.style.display=(heeft&&activeTool==='groenten')?'flex':'none';
+  info.style.display=(heeft&&activeTool==='groenten')?'block':'none';
+  if(!heeft) return;
+  var bz=bezettingPerMaand();
+  Array.prototype.forEach.call(bal.children,function(b){
+    var m=parseInt(b.dataset.m);
+    b.classList.toggle('active',m===actieveMaand);
+    b.querySelector('i').style.height=Math.round(bz[m-1].frac*100)+'%';
+    b.title=MAAND_LANG[m-1]+': '+bz[m-1].n+' planten, '+Math.round(bz[m-1].frac*100)+'% van de bereikbare ruimte bezet';
+  });
+  // lijst voor de gekozen maand
+  var groepen={zaaien:{},voorzaaien:{},uitplanten:{},oogsten:{}}, staat={};
+  plants.forEach(function(p){
+    if(p.vast) return;
+    var key=gewasLabel(p.g);
+    if(inMaand(p,actieveMaand)) staat[key]=(staat[key]||0)+1;
+    maandActies(p.g,actieveMaand).forEach(function(a){ groepen[a][key]=(groepen[a][key]||0)+1; });
+  });
+  var lijst=function(o){
+    var ks=Object.keys(o).sort();
+    return ks.length?ks.map(function(k){return esc(k)+(o[k]>1?' ('+o[k]+'×)':'');}).join(', '):'';
+  };
+  var rij=function(t,o){ var l=lijst(o); return l?'<div><b>'+t+'</b> '+l+'</div>':''; };
+  var nStaat=Object.keys(staat).length;
+  info.innerHTML='<div class="mi-titel">'+MAAND_LANG[actieveMaand-1]+'</div>'
+    +rij('Voorzaaien (kas/bakje):',groepen.voorzaaien)
+    +rij('Zaaien:',groepen.zaaien)
+    +rij('Uitplanten:',groepen.uitplanten)
+    +rij('Oogsten:',groepen.oogsten)
+    +'<div class="mi-staat">In de tuin: '+(nStaat?lijst(staat):'niets')+'</div>'
+    +'<div class="mi-noot">De balkjes boven de maanden tonen hoeveel van de bereikbare ruimte bezet is.</div>';
 }
 
 function showErr(m){var e=document.getElementById('errBox');e.textContent=m;e.style.display='block';}
@@ -6454,6 +6603,7 @@ function plantOnderMuis(e){
   var wx=(e.clientX-rect.left-MAR)/sc(), wy=(e.clientY-rect.top-MAR)/sc();
   var beste=null, besteDist=Infinity, besteIdx=-1;
   plants.forEach(function(p,i){
+    if(!inMaand(p,actieveMaand)) return;
     var d=Math.hypot(wx-p.cx, wy-p.cy);
     if(d<=p.g.diameter/2 && d<besteDist){ besteDist=d; beste=p; besteIdx=i; }
   });
@@ -6516,7 +6666,7 @@ document.getElementById('C').addEventListener('mousemove',function(e){
     if(!plants.length){ cv.style.cursor=''; return; }
     var pos2=canvasWxy(e);
     var raak=plants.some(function(p){
-      return Math.hypot(pos2.wx-p.cx,pos2.wy-p.cy)<=p.g.diameter/2;
+      return inMaand(p,actieveMaand)&&Math.hypot(pos2.wx-p.cx,pos2.wy-p.cy)<=p.g.diameter/2;
     });
     cv.style.cursor=raak?'grab':'';
     return;
@@ -6579,8 +6729,10 @@ document.getElementById('C').addEventListener('mouseup',function(e){
 
   // 2. Verwijder alle planten die overlappen met de nieuwe positie
   var verwijderd=[];
+  var pMask=plantMask(plant);
   plants=plants.filter(function(p){
     if(p.vast) return true;
+    if(!(plantMask(p)&pMask)) return true; // andere maanden: geen conflict
     var minAfstand=(r + p.g.diameter/2) * (1-MAX_OVERLAP_FRAC);
     if(Math.hypot(p.cx-nx,p.cy-ny)<minAfstand){
       verwijderd.push(p);
@@ -6595,7 +6747,7 @@ document.getElementById('C').addEventListener('mouseup',function(e){
 
   // 4. Herbouw occupiedGrid op basis van alle resterende planten
   resetOccupiedGrid();
-  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
 
   finishPlacement(baseCandidatesArea(), true);
   document.getElementById('btnFill').style.display='block';
@@ -6726,7 +6878,7 @@ function vastHerbouw(verwijderd,melding){
   var gap=parseFloat(document.getElementById('rGap').value);
   if(isNaN(gap)) gap=0.05;
   resetOccupiedGrid();
-  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+  plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
   finishPlacement(baseCandidatesArea(), true);
   if(verwijderd>0) document.getElementById('btnFill').style.display='block';
   document.getElementById('btnGroentenUndo').style.display='block';
@@ -7377,7 +7529,7 @@ function importTuinplan(input){
         resetOccupiedGrid();
         var gap=parseFloat(document.getElementById('rGap').value);
         if(isNaN(gap)) gap=0.05;
-        plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+        plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
         finishPlacement(baseCandidatesArea());
       }
       input.value='';
@@ -7436,7 +7588,7 @@ function syncGroentenView(){
     resetOccupiedGrid();
     var gap=parseFloat(document.getElementById('rGap').value);
     if(isNaN(gap)) gap=0.05;
-    plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap); });
+    plants.forEach(function(p){ markOccupied(p.cx,p.cy,p.g.diameter/2,gap,plantMask(p)); });
     finishPlacement(baseCandidatesArea(), true);
     document.getElementById('btnFill').style.display='block';
     showErr(verwijderd+' plant'+(verwijderd>1?'en':'')+' verwijderd — ze stonden na een wijziging van paden of obstakels niet meer op een geldige plek. Klik "Vul lege plaatsen op" om aan te vullen.');
@@ -7467,6 +7619,7 @@ function switchTool(name){
   document.getElementById('padenLegend').style.display = name==='paden'?'flex':'none';
   document.getElementById('groentenLegend').style.display = name==='groenten'?'flex':'none';
   document.getElementById('canvasHint').style.display = name==='paden'?'block':'none';
+  updateMaandUI();
   if(name!=='paden'){
     document.getElementById('reachToggleWrap').style.display='none';
     document.getElementById('ctxMenu').style.display='none';
@@ -7503,6 +7656,7 @@ window.addEventListener('resize',resize);
 // Startpositie: Paden-tabblad open, canvas op de juiste maat tekenen
 document.querySelector('.app').style.gridTemplateColumns='300px 1fr';
 MAR=62;
+bouwMaandBalk(); updateMaandUI();
 resize();
 
 </script>
